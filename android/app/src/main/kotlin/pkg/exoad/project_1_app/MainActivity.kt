@@ -1,4 +1,4 @@
-package com.example.project_1_app
+package pkg.exoad.project_1_app
 
 import io.flutter.embedding.android.FlutterActivity
 

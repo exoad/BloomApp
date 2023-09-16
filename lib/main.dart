@@ -5,8 +5,7 @@ import 'package:project_1_app/bits/consts.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  init();
-  runApp(const MainApp());
+  init().then((_) => runApp(const MainApp()));
 }
 
 class MainApp extends StatefulWidget {
@@ -39,8 +38,7 @@ class _MainAppState extends State<MainApp> {
           child: const Icon(Ionicons.chatbubble),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(
-              bottom: 8, left: 6, right: 6, top: 4),
+          padding: LaF.outerComponentPadding,
           child: BottomAppBar(
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -88,10 +86,33 @@ class _MainAppState extends State<MainApp> {
                 child: PageView(
               scrollDirection: Axis.vertical,
               allowImplicitScrolling: true,
-              children: [
+              children: <Widget>[
                 wrapAsHomeLabel(
-                    child: const Text("Placeholder Title"),
-                    color: LaF.primaryColorBlueTint),
+                  padding: const EdgeInsets.only(
+                      top: 2, bottom: 4, right: 2, left: 2),
+                  child: Row(
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly,
+                      children: [
+                         const Image(
+                          
+                              image: AssetImage(
+                                  "assets/app_icon/icon_64x64.png")),
+                        Column(
+                            mainAxisAlignment:
+                                MainAxisAlignment.start,
+                            children: [
+                              Text(uiText["TitleLabel"],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 30)),
+                              Text(uiText["AuthorsSublabel"],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14))
+                            ])
+                      ]),
+                ),
               ],
             )),
             Container(color: Colors.red),

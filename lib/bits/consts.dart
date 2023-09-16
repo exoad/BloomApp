@@ -22,6 +22,8 @@ final class LaF {
 
   static bool useLabeledBottomAppBarButtons = true;
 
+  static const EdgeInsets outerComponentPadding =
+      EdgeInsets.only(bottom: 8, left: 6, right: 6, top: 8);
   static const Radius roundedRectBorderRadius = Radius.circular(20);
 
   static String languageLocale = "en_US"; // ! NOTE: this is default
@@ -57,7 +59,9 @@ ThemeData appLaF() {
 
 late YamlMap uiText;
 
-void init() {
-  uiText = loadYaml(
+Future<void> init() async {
+  uiText = await loadYaml(
       loadString_sync("assets/i18n/${LaF.languageLocale}.yaml"));
+
+  uiText.forEach((k, v) => print("Loaded LOCALE_LANG: $k -> $v"));
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1_app/bits/consts.dart';
+import 'package:project_1_app/parts/block.dart';
 
 /// Creates a labled Icon Button in the format that the label is vertically under the Icon Button.
 /// [button] refers to the target IconButton and the [label] is the label for it and the optional [labelStyle]
@@ -26,18 +27,7 @@ IconButton bottomAppBarPageControlledBtn(
     );
 
 Widget wrapAsHomeLabel(
-        {required Widget child, required Color color, Size? size}) =>
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-          width: size?.width,
-          height: size?.height,
-          decoration: BoxDecoration(
-              color: color,
-              borderRadius: const BorderRadius.all(
-                  LaF.roundedRectBorderRadius)),
-          constraints: const BoxConstraints.expand(
-              height: 0, width: double.infinity),
-          child: Padding(
-              padding: const EdgeInsets.all(14), child: child)),
-    );
+        {required Widget child,
+        Color color = LaF.empty,
+        EdgeInsets padding = LaF.outerComponentPadding}) =>
+    Block(backgroundColor: color, padding: padding, child: child);

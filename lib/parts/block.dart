@@ -11,6 +11,34 @@ class Block extends StatelessWidget {
       required this.child,
       required this.padding});
 
+  const Block.claimed(
+      {super.key,
+      required this.backgroundColor,
+      required this.child,
+      this.padding = LaF.homeComponentPadding});
+
+  Block.text(
+      {super.key,
+      required String titleText,
+      this.padding = LaF.homeComponentPadding,
+      required String subText,
+      TextStyle titleTextStyle = LaF.blockTitleTextStyle,
+      TextStyle subTextStyle = LaF.blockSubTextStyle,
+      Widget? sideLabel,
+      required this.backgroundColor})
+      : child = sideLabel == null
+            ? Text.rich(TextSpan(children: <InlineSpan>[
+                TextSpan(text: titleText, style: titleTextStyle),
+                TextSpan(text: subText, style: subTextStyle)
+              ]))
+            : Row(children: [
+                sideLabel,
+                Text.rich(TextSpan(children: <InlineSpan>[
+                  TextSpan(text: titleText, style: titleTextStyle),
+                  TextSpan(text: subText, style: subTextStyle)
+                ]))
+              ]);
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -25,8 +53,7 @@ class Block extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                  padding: padding,
-                  child: Center(child: child))))
+                  padding: padding, child: Center(child: child))))
     ]);
   }
 }

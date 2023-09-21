@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:project_1_app/bits/debug.dart';
 import 'package:project_1_app/bits/helper.dart';
 import 'package:project_1_app/bits/consts.dart';
+import 'package:project_1_app/parts/block.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   init().then((_) => runApp(const MainApp()));
 }
 
@@ -34,7 +37,9 @@ class _MainAppState extends State<MainApp> {
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endContained,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () => pageController.animateToPage(4,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.fastEaseInToSlowEaseOut),
           child: const Icon(Ionicons.chatbubble),
         ),
         bottomNavigationBar: Padding(
@@ -83,21 +88,17 @@ class _MainAppState extends State<MainApp> {
           allowImplicitScrolling: false,
           children: <Widget>[
             Center(
-                child: PageView(
-              scrollDirection: Axis.vertical,
-              allowImplicitScrolling: true,
+                child: Column(
               children: <Widget>[
                 wrapAsHomeLabel(
-                  padding: const EdgeInsets.only(
-                      top: 2, bottom: 4, right: 2, left: 2),
+                  padding: LaF.homeComponentPadding,
                   child: Row(
                       mainAxisAlignment:
                           MainAxisAlignment.spaceEvenly,
                       children: [
-                         const Image(
-                          
-                              image: AssetImage(
-                                  "assets/app_icon/icon_64x64.png")),
+                        const Image(
+                            image: AssetImage(
+                                "assets/app_icon/icon_64x64.png")),
                         Column(
                             mainAxisAlignment:
                                 MainAxisAlignment.start,
@@ -113,12 +114,36 @@ class _MainAppState extends State<MainApp> {
                             ])
                       ]),
                 ),
+                const Block.claimed(
+                    backgroundColor: LaF.primaryColorBlueTint,
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                              flex: 3,
+                              child: Icon(Icons.warning_amber_rounded,
+                                  size: 54)),
+                          Text.rich(
+                            TextSpan(children: <InlineSpan>[
+                              TextSpan(text: "Placeholder\n"),
+                              TextSpan(text: "Text")
+                            ]),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 34),
+                          )
+                        ])),
+                const Block(
+                    backgroundColor: LaF.primaryColorGreenTint,
+                    padding: LaF.homeComponentPadding,
+                    child: Row())
               ],
             )),
-            Container(color: Colors.red),
-            Container(color: Colors.orange),
-            Container(color: Colors.green),
-            Container(color: Colors.pink)
+            debug_wrapPageNumber(bg: Colors.purple, text: "Page 2"),
+            debug_wrapPageNumber(bg: Colors.cyan, text: "Page 3"),
+            debug_wrapPageNumber(bg: Colors.green, text: "Page 4"),
+            debug_wrapPageNumber(bg: Colors.red, text: "Page 5"),
           ],
         ),
       ),

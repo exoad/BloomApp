@@ -15,6 +15,8 @@ final class LaF {
   static const Color primaryColorFgContrast =
       Color.fromARGB(255, 48, 48, 48);
 
+  static const Color primaryLightTint =
+      Color.fromARGB(255, 241, 241, 241);
   static const Color primaryColorGreenTint =
       Color.fromARGB(255, 156, 230, 159);
   static const Color primaryColorBlueTint =
@@ -24,9 +26,16 @@ final class LaF {
 
   static const EdgeInsets outerComponentPadding =
       EdgeInsets.only(bottom: 8, left: 6, right: 6, top: 8);
+  static const EdgeInsets homeComponentPadding =
+      EdgeInsets.only(bottom: 12, left: 12, right: 12);
   static const Radius roundedRectBorderRadius = Radius.circular(20);
 
   static String languageLocale = "en_US"; // ! NOTE: this is default
+
+  static const TextStyle blockTitleTextStyle =
+      TextStyle(fontWeight: FontWeight.w700, fontSize: 58);
+  static const TextStyle blockSubTextStyle =
+      TextStyle(fontWeight: FontWeight.w500, fontSize: 30);
 }
 
 ThemeData appLaF() {
@@ -35,7 +44,7 @@ ThemeData appLaF() {
       scaffoldBackgroundColor: LaF.primaryBackground,
       bottomAppBarTheme: const BottomAppBarTheme(
           color: LaF.primaryColor,
-          height: 80,
+          height: 75,
           surfaceTintColor: LaF.primaryColorTint,
           shadowColor: LaF.empty,
           shape: AutomaticNotchedShape(RoundedRectangleBorder(

@@ -23,3 +23,9 @@ flutter:
     - assets/app_icon/icon_512x512.png
     - assets/i18n/en_US.yaml
     - assets/app_icon/icon_64x64.png
+  fonts:
+    - family: FiraMono
+    - fonts:
+      - asset: assets/FiraMono-Bold.ttf
+      - asset: assets/FiraMono-Medium.ttf
+      - asset: assets/FiraMono-Regular.ttf

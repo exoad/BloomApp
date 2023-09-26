@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yaml/yaml.dart';
-import './content_pipe.dart';
+import 'pipe.dart';
 
 final class LaF {
   static const Color empty = Color.fromARGB(0, 0, 0, 0);
@@ -10,6 +10,8 @@ final class LaF {
       Color.fromARGB(255, 247, 204, 147);
   static const Color primaryColorTint =
       Color.fromARGB(255, 235, 208, 118);
+  static const Color primaryColorTintDarker_Pressed =
+      Color.fromARGB(180, 199, 144, 81);
   static const Color primaryColorConstrast =
       Color.fromARGB(255, 255, 145, 0);
   static const Color primaryColorFgContrast =
@@ -32,10 +34,14 @@ final class LaF {
 
   static String languageLocale = "en_US"; // ! NOTE: this is default
 
-  static const TextStyle blockTitleTextStyle =
-      TextStyle(fontWeight: FontWeight.w700, fontSize: 58);
-  static const TextStyle blockSubTextStyle =
-      TextStyle(fontWeight: FontWeight.w500, fontSize: 30);
+  static const TextStyle blockTitleTextStyle = TextStyle(
+      fontFamily: "FiraMono",
+      fontWeight: FontWeight.w700,
+      fontSize: 58);
+  static const TextStyle blockSubTextStyle = TextStyle(
+      fontFamily: "FiraMono",
+      fontWeight: FontWeight.w500,
+      fontSize: 30);
 }
 
 ThemeData appLaF() {
@@ -45,8 +51,8 @@ ThemeData appLaF() {
       bottomAppBarTheme: const BottomAppBarTheme(
           color: LaF.primaryColor,
           height: 75,
-          surfaceTintColor: LaF.primaryColorTint,
           shadowColor: LaF.empty,
+          surfaceTintColor: LaF.primaryColorTint,
           shape: AutomaticNotchedShape(RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.all(LaF.roundedRectBorderRadius)))),

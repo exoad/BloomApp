@@ -41,19 +41,25 @@ class Block extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Padding(
-          padding: padding,
-          child: Container(
-              decoration: ShapeDecoration(
-                color: backgroundColor,
-                shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.all(LaF.roundedRectBorderRadius),
-                ),
-              ),
-              child: Padding(
-                  padding: padding, child: Center(child: child))))
-    ]);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+              padding: padding,
+              child: Container(
+                  decoration: ShapeDecoration(
+                    color: backgroundColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                          LaF.roundedRectBorderRadius),
+                    ),
+                  ),
+                  child: Padding(
+                      padding: padding,
+                      child: Center(
+                        heightFactor: 1,
+                        child: child,
+                      ))))
+        ]);
   }
 }

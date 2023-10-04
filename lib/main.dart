@@ -87,11 +87,13 @@ class Page1_Home extends StatelessWidget {
                         Text(uiText["TitleLabel"],
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 30)),
+                                fontSize: 30,
+                                fontFamily: "FiraMono")),
                         Text(uiText["AuthorsSublabel"],
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 14))
+                                fontSize: 14,
+                                fontFamily: "FiraMono"))
                       ])
                 ]),
           ),
@@ -111,7 +113,9 @@ class Page1_Home extends StatelessWidget {
                         TextSpan(text: "Text")
                       ]),
                       style: TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 34),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 34,
+                          fontFamily: "FiraMono"),
                     )
                   ])),
           const Block(

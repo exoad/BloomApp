@@ -31,3 +31,40 @@ Widget wrapAsHomeLabel(
         Color color = LaF.empty,
         EdgeInsets padding = LaF.outerComponentPadding}) =>
     Block(backgroundColor: color, padding: padding, child: child);
+
+Text withText(
+        {required String data,
+        double? fontSize,
+        FontWeight? fontWeight,
+        Paint? foregroundColor,
+        double? wordSpacing,
+        StrutStyle? strutStyle,
+        TextAlign? textAlign,
+        TextDirection? textDirection,
+        Locale? locale,
+        bool? softWrap,
+        TextOverflow? overflow,
+        double? textScaleFactor,
+        int? maxLines,
+        String? semanticsLabel,
+        TextWidthBasis? textWidthBasis,
+        TextHeightBehavior? textHeightBehavior,
+        Color? selectionColor}) =>
+    Text(data,
+        textAlign: textAlign,
+        strutStyle: strutStyle,
+        selectionColor: selectionColor,
+        locale: locale,
+        softWrap: softWrap,
+        overflow: overflow,
+        textScaleFactor: textScaleFactor,
+        maxLines: maxLines,
+        semanticsLabel: semanticsLabel,
+        textWidthBasis: textWidthBasis,
+        textHeightBehavior: textHeightBehavior,
+        textDirection: textDirection,
+        style: TextStyle(
+            fontWeight: fontWeight,
+            fontSize: fontSize,
+            foreground: foregroundColor,
+            fontFamily: "FiraMonoe"));

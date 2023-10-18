@@ -1,5 +1,4 @@
-import 'dart:io';
+import 'package:flutter/services.dart';
 
-
-String loadString_sync(String fileLocale) => File(fileLocale).readAsStringSync();
-
+Future<String> loadString_sync(String fileLocale) =>
+    rootBundle.loadString(fileLocale);

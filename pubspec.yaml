@@ -26,6 +26,6 @@ flutter:
   fonts:
     - family: FiraMono
     - fonts:
-      - asset: assets/FiraMono-Bold.ttf
-      - asset: assets/FiraMono-Medium.ttf
-      - asset: assets/FiraMono-Regular.ttf
+      - asset: fonts/FiraMono-Bold.ttf
+      - asset: fonts/FiraMono-Medium.ttf
+      - asset: fonts/FiraMono-Regular.ttf

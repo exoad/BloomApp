@@ -20,7 +20,7 @@ final class LaF {
   static const Color primaryLightTint =
       Color.fromARGB(255, 241, 241, 241);
   static const Color primaryColorGreenTint =
-      Color.fromARGB(255, 178, 240, 180);
+      Color.fromARGB(255, 180, 242, 183);
   static const Color primaryColorBlueTint =
       Color.fromARGB(255, 177, 221, 241);
 

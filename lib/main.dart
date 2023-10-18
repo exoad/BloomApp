@@ -52,7 +52,7 @@ class _MainAppState extends State<MainApp> {
           children: <Widget>[
             const Page1_Home(),
             debug_wrapPageNumber(bg: Colors.purple, text: "Page 2"),
-            debug_wrapPageNumber(bg: Colors.cyan, text: "Page 3"),
+            debug_wrapPageNumber(bg: const Color.fromARGB(255, 63, 214, 234), text: "Page 3"),
             debug_wrapPageNumber(bg: Colors.green, text: "Page 4"),
             debug_wrapPageNumber(bg: Colors.red, text: "Page 5"),
           ],
@@ -179,7 +179,7 @@ class BottNavBar extends StatelessWidget {
           labeledIconBtn(
             child: bottomAppBarPageControlledBtn(
                 pageNum: 1,
-                icon: const Icon(Icons.lightbulb_rounded),
+                icon: const Icon(Icons.man_2),
                 controller: pageController),
             label: uiText["TipsLabel"]!,
           ),

@@ -175,20 +175,20 @@ class BottNavBar extends StatelessWidget {
                   pageNum: 0,
                   icon: const Icon(Icons.home_filled),
                   controller: pageController),
-              label: uiText["HomeLabel"]),
+              label: "HomeLabel"),
           labeledIconBtn(
             child: bottomAppBarPageControlledBtn(
                 pageNum: 1,
                 icon: const Icon(Icons.man_2),
                 controller: pageController),
-            label: uiText["TipsLabel"]!,
+            label: "TipsLabel"
           ),
           labeledIconBtn(
             child: bottomAppBarPageControlledBtn(
                 pageNum: 2,
                 icon: const Icon(Icons.format_list_bulleted_rounded),
                 controller: pageController),
-            label: uiText["LogLabel"]!,
+            label: "LogLabel"
           ),
           labeledIconBtn(
             child: bottomAppBarPageControlledBtn(

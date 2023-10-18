@@ -20,16 +20,16 @@ final class LaF {
   static const Color primaryLightTint =
       Color.fromARGB(255, 241, 241, 241);
   static const Color primaryColorGreenTint =
-      Color.fromARGB(255, 156, 230, 159);
+      Color.fromARGB(255, 178, 240, 180);
   static const Color primaryColorBlueTint =
-      Color.fromARGB(255, 156, 212, 238);
+      Color.fromARGB(255, 177, 221, 241);
 
   static bool useLabeledBottomAppBarButtons = true;
 
   static const EdgeInsets outerComponentPadding =
       EdgeInsets.only(bottom: 8, left: 6, right: 6, top: 8);
   static const EdgeInsets homeComponentPadding =
-      EdgeInsets.only(bottom: 12, left: 12, right: 12);
+      EdgeInsets.only(bottom: 4, left: 6, right: 6, top: 4);
   static const Radius roundedRectBorderRadius = Radius.circular(20);
 
   static String languageLocale = "en_US"; // ! NOTE: this is default

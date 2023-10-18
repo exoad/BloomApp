@@ -69,62 +69,87 @@ class Page1_Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: ListView.builder(itemBuilder: (ctxt, widget) {
-      return Column(
-        children: <Widget>[
-          wrapAsHomeLabel(
-            padding: LaF.homeComponentPadding,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const Image(
-                      image: AssetImage(
-                          "assets/app_icon/icon_64x64.png")),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(uiText["TitleLabel"],
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 30,
-                                fontFamily: "FiraMono")),
-                        Text(uiText["AuthorsSublabel"],
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                fontFamily: "FiraMono"))
-                      ])
-                ]),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              // Replace this with your actual list items
+              return wrapAsHomeLabel(
+                  padding: LaF.homeComponentPadding,
+                  child: Column(
+                    children: <Widget>[
+                      wrapAsHomeLabel(
+                        padding: LaF.homeComponentPadding,
+                        child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                            children: [
+                              const Image(
+                                  image: AssetImage(
+                                      "assets/app_icon/icon_64x64.png")),
+                              Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                  children: [
+                                    Text(uiText["TitleLabel"],
+                                        overflow:
+                                            TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontWeight:
+                                                FontWeight.w700,
+                                            fontSize: 30,
+                                            fontFamily: "FiraMono")),
+                                    Text(uiText["AuthorsSublabel"],
+                                        overflow:
+                                            TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontWeight:
+                                                FontWeight.w500,
+                                            fontSize: 14,
+                                            fontFamily: "FiraMono"))
+                                  ])
+                            ]),
+                      ),
+                      const Block.claimed(
+                          backgroundColor: LaF.primaryColorBlueTint,
+                          child: Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceAround,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                    flex: 3,
+                                    child: Icon(
+                                        Icons.warning_amber_rounded,
+                                        size: 54)),
+                                Text.rich(
+                                  TextSpan(children: <InlineSpan>[
+                                    TextSpan(
+                                        text: "Placeholder\n",
+                                        style: TextStyle(
+                                            overflow: TextOverflow
+                                                .ellipsis,)),
+                                  ]),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 34,
+                                      fontFamily: "FiraMono"),
+                                )
+                              ])),
+                      const Block(
+                          backgroundColor: LaF.primaryColorGreenTint,
+                          padding: LaF.homeComponentPadding,
+                          child: Text("Placeholder"))
+                    ],
+                  ));
+            },
+            childCount:
+                1, // Set the number of list items you want to display
           ),
-          const Block.claimed(
-              backgroundColor: LaF.primaryColorBlueTint,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Flexible(
-                        flex: 3,
-                        child: Icon(Icons.warning_amber_rounded,
-                            size: 54)),
-                    Text.rich(
-                      TextSpan(children: <InlineSpan>[
-                        TextSpan(text: "Placeholder\n"),
-                        TextSpan(text: "Text")
-                      ]),
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 34,
-                          fontFamily: "FiraMono"),
-                    )
-                  ])),
-          const Block(
-              backgroundColor: LaF.primaryColorGreenTint,
-              padding: LaF.homeComponentPadding,
-              child: Text("Placeholder"))
-        ],
-      );
-    }));
+        ),
+      ],
+    );
   }
 }
 

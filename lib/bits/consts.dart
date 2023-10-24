@@ -49,19 +49,14 @@ ThemeData appLaF() {
       useMaterial3: false,
       scaffoldBackgroundColor: LaF.primaryBackground,
       bottomAppBarTheme: const BottomAppBarTheme(
-          color: LaF.primaryColor,
-          height: 75,
-          shadowColor: LaF.empty,
-          surfaceTintColor: LaF.primaryColorTint,
-          shape: AutomaticNotchedShape(RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.all(LaF.roundedRectBorderRadius)))),
+        color: LaF.primaryColor,
+        shadowColor: LaF.empty,
+        surfaceTintColor: LaF.primaryColorTint,
+      ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: LaF.primaryColorConstrast,
-          foregroundColor: LaF.primaryColorFgContrast,
-          shape: RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.all(LaF.roundedRectBorderRadius))),
+        backgroundColor: LaF.primaryColorConstrast,
+        foregroundColor: LaF.primaryColorFgContrast,
+      ),
       shadowColor: LaF.empty,
       iconButtonTheme: const IconButtonThemeData(
           style: ButtonStyle(
@@ -75,8 +70,8 @@ ThemeData appLaF() {
 late YamlMap uiText;
 
 Future<void> init() async {
-  uiText = await loadYaml(
-      await loadString_sync("assets/i18n/${LaF.languageLocale}.yaml"));
+  uiText = await loadYaml(await loadString_sync(
+      "assets/i18n/${LaF.languageLocale}.yaml"));
 
   uiText.forEach((k, v) => print("Loaded LOCALE_LANG: $k -> $v"));
 }

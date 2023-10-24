@@ -15,6 +15,31 @@ Widget labeledIconBtn(
             children: [child, Text(label, style: labelStyle)])
         : child;
 
+Widget makeListTile_SideDrawer(
+    {required IconData icon,
+    required String title,
+    required void Function() onTap,
+    Color? iconColor,
+    Color? textColor}) {
+  return ListTile(
+      onTap: onTap.call,
+      title: Row(
+        children: [
+          Icon(
+            icon,
+            size: 28,
+            color: iconColor ?? Colors.black,
+          ),
+          const SizedBox(width: 30),
+          Text(title,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: textColor ?? Colors.black)),
+        ],
+      ));
+}
+
 IconButton bottomAppBarPageControlledBtn(
         {required int pageNum,
         required Icon icon,

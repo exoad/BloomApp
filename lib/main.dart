@@ -11,7 +11,13 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((value) {
     prefs = value;
-    init().then((_) => runApp(const _AppWrapper(appHome: MainApp())));
+    init().then((_) => runApp(const _AppWrapper(
+            appHome: InputDetailsCarousel(
+          firstPage: (
+            title: "Let's set you up",
+            hint: "Tap > for the next step"
+          ),
+        ))));
   });
 }
 
@@ -35,8 +41,14 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
+typedef InfoDisplayPage = ({String title, String hint});
+
 class InputDetailsCarousel extends StatefulWidget {
-  const InputDetailsCarousel({super.key});
+  final InfoDisplayPage firstPage;
+  final List<Widget> otherPages;
+  const InputDetailsCarousel(
+      {Key? key, required this.firstPage, this.otherPages = const []})
+      : super(key: key);
 
   @override
   State<InputDetailsCarousel> createState() =>
@@ -49,67 +61,147 @@ class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> pageViewChildren = const <Widget>[
-      Center(
-          child: Text.rich(TextSpan(children: [
-        TextSpan(
-            text: "Let's get started",
-            style:
-                TextStyle(fontSize: 34, fontWeight: FontWeight.w800)),
-        TextSpan(
-            text: "Tap \">\" for the next step",
-            style:
-                TextStyle(fontSize: 18, fontWeight: FontWeight.w500))
-      ])))
+    List<Widget> pageViewChildren = <Widget>[
+      Text.rich(
+        TextSpan(children: [
+          TextSpan(
+              text: "${widget.firstPage.title}\n\n\n",
+              style: const TextStyle(
+                  fontSize: 34, fontWeight: FontWeight.w800)),
+          TextSpan(
+            text: widget.firstPage.hint,
+            style: const TextStyle(
+                fontSize: 18, fontWeight: FontWeight.w500),
+          ),
+        ]),
+        textAlign: TextAlign.center,
+      ),
+      Text.rich(
+        TextSpan(children: [
+          TextSpan(
+              text: "${widget.firstPage.title}\n2323232n\n",
+              style: const TextStyle(
+                  fontSize: 34, fontWeight: FontWeight.w800)),
+          TextSpan(
+            text: widget.firstPage.hint,
+            style: const TextStyle(
+                fontSize: 18, fontWeight: FontWeight.w500),
+          ),
+        ]),
+        textAlign: TextAlign.center,
+      ),
     ];
 
-    return Column(
+    return Scaffold(
+      body: Flex(
+        direction: Axis.vertical,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            height: 300,
+            child: PageView(
+              controller: pageController,
+              pageSnapping: true,
+              padEnds: true,
+              onPageChanged: (value) => setState(() {}),
+              allowImplicitScrolling: false,
+              children: pageViewChildren,
+            ),
+          ),
+          Flexible(
+            flex: 0,
+            child: _InputDetailsControllerRow(
+                pageController: pageController,
+                pageViewChildren: pageViewChildren),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InputDetailsControllerRow extends StatefulWidget {
+  const _InputDetailsControllerRow({
+    super.key,
+    required this.pageController,
+    required this.pageViewChildren,
+  });
+
+  final PageController pageController;
+  final List<Widget> pageViewChildren;
+
+  @override
+  State<_InputDetailsControllerRow> createState() =>
+      _InputDetailsControllerRowState();
+}
+
+// this works now woohoo!
+class _InputDetailsControllerRowState
+    extends State<_InputDetailsControllerRow> {
+  @override
+  Widget build(BuildContext context) {
+    return Flex(
+      direction: Axis.horizontal,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        PageView(
-            controller: pageController,
-            pageSnapping: true,
-            padEnds: true,
-            allowImplicitScrolling: false,
-            children: pageViewChildren),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    if (pageController.page! < 0 ||
-                        pageController.page! >
-                            pageViewChildren.length)
-                      pageController.animateToPage(0,
-                          duration: const Duration(milliseconds: 50),
-                          curve: Curves.linear);
-                    if (pageController.page! - 1 >= 0) {
-                      pageController.animateToPage(
-                          (pageController.page! - 1) as int,
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeInOut);
-                    }
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                      color: LaF.primaryColorFgContrast)),
-              IconButton(
-                  onPressed: () {
-                    if (pageController.page! < 0 ||
-                        pageController.page! >
-                            pageViewChildren.length)
-                      pageController.animateToPage(0,
-                          duration: const Duration(milliseconds: 50),
-                          curve: Curves.linear);
-                    if (pageController.page! + 1 <=
-                        pageViewChildren.length - 1) {
-                      pageController.animateToPage(
-                          (pageController.page! + 1) as int,
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeInOut);
-                    }
-                  },
-                  icon: const Icon(Icons.arrow_forward_ios_rounded,
-                      color: LaF.primaryColorFgContrast))
-            ]),
+        Flexible(
+          flex: 0,
+          fit: FlexFit.tight,
+          child: IconButton(
+            onPressed: () {
+              if (widget.pageController.page! - 1 >= 0) {
+                widget.pageController
+                    .animateToPage(
+                      (widget.pageController.page! - 1).toInt(),
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.linear,
+                    )
+                    .then((value) => setState(() {})); // most lazy repaint scheduling XD
+              }
+            },
+            icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                size: 32),
+          ),
+        ),
+        Flexible(
+            flex: 0,
+            fit: FlexFit.tight,
+            child: Builder(builder: (_) {
+              if (widget.pageController.page != null) {
+                print(
+                    "CONTROLLER_PAGE = ${widget.pageController.page!}");
+                print(
+                    "PAGEVIEW_LENGTH = ${widget.pageViewChildren.length}");
+              } // man for some reason it can have fractional pages ?!??!!?!? wtf
+              return widget.pageController.page != null &&
+                      widget.pageController.page! + 1 ==
+                          widget.pageViewChildren.length
+                  ? IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.check_rounded, size: 32))
+                  : const SizedBox(width: 42, height: 42);
+            })), // getting this arrow to work took me way too fucking long
+        Flexible(
+          flex: 0,
+          fit: FlexFit.tight,
+          child: IconButton(
+            onPressed: () {
+              if (widget.pageController.page! + 1 <=
+                  widget.pageViewChildren.length - 1) {
+                widget.pageController
+                    .animateToPage(
+                      (widget.pageController.page! + 1).toInt(), // as int fails for conversions
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.linear,
+                    )
+                    .then((value) => setState(() {})); // most lazy repaint scheduling XD
+              }
+            },
+            icon:
+                const Icon(Icons.arrow_forward_ios_rounded, size: 32),
+          ),
+        ),
       ],
     );
   }

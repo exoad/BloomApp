@@ -11,12 +11,45 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((value) {
     prefs = value;
-    init().then((_) => runApp(const _AppWrapper(
+    init().then((_) => runApp(_AppWrapper(
+            // testing the input carousel
             appHome: InputDetailsCarousel(
           firstPage: (
             title: "Let's set you up",
             hint: "Tap > for the next step"
           ),
+          otherPages: [
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("What is your name?",
+                      style: TextStyle(
+                          fontSize: 34, fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(34.0),
+                    child: Builder(builder: (context) {
+                      TextEditingController controller =
+                          TextEditingController();
+                      controller.addListener(() {
+                        setUserName(controller.text);
+                      });
+                      return TextFormField(
+                        cursorColor: LaF.primaryColor,
+                        textAlign: TextAlign.center,
+                        controller: controller,
+                        decoration: const InputDecoration(
+                            focusColor: LaF.primaryColor,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                    LaF.roundedRectBorderRadius)),
+                            hintText: "John",
+                            alignLabelWithHint: true),
+                      );
+                    }),
+                  )
+                ])
+          ],
         ))));
   });
 }
@@ -61,7 +94,7 @@ class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> pageViewChildren = <Widget>[
+    List<Widget> pageViewChildren = List.from(<Widget>[
       if (widget.firstPage != null)
         Text.rich(
           TextSpan(children: [
@@ -78,7 +111,8 @@ class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
           ]),
           textAlign: TextAlign.center,
         ),
-    ];
+    ])
+      ..addAll(widget.otherPages);
 
     return Scaffold(
       body: Flex(

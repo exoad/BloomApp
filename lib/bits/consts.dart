@@ -50,6 +50,8 @@ ThemeData appLaF() {
   return ThemeData(
       highlightColor: LaF.primaryBackground,
       useMaterial3: false,
+      primaryColor: LaF.primaryColor,
+      primaryColorDark: LaF.primaryColor,
       scaffoldBackgroundColor: LaF.primaryBackground,
       bottomAppBarTheme: const BottomAppBarTheme(
         color: LaF.primaryColor,

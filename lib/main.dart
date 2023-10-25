@@ -44,10 +44,10 @@ class MainApp extends StatefulWidget {
 typedef InfoDisplayPage = ({String title, String hint});
 
 class InputDetailsCarousel extends StatefulWidget {
-  final InfoDisplayPage firstPage;
+  final InfoDisplayPage? firstPage;
   final List<Widget> otherPages;
   const InputDetailsCarousel(
-      {Key? key, required this.firstPage, this.otherPages = const []})
+      {Key? key, this.firstPage, this.otherPages = const []})
       : super(key: key);
 
   @override
@@ -62,34 +62,22 @@ class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
   @override
   Widget build(BuildContext context) {
     List<Widget> pageViewChildren = <Widget>[
-      Text.rich(
-        TextSpan(children: [
-          TextSpan(
-              text: "${widget.firstPage.title}\n\n\n",
+      if (widget.firstPage != null)
+        Text.rich(
+          TextSpan(children: [
+            TextSpan(
+                text:
+                    "${widget.firstPage!.title}\n\n\n", // fuck the null checking, we can ignore after null check previous
+                style: const TextStyle(
+                    fontSize: 34, fontWeight: FontWeight.w800)),
+            TextSpan(
+              text: widget.firstPage!.hint,
               style: const TextStyle(
-                  fontSize: 34, fontWeight: FontWeight.w800)),
-          TextSpan(
-            text: widget.firstPage.hint,
-            style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w500),
-          ),
-        ]),
-        textAlign: TextAlign.center,
-      ),
-      Text.rich(
-        TextSpan(children: [
-          TextSpan(
-              text: "${widget.firstPage.title}\n2323232n\n",
-              style: const TextStyle(
-                  fontSize: 34, fontWeight: FontWeight.w800)),
-          TextSpan(
-            text: widget.firstPage.hint,
-            style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w500),
-          ),
-        ]),
-        textAlign: TextAlign.center,
-      ),
+                  fontSize: 18, fontWeight: FontWeight.w500),
+            ),
+          ]),
+          textAlign: TextAlign.center,
+        ),
     ];
 
     return Scaffold(
@@ -157,7 +145,8 @@ class _InputDetailsControllerRowState
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.linear,
                     )
-                    .then((value) => setState(() {})); // most lazy repaint scheduling XD
+                    .then((value) => setState(
+                        () {})); // most lazy repaint scheduling XD
               }
             },
             icon: const Icon(Icons.arrow_back_ios_new_rounded,
@@ -168,12 +157,7 @@ class _InputDetailsControllerRowState
             flex: 0,
             fit: FlexFit.tight,
             child: Builder(builder: (_) {
-              if (widget.pageController.page != null) {
-                print(
-                    "CONTROLLER_PAGE = ${widget.pageController.page!}");
-                print(
-                    "PAGEVIEW_LENGTH = ${widget.pageViewChildren.length}");
-              } // man for some reason it can have fractional pages ?!??!!?!? wtf
+              // man for some reason it can have fractional pages ?!??!!?!? wtf
               return widget.pageController.page != null &&
                       widget.pageController.page! + 1 ==
                           widget.pageViewChildren.length
@@ -191,11 +175,13 @@ class _InputDetailsControllerRowState
                   widget.pageViewChildren.length - 1) {
                 widget.pageController
                     .animateToPage(
-                      (widget.pageController.page! + 1).toInt(), // as int fails for conversions
+                      (widget.pageController.page! + 1)
+                          .toInt(), // as int fails for conversions
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.linear,
                     )
-                    .then((value) => setState(() {})); // most lazy repaint scheduling XD
+                    .then((value) => setState(
+                        () {})); // most lazy repaint scheduling XD
               }
             },
             icon:

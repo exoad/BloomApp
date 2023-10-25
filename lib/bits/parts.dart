@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_1_app/bits/consts.dart';
+import 'package:blosso_mindfulness/bits/consts.dart';
+import 'package:blosso_mindfulness/bits/telemetry.dart';
 
 class Block extends StatelessWidget {
   final Color backgroundColor;
@@ -61,5 +62,41 @@ class Block extends StatelessWidget {
                         child: child,
                       ))))
         ]);
+  }
+}
+
+class NamePrompt extends StatefulWidget {
+  final void Function() afterCallback;
+  const NamePrompt({super.key, required this.afterCallback});
+
+  @override
+  NamePromptState createState() => NamePromptState();
+}
+
+class NamePromptState extends State<NamePrompt> {
+  TextEditingController _nameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Enter Your Name'),
+      content: TextField(
+        controller: _nameController,
+        decoration: const InputDecoration(
+          hintText: 'Your Name',
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text("Lets go!"),
+          onPressed: () {
+            String userName = _nameController.text;
+            setUserName(userName);
+            setIsNewUser(false);
+            widget.afterCallback.call();
+          },
+        ),
+      ],
+    );
   }
 }

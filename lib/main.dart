@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:project_1_app/bits/debug.dart';
-import 'package:project_1_app/bits/helper.dart';
-import 'package:project_1_app/bits/consts.dart';
-import 'package:project_1_app/bits/block.dart';
+import 'package:blosso_mindfulness/bits/debug.dart';
+import 'package:blosso_mindfulness/bits/helper.dart';
+import 'package:blosso_mindfulness/bits/consts.dart';
+import 'package:blosso_mindfulness/bits/parts.dart';
+import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((value) {
     prefs = value;
+    loadPerpetualTelemetry();
+
     init().then((_) => runApp(const MainApp()));
   });
 }
@@ -26,9 +29,28 @@ class _MainAppState extends State<MainApp> {
       PageController(initialPage: 0);
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(_checkNewUser);
+    super.initState();
+  }
+
+  @override
   void dispose() {
     pageController.dispose();
     super.dispose();
+  }
+
+  void _checkNewUser(_) {
+    if (getIsNewUser()) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return NamePrompt(afterCallback: () {
+            Navigator.of(context).pop();
+          });
+        },
+      );
+    }
   }
 
   void _animateToPage(int index) {

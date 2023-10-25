@@ -10,35 +10,40 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((value) {
     prefs = value;
-    init().then((_) => runApp(_AppWrapper(
-        appHome: getIsNewUser()
-            ? const MainApp()
-            : InputDetailsCarousel(
-                firstPage: (
-                  title: "Let's set you up",
-                  hint: "Tap > for the next step"
-                ),
-                submissionCallback: () => setIsNewUser(false),
-                otherPages: [
-                  makeTextInputDetails(
-                      title: "What should we call you?",
-                      hintText: "John",
-                      callback: setUserName),
-                  makeCustomInputDetails(
-                      title: "What is your age range?",
-                      child: Center(
-                        child: Slider(
-                          value: 0,
-                          onChanged: (val) {},
-                          min: 0,
-                          max: 1.0,
-                          divisions: 10,
-                          allowedInteraction:
-                              SliderInteraction.tapAndSlide,
-                        ),
-                      ))
-                ],
-              ))));
+    prefs.reload();
+    init().then((_) {
+      assert(getIsNewUser() == prefs.getBool("isNewUser"),
+          "FAILED KEY EVALUATION FOR IS NEW USER CHECK");
+      runApp(_AppWrapper(
+          appHome:
+              !getIsNewUser() // oh fuck, dont reverse the conditions here. first time did it and got the wrong results. im too lazy to reverse the values of the resultants so just inverting the condition itself :/
+                  ? const MainApp()
+                  : InputDetailsCarousel(
+                      firstPage: (
+                        title: "Let's set you up",
+                        hint: "Tap > for the next step"
+                      ),
+                      submissionCallback: () => setIsNewUser(false),
+                      otherPages: [
+                        makeTextInputDetails(
+                            title: "What should we call you?",
+                            hintText: "John",
+                            callback: setUserName),
+                        makeCustomInputDetails(
+                            title: "What is your age range?",
+                            child: Center(
+                              child: Slider(
+                                value: 20,
+                                onChanged: (val) {},
+                                min: 10,
+                                max: 90,
+                                allowedInteraction:
+                                    SliderInteraction.tapAndSlide,
+                              ),
+                            ))
+                      ],
+                    )));
+    });
   });
 }
 

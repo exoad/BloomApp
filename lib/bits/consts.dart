@@ -79,6 +79,4 @@ late YamlMap uiText;
 Future<void> init() async {
   uiText = await loadYaml(await loadString_sync(
       "assets/i18n/${LaF.languageLocale}.yaml"));
-
-  uiText.forEach((k, v) => print("Loaded LOCALE_LANG: $k -> $v"));
 }

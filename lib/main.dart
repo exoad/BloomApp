@@ -189,7 +189,7 @@ class _MainAppState extends State<MainApp> {
           makeListTile_SideDrawer(
               icon: Ionicons.chatbubble,
               title: "Chat",
-              onTap: () => {}),
+              onTap: () => _animateToPage(6)),
           makeListTile_SideDrawer(
               icon: Icons.lightbulb_rounded,
               title: "Tips",
@@ -215,7 +215,7 @@ class _MainAppState extends State<MainApp> {
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
-          onPressed: () => pageController.animateToPage(4,
+          onPressed: () => pageController.animateToPage(6,
               duration: const Duration(milliseconds: 300),
               curve: Curves.fastEaseInToSlowEaseOut),
           child: const Icon(Ionicons.chatbubble),
@@ -228,14 +228,17 @@ class _MainAppState extends State<MainApp> {
           children: <Widget>[
             //const Page1_Home(),
             debug_wrapPageNumber(
-                bg: Colors.purple, text: "Placeholder"),
-            debug_wrapPageNumber(bg: Colors.purple, text: "Page 2"),
+                bg: Colors.purple, text: "Home Page"),
+            debug_wrapPageNumber(
+                bg: Colors.purple, text: "Tips Page"),
             debug_wrapPageNumber(
                 bg: const Color.fromARGB(255, 63, 214, 234),
-                text: "Page 3"),
-            debug_wrapPageNumber(bg: Colors.green, text: "Page 4"),
-            debug_wrapPageNumber(bg: Colors.red, text: "Page 5"),
-            const DebuggingStuffs()
+                text: "Statistics"),
+            debug_wrapPageNumber(bg: Colors.green, text: "Wellbeing"),
+            debug_wrapPageNumber(
+                bg: Colors.red, text: "Settings Page"),
+            const DebuggingStuffs(),
+            debug_wrapPageNumber(bg: Colors.red, text: "Chat Page"),
           ],
         ));
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1_app/bits/consts.dart';
-import 'package:project_1_app/parts/block.dart';
+import 'package:project_1_app/bits/block.dart';
 
 /// Creates a labled Icon Button in the format that the label is vertically under the Icon Button.
 /// [button] refers to the target IconButton and the [label] is the label for it and the optional [labelStyle]

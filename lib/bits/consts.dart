@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yaml/yaml.dart';
 import 'pipe.dart';
 
 final class LaF {
+  static const String appName = "Bloom";
+
   static const Color empty = Color.fromARGB(0, 0, 0, 0);
   static const Color primaryBackground =
       Color.fromARGB(255, 247, 237, 225);
-  static const Color primaryColor =
-      Color.fromARGB(255, 247, 204, 147);
+  static const Color primaryColor = Color.fromARGB(255, 250, 178, 90);
   static const Color primaryColorTint =
       Color.fromARGB(255, 235, 208, 118);
   static const Color primaryColorTintDarker_Pressed =
       Color.fromARGB(180, 199, 144, 81);
-  static const Color primaryColorConstrast =
-      Color.fromARGB(255, 255, 145, 0);
   static const Color primaryColorFgContrast =
       Color.fromARGB(255, 48, 48, 48);
 
@@ -46,6 +46,7 @@ final class LaF {
 
 ThemeData appLaF() {
   return ThemeData(
+      highlightColor: LaF.primaryBackground,
       useMaterial3: false,
       scaffoldBackgroundColor: LaF.primaryBackground,
       bottomAppBarTheme: const BottomAppBarTheme(
@@ -54,7 +55,7 @@ ThemeData appLaF() {
         surfaceTintColor: LaF.primaryColorTint,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: LaF.primaryColorConstrast,
+        backgroundColor: LaF.primaryColor,
         foregroundColor: LaF.primaryColorFgContrast,
       ),
       shadowColor: LaF.empty,
@@ -66,6 +67,8 @@ ThemeData appLaF() {
       iconTheme:
           const IconThemeData(color: LaF.primaryColorFgContrast));
 }
+
+late final SharedPreferences prefs;
 
 late YamlMap uiText;
 

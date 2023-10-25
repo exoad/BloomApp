@@ -1,16 +1,17 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:project_1_app/bits/debug.dart';
 import 'package:project_1_app/bits/helper.dart';
 import 'package:project_1_app/bits/consts.dart';
-import 'package:project_1_app/parts/block.dart';
+import 'package:project_1_app/bits/block.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  init().then((_) => runApp(const MainApp()));
+  SharedPreferences.getInstance().then((value) {
+    prefs = value;
+    init().then((_) => runApp(const MainApp()));
+  });
 }
 
 class MainApp extends StatefulWidget {
@@ -30,10 +31,11 @@ class _MainAppState extends State<MainApp> {
     super.dispose();
   }
 
-  void _animateToPage(int index) =>
-      pageController.animateToPage(index,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.fastEaseInToSlowEaseOut);
+  void _animateToPage(int index) {
+    pageController.animateToPage(index,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.fastEaseInToSlowEaseOut);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class _MainAppState extends State<MainApp> {
         appBar: AppBar(
           backgroundColor: LaF.primaryColor,
           foregroundColor: LaF.primaryColorFgContrast,
-          title: const Text("AppName",
+          title: const Text(LaF.appName,
               style: TextStyle(fontWeight: FontWeight.w700)),
           centerTitle: true,
           primary: true,
@@ -57,12 +59,12 @@ class _MainAppState extends State<MainApp> {
                   gradient: LinearGradient(
                       colors: [
                     Color.fromARGB(255, 252, 218, 175),
-                    Color.fromARGB(255, 240, 153, 47),
+                    Color.fromARGB(255, 250, 178, 90),
                     Color.fromARGB(255, 255, 153, 0)
                   ],
                       stops: [
                     0.0,
-                    0.35,
+                    0.45,
                     0.7
                   ],
                       begin: Alignment.topLeft,
@@ -96,15 +98,13 @@ class _MainAppState extends State<MainApp> {
               onTap: () => _animateToPage(4))
         ])),
         floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked,
+            FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
           onPressed: () => pageController.animateToPage(4,
               duration: const Duration(milliseconds: 300),
               curve: Curves.fastEaseInToSlowEaseOut),
           child: const Icon(Ionicons.chatbubble),
         ),
-        bottomNavigationBar:
-            BottNavBar(pageController: pageController),
         body: PageView(
           controller: pageController,
           pageSnapping: true,
@@ -115,7 +115,9 @@ class _MainAppState extends State<MainApp> {
             debug_wrapPageNumber(
                 bg: Colors.purple, text: "Placeholder"),
             debug_wrapPageNumber(bg: Colors.purple, text: "Page 2"),
-            debug_wrapPageNumber(bg: const Color.fromARGB(255, 63, 214, 234), text: "Page 3"),
+            debug_wrapPageNumber(
+                bg: const Color.fromARGB(255, 63, 214, 234),
+                text: "Page 3"),
             debug_wrapPageNumber(bg: Colors.green, text: "Page 4"),
             debug_wrapPageNumber(bg: Colors.red, text: "Page 5"),
           ],
@@ -213,57 +215,6 @@ class Page1_Home extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class BottNavBar extends StatelessWidget {
-  const BottNavBar({
-    super.key,
-    required this.pageController,
-  });
-
-  final PageController pageController;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          labeledIconBtn(
-              child: bottomAppBarPageControlledBtn(
-                  pageNum: 0,
-                  icon: const Icon(Icons.home_filled),
-                  controller: pageController),
-              label: uiText["HomeLabel"]),
-          labeledIconBtn(
-            child: bottomAppBarPageControlledBtn(
-                pageNum: 1,
-                icon: const Icon(Icons.lightbulb_rounded),
-                controller: pageController),
-            label: uiText["TipsLabel"]!,
-          ),
-          labeledIconBtn(
-            child: bottomAppBarPageControlledBtn(
-                pageNum: 2,
-                icon: const Icon(Icons.format_list_bulleted_rounded),
-                controller: pageController),
-            label: uiText["LogLabel"]!,
-          ),
-          labeledIconBtn(
-            child: bottomAppBarPageControlledBtn(
-                pageNum: 3,
-                icon: const Icon(Icons.settings),
-                controller: pageController),
-            label: uiText["SettingsLabel"]!,
-          ),
-        ],
-      )),
     );
   }
 }

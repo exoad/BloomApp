@@ -15,6 +15,74 @@ Widget labeledIconBtn(
             children: [child, Text(label, style: labelStyle)])
         : child;
 
+Widget _acquireInputTitleText(
+    {required String title, TextStyle? titleStyle}) {
+  return Padding(
+    padding: const EdgeInsets.all(18.0),
+    child: Text(
+      title,
+      style: titleStyle ??
+          const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w800,
+              overflow: TextOverflow.clip),
+      textAlign: TextAlign.center,
+    ),
+  );
+}
+
+Widget makeTextInputDetails(
+    {required String title,
+    required void Function(String) callback,
+    TextStyle? titleStyle,
+    TextStyle? hintStyle,
+    String hintText = ""}) {
+  return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _acquireInputTitleText(title: title, titleStyle: titleStyle),
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(34.0),
+          child: Builder(builder: (context) {
+            TextEditingController controller =
+                TextEditingController();
+            controller.addListener(() {
+              callback.call(controller.text);
+            });
+            return TextFormField(
+              cursorColor: LaF.primaryColor,
+              textAlign: TextAlign.center,
+              controller: controller,
+              decoration: InputDecoration(
+                  focusColor: LaF.primaryColor,
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                          LaF.roundedRectBorderRadius)),
+                  hintText: hintText,
+                  alignLabelWithHint: true,
+                  hintStyle: hintStyle ??
+                      const TextStyle(
+                          color: Color.fromARGB(178, 133, 133, 133))),
+            );
+          }),
+        )
+      ]);
+}
+
+Widget makeCustomInputDetails(
+    {required String title,
+    TextStyle? titleStyle,
+    required Widget child}) {
+  return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _acquireInputTitleText(title: title, titleStyle: titleStyle),
+        const SizedBox(height: 20),
+        child
+      ]);
+}
+
 Widget makeListTile_SideDrawer(
     {required IconData icon,
     required String title,

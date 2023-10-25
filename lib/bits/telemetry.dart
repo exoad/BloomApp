@@ -37,3 +37,9 @@ String getUserName() => prefs.getString("userName") ?? "";
 
 void setUserName(String newValue) =>
     prefs.setString("userName", newValue);
+
+double getEngagementTime() =>
+    prefs.getDouble("engagementTime") ?? 0.0;
+
+void setEngagementTime(double newValue) =>
+    prefs.setDouble("engagementTime", newValue);

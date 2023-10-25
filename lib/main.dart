@@ -4,7 +4,6 @@ import 'package:ionicons/ionicons.dart';
 import 'package:blosso_mindfulness/bits/debug.dart';
 import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
-import 'package:blosso_mindfulness/bits/parts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -12,45 +11,34 @@ void main() {
   SharedPreferences.getInstance().then((value) {
     prefs = value;
     init().then((_) => runApp(_AppWrapper(
-            // testing the input carousel
-            appHome: InputDetailsCarousel(
-          firstPage: (
-            title: "Let's set you up",
-            hint: "Tap > for the next step"
-          ),
-          otherPages: [
-            Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("What is your name?",
-                      style: TextStyle(
-                          fontSize: 34, fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(34.0),
-                    child: Builder(builder: (context) {
-                      TextEditingController controller =
-                          TextEditingController();
-                      controller.addListener(() {
-                        setUserName(controller.text);
-                      });
-                      return TextFormField(
-                        cursorColor: LaF.primaryColor,
-                        textAlign: TextAlign.center,
-                        controller: controller,
-                        decoration: const InputDecoration(
-                            focusColor: LaF.primaryColor,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                    LaF.roundedRectBorderRadius)),
-                            hintText: "John",
-                            alignLabelWithHint: true),
-                      );
-                    }),
-                  )
-                ])
-          ],
-        ))));
+        appHome: getIsNewUser()
+            ? const MainApp()
+            : InputDetailsCarousel(
+                firstPage: (
+                  title: "Let's set you up",
+                  hint: "Tap > for the next step"
+                ),
+                submissionCallback: () => setIsNewUser(false),
+                otherPages: [
+                  makeTextInputDetails(
+                      title: "What should we call you?",
+                      hintText: "John",
+                      callback: setUserName),
+                  makeCustomInputDetails(
+                      title: "What is your age range?",
+                      child: Center(
+                        child: Slider(
+                          value: 0,
+                          onChanged: (val) {},
+                          min: 0,
+                          max: 1.0,
+                          divisions: 10,
+                          allowedInteraction:
+                              SliderInteraction.tapAndSlide,
+                        ),
+                      ))
+                ],
+              ))));
   });
 }
 
@@ -79,8 +67,12 @@ typedef InfoDisplayPage = ({String title, String hint});
 class InputDetailsCarousel extends StatefulWidget {
   final InfoDisplayPage? firstPage;
   final List<Widget> otherPages;
+  final void Function()? submissionCallback;
   const InputDetailsCarousel(
-      {Key? key, this.firstPage, this.otherPages = const []})
+      {Key? key,
+      this.firstPage,
+      this.otherPages = const [],
+      this.submissionCallback})
       : super(key: key);
 
   @override
@@ -134,7 +126,8 @@ class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
             flex: 0,
             child: _InputDetailsControllerRow(
                 pageController: pageController,
-                pageViewChildren: pageViewChildren),
+                pageViewChildren: pageViewChildren,
+                submissionCallback: widget.submissionCallback),
           ),
         ],
       ),
@@ -143,14 +136,15 @@ class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
 }
 
 class _InputDetailsControllerRow extends StatefulWidget {
-  const _InputDetailsControllerRow({
-    super.key,
-    required this.pageController,
-    required this.pageViewChildren,
-  });
+  const _InputDetailsControllerRow(
+      {super.key,
+      required this.pageController,
+      required this.pageViewChildren,
+      required this.submissionCallback});
 
   final PageController pageController;
   final List<Widget> pageViewChildren;
+  final void Function()? submissionCallback;
 
   @override
   State<_InputDetailsControllerRow> createState() =>
@@ -196,7 +190,14 @@ class _InputDetailsControllerRowState
                       widget.pageController.page! + 1 ==
                           widget.pageViewChildren.length
                   ? IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                          return const MainApp();
+                        }));
+                        widget.submissionCallback?.call();
+                      },
                       icon: const Icon(Icons.check_rounded, size: 32))
                   : const SizedBox(width: 42, height: 42);
             })), // getting this arrow to work took me way too fucking long
@@ -242,19 +243,6 @@ class _MainAppState extends State<MainApp> {
     super.dispose();
   }
 
-  void _checkNewUser() async {
-    if (getIsNewUser()) {
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return NamePrompt(afterCallback: () {
-            Navigator.of(context).pop();
-          });
-        },
-      );
-    }
-  }
-
   void _animateToPage(int index) {
     pageController.animateToPage(index,
         duration: const Duration(milliseconds: 250),
@@ -263,7 +251,6 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 100), _checkNewUser);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: LaF.primaryColor,

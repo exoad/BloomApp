@@ -185,32 +185,53 @@ class _MainAppState extends State<MainApp> {
           makeListTile_SideDrawer(
               icon: Icons.home_rounded,
               title: "Home",
-              onTap: () => _animateToPage(0)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _animateToPage(0);
+              }),
           makeListTile_SideDrawer(
               icon: Ionicons.chatbubble,
               title: "Chat",
-              onTap: () => _animateToPage(6)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _animateToPage(6);
+              }),
           makeListTile_SideDrawer(
               icon: Icons.lightbulb_rounded,
               title: "Tips",
-              onTap: () => _animateToPage(1)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _animateToPage(1);
+              }),
           makeListTile_SideDrawer(
               icon: Icons.calculate_rounded,
               title: "Statistics",
-              onTap: () => _animateToPage(2)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _animateToPage(2);
+              }),
           makeListTile_SideDrawer(
               icon: Icons.settings_accessibility_rounded,
               title: "Wellbeing",
-              onTap: () => _animateToPage(3)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _animateToPage(3);
+              }),
           makeListTile_SideDrawer(
               icon: Icons.settings_rounded,
               title: "Settings",
-              onTap: () => _animateToPage(4)),
+              onTap: () {
+                Navigator.of(context).pop();
+                _animateToPage(4);
+              }),
           if (APP_DEVELOPMENT_MODE)
             makeListTile_SideDrawer(
                 icon: Icons.bug_report_rounded,
                 title: "APP_DEBUG",
-                onTap: () => _animateToPage(5))
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _animateToPage(5);
+                })
         ])),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endFloat,

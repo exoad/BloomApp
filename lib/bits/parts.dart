@@ -88,7 +88,7 @@ class NamePromptState extends State<NamePrompt> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text("Lets go!"),
+          child: const Text("Submit"),
           onPressed: () {
             String userName = _nameController.text;
             setUserName(userName);

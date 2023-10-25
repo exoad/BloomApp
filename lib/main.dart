@@ -13,8 +13,20 @@ void main() {
     prefs = value;
     loadPerpetualTelemetry();
 
-    init().then((_) => runApp(const MainApp()));
+    init().then((_) => runApp(const _AppWrapper()));
   });
+}
+
+class _AppWrapper extends StatelessWidget {
+  const _AppWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        theme: appLaF(),
+        debugShowCheckedModeBanner: false,
+        home: const MainApp());
+  }
 }
 
 class MainApp extends StatefulWidget {
@@ -24,13 +36,22 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
+class _InitialInputUserDetails extends StatelessWidget {
+  final PageController pageController =
+      PageController(initialPage: 0);
+
+  @override
+  Widget build(BuildContext context) {
+    throw UnimplementedError();
+  }
+}
+
 class _MainAppState extends State<MainApp> {
   final PageController pageController =
       PageController(initialPage: 0);
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(_checkNewUser);
     super.initState();
   }
 
@@ -40,9 +61,9 @@ class _MainAppState extends State<MainApp> {
     super.dispose();
   }
 
-  void _checkNewUser(_) {
+  void _checkNewUser() async {
     if (getIsNewUser()) {
-      showDialog(
+      await showDialog(
         context: context,
         builder: (BuildContext context) {
           return NamePrompt(afterCallback: () {
@@ -61,10 +82,8 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: appLaF(),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    Future.delayed(const Duration(milliseconds: 100), _checkNewUser);
+    return Scaffold(
         appBar: AppBar(
           backgroundColor: LaF.primaryColor,
           foregroundColor: LaF.primaryColorFgContrast,
@@ -117,7 +136,12 @@ class _MainAppState extends State<MainApp> {
           makeListTile_SideDrawer(
               icon: Icons.settings_rounded,
               title: "Settings",
-              onTap: () => _animateToPage(4))
+              onTap: () => _animateToPage(4)),
+          if (APP_DEVELOPMENT_MODE)
+            makeListTile_SideDrawer(
+                icon: Icons.bug_report_rounded,
+                title: "APP_DEBUG",
+                onTap: () => _animateToPage(5))
         ])),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endFloat,
@@ -142,10 +166,9 @@ class _MainAppState extends State<MainApp> {
                 text: "Page 3"),
             debug_wrapPageNumber(bg: Colors.green, text: "Page 4"),
             debug_wrapPageNumber(bg: Colors.red, text: "Page 5"),
+            const DebuggingStuffs()
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
 

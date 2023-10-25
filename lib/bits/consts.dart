@@ -44,6 +44,8 @@ final class LaF {
       fontSize: 30);
 }
 
+const bool APP_DEVELOPMENT_MODE = true;
+
 ThemeData appLaF() {
   return ThemeData(
       highlightColor: LaF.primaryBackground,

@@ -28,22 +28,12 @@ Stressors or triggers.
   /-------------------------------------------------------*/
 }
 
-Map<String, dynamic> _perpetualTelemetry = {
-  "isNewUser": true,
-  "userName": "",
-};
-
-bool getIsNewUser() => _perpetualTelemetry["isNewUser"];
+bool getIsNewUser() => prefs.getBool("isNewUser") ?? true;
 
 void setIsNewUser(bool newValue) =>
-    _perpetualTelemetry["isNewUser"] = newValue;
+    prefs.setBool("isNewUser", newValue);
 
-String getUserName() => _perpetualTelemetry["userName"];
+String getUserName() => prefs.getString("userName") ?? "";
 
 void setUserName(String newValue) =>
-    _perpetualTelemetry["userName"] = newValue;
-
-void loadPerpetualTelemetry() {
-  _perpetualTelemetry["isNewUser"] ??= prefs.getBool("isUserName");
-  _perpetualTelemetry["userName"] ??= prefs.getString("userName");
-}
+    prefs.setString("userName", newValue);

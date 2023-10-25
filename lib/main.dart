@@ -1,31 +1,30 @@
+import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:blosso_mindfulness/bits/debug.dart';
 import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:blosso_mindfulness/bits/parts.dart';
-import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((value) {
     prefs = value;
-    loadPerpetualTelemetry();
-
-    init().then((_) => runApp(const _AppWrapper()));
+    init().then((_) => runApp(const _AppWrapper(appHome: MainApp())));
   });
 }
 
 class _AppWrapper extends StatelessWidget {
-  const _AppWrapper({super.key});
+  final Widget appHome;
+  const _AppWrapper({super.key, required this.appHome});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: appLaF(),
         debugShowCheckedModeBanner: false,
-        home: const MainApp());
+        home: appHome);
   }
 }
 
@@ -36,13 +35,56 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
-class _InitialInputUserDetails extends StatelessWidget {
+class InputDetailsCarousel extends StatefulWidget {
+  const InputDetailsCarousel({super.key});
+
+  @override
+  State<InputDetailsCarousel> createState() =>
+      _InputDetailsCarouselState();
+}
+
+class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
   final PageController pageController =
       PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    return Scaffold(
+        body: Column(
+      children: [
+        PageView(
+          controller: pageController,
+          pageSnapping: true,
+          padEnds: true,
+          allowImplicitScrolling: false,
+          children: const <Widget>[
+            Center(
+                child: Text.rich(TextSpan(children: [
+              TextSpan(
+                  text: "Let's get started",
+                  style: TextStyle(
+                      fontSize: 34, fontWeight: FontWeight.w800)),
+              TextSpan(
+                  text: "Tap \">\" for the next step",
+                  style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w500))
+            ])))
+          ],
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                      color: LaF.primaryColorFgContrast)),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.arrow_forward_ios_rounded,
+                      color: LaF.primaryColorFgContrast))
+            ]),
+      ],
+    ));
   }
 }
 

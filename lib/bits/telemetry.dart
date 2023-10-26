@@ -26,6 +26,10 @@ Stressors or triggers.
   /                                                        /
   / EphemeralTelemetry({this.dailyMoods = const <int>[]}); /
   /-------------------------------------------------------*/
+
+  final double entryIndex;
+
+  EphemeralTelemetry() : entryIndex = 0;
 }
 
 void invalidateEphemeral() {
@@ -83,11 +87,22 @@ void setLastEntryTime(DateTime newValue) =>
 
 double getLastEntryIndex() => prefs.getDouble("lastEntryIndex") ?? 0;
 
+double getCurrentWorkingEntryIndex() => getLastEntryIndex() + 1;
+
 void setLastEntryIndexOneMore() =>
     prefs.setDouble("lastEntryIndex", getLastEntryIndex() + 1);
 
+void setLastEntryIndexOneLess() => getLastEntryIndex() - 1 <
+        0 // we dont have to be null aware as this fx takes care of the nullability check
+    ? prefs.setDouble("lastEntryIndex", 0)
+    : prefs.setDouble("lastEntryIndex", getLastEntryIndex() - 1);
+
 void setLastEntryIndex(double newValue) =>
     prefs.setDouble("lastEntryIndex", newValue);
+
+void insertEntry(EphemeralTelemetry newEntry) {
+  
+}
 
 void firstTimeValidateTelemetry() {
   setEngagementTime(0.0);

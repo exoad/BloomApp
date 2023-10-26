@@ -68,6 +68,25 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
+class _StatsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> telemetryData = const <Widget>[];
+
+    return CustomScrollView(slivers: <Widget>[
+      SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+        return const Text.rich(TextSpan(children: [
+          TextSpan(
+              text: "Personal Statistics",
+              style: TextStyle(
+                  fontWeight: FontWeight.w800, fontSize: 28))
+        ])); // dangerous area if we dont have the valid delegates for the required widgets fed into the stats tree
+      }))
+    ]);
+  }
+}
+
 typedef InfoDisplayPage = ({String title, String hint});
 
 class InputDetailsCarousel extends StatefulWidget {
@@ -261,10 +280,14 @@ class _MainAppState extends State<MainApp> {
         appBar: AppBar(
           backgroundColor: LaF.primaryColor,
           foregroundColor: LaF.primaryColorFgContrast,
-          title: const Text(LaF.appName,
-              style: TextStyle(fontWeight: FontWeight.w700)),
+          title: const Text(
+            LaF.appName,
+            style: TextStyle(fontWeight: FontWeight.w700),
+            textAlign: TextAlign.left,
+          ),
           centerTitle: true,
           primary: true,
+          automaticallyImplyLeading: true,
         ),
         drawer: Drawer(
             child:
@@ -357,9 +380,7 @@ class _MainAppState extends State<MainApp> {
                 bg: Colors.purple, text: "Home Page"),
             debug_wrapPageNumber(
                 bg: Colors.purple, text: "Tips Page"),
-            debug_wrapPageNumber(
-                bg: const Color.fromARGB(255, 63, 214, 234),
-                text: "Statistics"),
+            _StatsPage(),
             debug_wrapPageNumber(bg: Colors.green, text: "Wellbeing"),
             debug_wrapPageNumber(
                 bg: Colors.red, text: "Settings Page"),

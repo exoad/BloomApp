@@ -63,7 +63,27 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
                 setUserName("");
                 setState(() {});
               }),
-          
+          _dbgButton(
+              text: "+1 ENTRY_INDEX",
+              icon: Icons.exposure_plus_1_rounded,
+              onPressed: () {
+                setLastEntryIndexOneMore();
+                setState(() {});
+              }),
+          _dbgButton(
+              text: "0 ENTRY_INDEX",
+              icon: Icons.restore_rounded,
+              onPressed: () {
+                setLastEntryIndex(0);
+                setState(() {});
+              }),
+          _dbgButton(
+              text: "-1 ENTRY_INDEX",
+              icon: Icons.exposure_minus_1_rounded,
+              onPressed: () {
+                setLastEntryIndexOneLess();
+                setState(() {});
+              }),
           _dbgButton(
               text: "RESET_LAST_ENTRY_TIME",
               icon: Icons.calendar_month_rounded,

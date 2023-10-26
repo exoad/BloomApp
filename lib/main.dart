@@ -21,7 +21,10 @@ void main() {
                         title: "Let's set you up",
                         hint: "Tap > for the next step"
                       ),
-                      submissionCallback: () => setIsNewUser(false),
+                      submissionCallback: () {
+                        setIsNewUser(false);
+                        firstTimeValidateTelemetry();
+                      },
                       otherPages: [
                         makeTextInputDetails(
                             title: "What should we call you?",

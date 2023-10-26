@@ -1,3 +1,4 @@
+import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,17 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
       required void Function() onPressed}) {
     return TextButton.icon(
         onPressed: onPressed, icon: Icon(icon), label: Text(text));
+  }
+
+  static InlineSpan _makeProperty({required String name}) {
+    return TextSpan(
+        text: "$name = ",
+        style: const TextStyle(fontWeight: FontWeight.w800),
+        children: [
+          TextSpan(
+              text: "${prefs.get(name).toString()}\n",
+              style: const TextStyle(fontWeight: FontWeight.w600))
+        ]);
   }
 
   @override
@@ -78,26 +90,10 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
               icon: Icons.refresh_rounded,
               onPressed: () => setState(() {})),
           Text.rich(TextSpan(children: [
-            const TextSpan(
-                text: "isNewUser = ",
-                style: TextStyle(fontWeight: FontWeight.w800)),
-            TextSpan(
-              text: "${getIsNewUser().toString()}\n",
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            const TextSpan(
-                text: "userName = ",
-                style: TextStyle(fontWeight: FontWeight.w800)),
-            TextSpan(
-              text: "${getUserName()}\n",
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-            const TextSpan(
-                text: "lastEntryTime = ",
-                style: TextStyle(fontWeight: FontWeight.w800)),
-            TextSpan(
-                text: "${getLastEntryTime()}\n",
-                style: const TextStyle(fontWeight: FontWeight.w600))
+            _makeProperty(name: "isNewUser"),
+            _makeProperty(name: "userName"),
+            _makeProperty(name: "lastEntryTime"),
+            _makeProperty(name: "lastEntryIndex"),
           ], style: const TextStyle(fontSize: 18))),
         ],
       ),

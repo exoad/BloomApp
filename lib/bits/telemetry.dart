@@ -38,6 +38,7 @@ void invalidateEphemeral() {
 
 T _safeGet<T>(String key, T defaultValue) {
   // primary fx for when we have to rewrite the datatype of an object and thus saves us the pain of debugging errors
+  // probably not going to use this fx anyways
   late T obj;
   try {
     obj = prefs.get(key) as T;
@@ -80,4 +81,16 @@ void setLastEntryTimeAsNow() => prefs.setInt(
 void setLastEntryTime(DateTime newValue) =>
     prefs.setInt("lastEntryTime", newValue.millisecondsSinceEpoch);
 
-class UserDailyEntryAsYaml {}
+double getLastEntryIndex() => prefs.getDouble("lastEntryIndex") ?? 0;
+
+void setLastEntryIndexOneMore() =>
+    prefs.setDouble("lastEntryIndex", getLastEntryIndex() + 1);
+
+void setLastEntryIndex(double newValue) =>
+    prefs.setDouble("lastEntryIndex", newValue);
+
+void firstTimeValidateTelemetry() {
+  setEngagementTime(0.0);
+  setLastEntryIndex(0.0);
+  setLastEntryTime(DateTime.now());
+}

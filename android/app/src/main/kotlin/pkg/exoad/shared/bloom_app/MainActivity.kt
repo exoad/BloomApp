@@ -1,4 +1,4 @@
-package pkg.exoad.project_1_app
+package pkg.exoad.shared.bloom_app
 
 import io.flutter.embedding.android.FlutterActivity
 

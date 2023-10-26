@@ -63,6 +63,7 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
                 setUserName("");
                 setState(() {});
               }),
+          
           _dbgButton(
               text: "RESET_LAST_ENTRY_TIME",
               icon: Icons.calendar_month_rounded,

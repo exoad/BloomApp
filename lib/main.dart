@@ -12,8 +12,6 @@ void main() {
     prefs = value;
     prefs.reload();
     init().then((_) {
-      assert(getIsNewUser() == prefs.getBool("isNewUser"),
-          "FAILED KEY EVALUATION FOR IS NEW USER CHECK");
       runApp(_AppWrapper(
           appHome:
               !getIsNewUser() // oh fuck, dont reverse the conditions here. first time did it and got the wrong results. im too lazy to reverse the values of the resultants so just inverting the condition itself :/

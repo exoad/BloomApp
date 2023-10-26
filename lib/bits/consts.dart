@@ -9,9 +9,9 @@ final class LaF {
   static const Color empty = Color.fromARGB(0, 0, 0, 0);
   static const Color primaryBackground =
       Color.fromARGB(255, 247, 237, 225);
-  static const Color primaryColor = Color.fromARGB(255, 250, 178, 90);
+  static const Color primaryColor = Color.fromARGB(255, 79, 225, 72);
   static const Color primaryColorTint =
-      Color.fromARGB(255, 235, 208, 118);
+      Color.fromARGB(255, 68, 197, 124);
   static const Color primaryColorTintDarker_Pressed =
       Color.fromARGB(180, 199, 144, 81);
   static const Color primaryColorFgContrast =
@@ -22,7 +22,7 @@ final class LaF {
   static const Color primaryColorGreenTint =
       Color.fromARGB(255, 180, 242, 183);
   static const Color primaryColorBlueTint =
-      Color.fromARGB(255, 177, 221, 241);
+      Color.fromARGB(255, 17, 125, 174);
 
   static bool useLabeledBottomAppBarButtons = true;
 

@@ -71,19 +71,22 @@ class MainApp extends StatefulWidget {
 class _StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Widget> telemetryData = const <Widget>[];
+    List<Widget> telemetryData = <Widget>[];
 
-    return CustomScrollView(slivers: <Widget>[
-      SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-        return const Text.rich(TextSpan(children: [
-          TextSpan(
-              text: "Personal Statistics",
-              style: TextStyle(
-                  fontWeight: FontWeight.w800, fontSize: 28))
-        ])); // dangerous area if we dont have the valid delegates for the required widgets fed into the stats tree
-      }))
-    ]);
+    for (int i = 0; i < getLastEntryIndex(); i++) {
+      telemetryData
+          .add(Text("Index: ${getEntry(i.toDouble())?.entryIndex}"));
+    }
+    return Padding(
+      padding: const EdgeInsets.all(18),
+      child: CustomScrollView(slivers: <Widget>[
+        SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+          return telemetryData[
+              index]; // dangerous area if we dont have the valid delegates for the required widgets fed into the stats tree
+        }, childCount: telemetryData.length))
+      ]),
+    );
   }
 }
 
@@ -256,6 +259,7 @@ class _InputDetailsControllerRowState
 class _MainAppState extends State<MainApp> {
   final PageController pageController =
       PageController(initialPage: 0);
+  String appBarTitle = LaF.appName;
 
   @override
   void initState() {
@@ -280,87 +284,115 @@ class _MainAppState extends State<MainApp> {
         appBar: AppBar(
           backgroundColor: LaF.primaryColor,
           foregroundColor: LaF.primaryColorFgContrast,
-          title: const Text(
-            LaF.appName,
-            style: TextStyle(fontWeight: FontWeight.w700),
+          title: Text(
+            appBarTitle,
+            style: const TextStyle(fontWeight: FontWeight.w700),
             textAlign: TextAlign.left,
           ),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctxt) {
+                  return Drawer(
+                      child: ListView(
+                          padding: EdgeInsets.zero,
+                          children: <Widget>[
+                        const DrawerHeader(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [
+                                  Color.fromARGB(255, 236, 218, 195),
+                                  Color.fromARGB(255, 245, 211, 169),
+                                  Color.fromARGB(255, 247, 203, 139)
+                                ],
+                                    stops: [
+                                  0.0,
+                                  0.45,
+                                  0.7
+                                ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight)),
+                            child: Text("Actions",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24))),
+                        makeListTile_SideDrawer(
+                            icon: Icons.home_rounded,
+                            title: "Home",
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              _animateToPage(0);
+                              setState(() {
+                                appBarTitle = "Home";
+                              });
+                            }),
+                        makeListTile_SideDrawer(
+                            icon: Ionicons.chatbubble,
+                            title: "Chat",
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              _animateToPage(6);
+                              setState(() {
+                                appBarTitle = "Personal Chat";
+                              });
+                            }),
+                        makeListTile_SideDrawer(
+                            icon: Icons.lightbulb_rounded,
+                            title: "Tips",
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              _animateToPage(1);
+                              setState(() {
+                                appBarTitle = "Personalized Tips";
+                              });
+                            }),
+                        makeListTile_SideDrawer(
+                            icon: Icons.calculate_rounded,
+                            title: "Statistics",
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              _animateToPage(2);
+                              setState(() {
+                                appBarTitle = "Personal Statistics";
+                              });
+                            }),
+                        makeListTile_SideDrawer(
+                            icon:
+                                Icons.settings_accessibility_rounded,
+                            title: "Wellbeing",
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              _animateToPage(3);
+                              setState(() {
+                                appBarTitle = "Wellbeing";
+                              });
+                            }),
+                        makeListTile_SideDrawer(
+                            icon: Icons.settings_rounded,
+                            title: "Settings",
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              _animateToPage(4);
+                              setState(() {
+                                appBarTitle = "Settings";
+                              });
+                            }),
+                        if (APP_DEVELOPMENT_MODE)
+                          makeListTile_SideDrawer(
+                              icon: Icons.bug_report_rounded,
+                              title: "APP_DEBUG",
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                _animateToPage(5);
+                              })
+                      ]));
+                }));
+              },
+              icon: const Icon(Icons.menu_rounded)),
           centerTitle: true,
           primary: true,
-          automaticallyImplyLeading: true,
+          automaticallyImplyLeading: false,
         ),
-        drawer: Drawer(
-            child:
-                ListView(padding: EdgeInsets.zero, children: <Widget>[
-          const DrawerHeader(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [
-                    Color.fromARGB(255, 252, 218, 175),
-                    Color.fromARGB(255, 250, 178, 90),
-                    Color.fromARGB(255, 255, 153, 0)
-                  ],
-                      stops: [
-                    0.0,
-                    0.45,
-                    0.7
-                  ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight)),
-              child: Text("Actions",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700, fontSize: 24))),
-          makeListTile_SideDrawer(
-              icon: Icons.home_rounded,
-              title: "Home",
-              onTap: () {
-                Navigator.of(context).pop();
-                _animateToPage(0);
-              }),
-          makeListTile_SideDrawer(
-              icon: Ionicons.chatbubble,
-              title: "Chat",
-              onTap: () {
-                Navigator.of(context).pop();
-                _animateToPage(6);
-              }),
-          makeListTile_SideDrawer(
-              icon: Icons.lightbulb_rounded,
-              title: "Tips",
-              onTap: () {
-                Navigator.of(context).pop();
-                _animateToPage(1);
-              }),
-          makeListTile_SideDrawer(
-              icon: Icons.calculate_rounded,
-              title: "Statistics",
-              onTap: () {
-                Navigator.of(context).pop();
-                _animateToPage(2);
-              }),
-          makeListTile_SideDrawer(
-              icon: Icons.settings_accessibility_rounded,
-              title: "Wellbeing",
-              onTap: () {
-                Navigator.of(context).pop();
-                _animateToPage(3);
-              }),
-          makeListTile_SideDrawer(
-              icon: Icons.settings_rounded,
-              title: "Settings",
-              onTap: () {
-                Navigator.of(context).pop();
-                _animateToPage(4);
-              }),
-          if (APP_DEVELOPMENT_MODE)
-            makeListTile_SideDrawer(
-                icon: Icons.bug_report_rounded,
-                title: "APP_DEBUG",
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _animateToPage(5);
-                })
-        ])),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(

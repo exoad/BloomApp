@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blosso_mindfulness/bits/consts.dart';
 
 class EphemeralTelemetry {
@@ -29,7 +31,19 @@ Stressors or triggers.
 
   final double entryIndex;
 
-  EphemeralTelemetry() : entryIndex = 0;
+  // the below are actual related data to the user
+  int moodScale; // out of 5
+  String briefNote;
+  double hoursOfSleep;
+  int entryTimeEpochMS; // using DateTime.frommillisecondsfromepoch or something
+
+  EphemeralTelemetry(this.entryIndex,
+      {this.moodScale = 5,
+      this.briefNote = "N/A",
+      this.hoursOfSleep = 0,
+      int? entryTime})
+      : entryTimeEpochMS =
+            entryTime ?? DateTime.now().millisecondsSinceEpoch;
 }
 
 void invalidateEphemeral() {
@@ -101,7 +115,29 @@ void setLastEntryIndex(double newValue) =>
     prefs.setDouble("lastEntryIndex", newValue);
 
 void insertEntry(EphemeralTelemetry newEntry) {
-  
+  prefs.setString(
+      "userEntry_EphemeralData${newEntry.entryIndex}",
+      jsonEncode(<String, dynamic>{
+        "entryIndex": newEntry.entryIndex,
+        "moodScale": newEntry.moodScale,
+        "briefNote": newEntry.briefNote,
+        "hoursOfSleep": newEntry.hoursOfSleep,
+        "entryTimeEpochMS": newEntry.entryTimeEpochMS
+      }));
+  setLastEntryIndexOneMore();
+}
+
+EphemeralTelemetry? getEntry(double index) {
+  if (prefs.getString("userEntry_EphemeralData$index") != null) {
+    Map<String, dynamic> jsonData =
+        jsonDecode(prefs.getString("userEntry_EphemeralData$index")!);
+    return EphemeralTelemetry(index,
+        moodScale: jsonData["moodScale"] as int,
+        briefNote: jsonData["briefNote"].toString(),
+        hoursOfSleep: jsonData["hoursOfSleep"] as double,
+        entryTime: jsonData["entryTimeEpochMS"] as int);
+  }
+  return null;
 }
 
 void firstTimeValidateTelemetry() {

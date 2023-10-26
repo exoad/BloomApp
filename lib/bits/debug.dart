@@ -1,5 +1,6 @@
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:blosso_mindfulness/bits/telemetry.dart';
+import 'package:blosso_mindfulness/main.dart';
 import 'package:flutter/material.dart';
 
 Widget debug_wrapPageNumber(
@@ -40,6 +41,9 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
         ]);
   }
 
+  static EphemeralTelemetry _fakeEph() =>
+      EphemeralTelemetry(getCurrentWorkingEntryIndex());
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -64,6 +68,13 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
                 setState(() {});
               }),
           _dbgButton(
+              text: "INSERT_FAKE_ENTRY",
+              icon: Icons.book_online_rounded,
+              onPressed: () {
+                insertEntry(_fakeEph());
+                setState(() {});
+              }),
+          _dbgButton(
               text: "+1 ENTRY_INDEX",
               icon: Icons.exposure_plus_1_rounded,
               onPressed: () {
@@ -76,6 +87,31 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
               onPressed: () {
                 setLastEntryIndex(0);
                 setState(() {});
+              }),
+          _dbgButton(
+              text: "SHOW_DEBUG_INPUT_CAROUSEL",
+              icon: Icons.input_rounded,
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctxt) {
+                  return InputDetailsCarousel(
+                    firstPage: (
+                      title: "DEBUG_CAROUSEL",
+                      hint:
+                          "This is a debug carousel. The next page will have a button to close this."
+                    ),
+                    otherPages: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(ctxt);
+                            setState(() {});
+                          },
+                          icon: const Icon(
+                              Icons.close_fullscreen_rounded,
+                              size: 64))
+                    ],
+                  );
+                }));
               }),
           _dbgButton(
               text: "-1 ENTRY_INDEX",

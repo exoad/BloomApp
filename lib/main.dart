@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -256,66 +258,81 @@ class _InputDetailsControllerRowState
     );
   }
 }
-class GardenPage extends StatefulWidget{ //got this to work
+
+class GardenPage extends StatefulWidget {
+  const GardenPage({super.key});
+  //got this to work
   @override
-  _GardenPageState createState()=> _GardenPageState();
+  _GardenPageState createState() => _GardenPageState();
 }
-class _GardenPageState extends State<GardenPage>{
+
+class _GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
-        leading:IconButton(
-          icon: Icon(Icons.arrow_left),
-          onPressed:(){
+        title: Text(
+            '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_left),
+          onPressed: () {
             setState(() {
-              currentMonth = DateTime(currentMonth.year, currentMonth.month - 1, 1);
-          });
-        },
+              currentMonth = DateTime(
+                  currentMonth.year, currentMonth.month - 1, 1);
+            });
+          },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_right),
-            onPressed:(){
+            icon: const Icon(Icons.arrow_right),
+            onPressed: () {
               setState(() {
-                currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
+                currentMonth = DateTime(
+                    currentMonth.year, currentMonth.month + 1, 1);
               });
             },
           )
         ],
       ),
-      body:ListView.builder(
-        itemCount: getNumberOfWeeks(currentMonth.year, currentMonth.month),
-        itemBuilder: (context, index){
-          if(index == 0){
-            return Container(height:150.0, color:Colors.green, child: Center(child: Text('Current Weeks Garden')),
+      body: ListView.builder(
+        itemCount:
+            getNumberOfWeeks(currentMonth.year, currentMonth.month),
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Container(
+              height: 150.0,
+              color: Colors.green,
+              child:
+                  const Center(child: Text('Current Weeks Garden')),
             );
-          
-          }
-          else{
-            return Container(height: 100.0, color:Colors.green[300 + (index *100) % 300], child: Center(child: Text('Week ${index + 1} Garden')),
+          } else {
+            return Container(
+              height: 100.0,
+              color: Colors.green[300 + (index * 100) % 300],
+              child: Center(child: Text('Week ${index + 1} Garden')),
             );
           }
         },
       ),
     );
   }
-  int getNumberOfWeeks(int year, int month){ //able to display months and weeks accurately 
-  //i need to go to sleep now fuck
-    DateTime lastDayOfMonth = DateTime(year, month + 1,0);
+
+  int getNumberOfWeeks(int year, int month) {
+    //able to display months and weeks accurately
+    //i need to go to sleep now fuck
+    DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
     int weekdayOfFirst = DateTime(year, month, 1).weekday;
     int weekdayOfLast = lastDayOfMonth.weekday;
     int daysInFirstWeek = 8 - weekdayOfFirst;
     int daysInLastWeek = weekdayOfLast;
-    int daysInBetween = lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
-    return(daysInBetween/7).ceil() + 2; //adds for first and last week yo
+    int daysInBetween =
+        lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
+    return (daysInBetween / 7).ceil() +
+        2; //adds for first and last week yo
   }
 }
 
-
-  
 class _MainAppState extends State<MainApp> {
   final PageController pageController =
       PageController(initialPage: 0);
@@ -437,7 +454,6 @@ class _MainAppState extends State<MainApp> {
                                 appBarTitle = "Settings";
                               });
                             }),
-  
                         if (APP_DEVELOPMENT_MODE)
                           makeListTile_SideDrawer(
                               icon: Icons.bug_report_rounded,

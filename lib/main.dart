@@ -5,6 +5,7 @@ import 'package:blosso_mindfulness/bits/debug.dart';
 import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -255,7 +256,66 @@ class _InputDetailsControllerRowState
     );
   }
 }
+class GardenPage extends StatefulWidget{ //got this to work
+  @override
+  _GardenPageState createState()=> _GardenPageState();
+}
+class _GardenPageState extends State<GardenPage>{
+  DateTime currentMonth = DateTime.now();
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
+        leading:IconButton(
+          icon: Icon(Icons.arrow_left),
+          onPressed:(){
+            setState(() {
+              currentMonth = DateTime(currentMonth.year, currentMonth.month - 1, 1);
+          });
+        },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed:(){
+              setState(() {
+                currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
+              });
+            },
+          )
+        ],
+      ),
+      body:ListView.builder(
+        itemCount: getNumberOfWeeks(currentMonth.year, currentMonth.month),
+        itemBuilder: (context, index){
+          if(index == 0){
+            return Container(height:150.0, color:Colors.green, child: Center(child: Text('Current Weeks Garden')),
+            );
+          
+          }
+          else{
+            return Container(height: 100.0, color:Colors.green[300 + (index *100) % 300], child: Center(child: Text('Week ${index + 1} Garden')),
+            );
+          }
+        },
+      ),
+    );
+  }
+  int getNumberOfWeeks(int year, int month){ //able to display months and weeks accurately 
+  //i need to go to sleep now fuck
+    DateTime lastDayOfMonth = DateTime(year, month + 1,0);
+    int weekdayOfFirst = DateTime(year, month, 1).weekday;
+    int weekdayOfLast = lastDayOfMonth.weekday;
+    int daysInFirstWeek = 8 - weekdayOfFirst;
+    int daysInLastWeek = weekdayOfLast;
+    int daysInBetween = lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
+    return(daysInBetween/7).ceil() + 2; //adds for first and last week yo
+  }
+}
 
+
+  
 class _MainAppState extends State<MainApp> {
   final PageController pageController =
       PageController(initialPage: 0);
@@ -351,7 +411,7 @@ class _MainAppState extends State<MainApp> {
                             title: "Statistics",
                             onTap: () {
                               Navigator.of(context).pop();
-                              _animateToPage(2);
+                              _animateToPage(3);
                               setState(() {
                                 appBarTitle = "Personal Statistics";
                               });
@@ -359,12 +419,12 @@ class _MainAppState extends State<MainApp> {
                         makeListTile_SideDrawer(
                             icon:
                                 Icons.settings_accessibility_rounded,
-                            title: "Wellbeing",
+                            title: "Garden",
                             onTap: () {
                               Navigator.of(context).pop();
-                              _animateToPage(3);
+                              _animateToPage(2);
                               setState(() {
-                                appBarTitle = "Wellbeing";
+                                appBarTitle = "Garden";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -377,6 +437,7 @@ class _MainAppState extends State<MainApp> {
                                 appBarTitle = "Settings";
                               });
                             }),
+  
                         if (APP_DEVELOPMENT_MODE)
                           makeListTile_SideDrawer(
                               icon: Icons.bug_report_rounded,
@@ -412,8 +473,9 @@ class _MainAppState extends State<MainApp> {
                 bg: Colors.purple, text: "Home Page"),
             debug_wrapPageNumber(
                 bg: Colors.purple, text: "Tips Page"),
+            GardenPage(),
             _StatsPage(),
-            debug_wrapPageNumber(bg: Colors.green, text: "Wellbeing"),
+            debug_wrapPageNumber(bg: Colors.green, text: "Garden"),
             debug_wrapPageNumber(
                 bg: Colors.red, text: "Settings Page"),
             const DebuggingStuffs(),

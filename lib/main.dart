@@ -486,16 +486,15 @@ class _MainAppState extends State<MainApp> {
           children: <Widget>[
             //const Page1_Home(),
             debug_wrapPageNumber(
-                bg: Colors.purple, text: "Home Page"),
+                bg: Colors.purple, text: "Home Page"), // 0
             debug_wrapPageNumber(
-                bg: Colors.purple, text: "Tips Page"),
-            GardenPage(),
-            _StatsPage(),
-            debug_wrapPageNumber(bg: Colors.green, text: "Garden"),
+                bg: Colors.purple, text: "Tips Page"), // 1
+            const GardenPage(), // 2
+            _StatsPage(), // 3
             debug_wrapPageNumber(
-                bg: Colors.red, text: "Settings Page"),
-            const DebuggingStuffs(),
-            debug_wrapPageNumber(bg: Colors.red, text: "Chat Page"),
+                bg: Colors.red, text: "Settings Page"), // 4
+            const DebuggingStuffs(), // 5
+            debug_wrapPageNumber(bg: Colors.red, text: "Chat Page"), // 6
           ],
         ));
   }

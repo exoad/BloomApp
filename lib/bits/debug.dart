@@ -68,21 +68,14 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
                 setState(() {});
               }),
           _dbgButton(
-              text: "INSERT_FAKE_ENTRY",
+              text: "+1 FAKE_ENTRY",
               icon: Icons.book_online_rounded,
               onPressed: () {
                 insertEntry(_fakeEph());
                 setState(() {});
               }),
           _dbgButton(
-              text: "+1 ENTRY_INDEX",
-              icon: Icons.exposure_plus_1_rounded,
-              onPressed: () {
-                setLastEntryIndexOneMore();
-                setState(() {});
-              }),
-          _dbgButton(
-              text: "0 ENTRY_INDEX",
+              text: "0 FAKE_ENTRY",
               icon: Icons.restore_rounded,
               onPressed: () {
                 setLastEntryIndex(0);

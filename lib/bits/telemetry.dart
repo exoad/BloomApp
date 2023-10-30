@@ -127,6 +127,12 @@ void insertEntry(EphemeralTelemetry newEntry) {
   setLastEntryIndexOneMore();
 }
 
+void removeAllEntries() {
+  for (int i = 0; i < getLastEntryIndex(); i++) {
+    prefs.remove("userEntry_EphemeralData$i");
+  }
+}
+
 EphemeralTelemetry? getEntry(double index) {
   if (prefs.getString("userEntry_EphemeralData$index") != null) {
     Map<String, dynamic> jsonData =

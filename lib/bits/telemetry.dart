@@ -4,17 +4,17 @@ import 'package:blosso_mindfulness/bits/consts.dart';
 
 class EphemeralTelemetry {
   /*
-Daily mood rating on a scale.
-Emotion tags (happy, sad, anxious, anry).
 Time spent relaxing
 Time spent with friends/family
-Brief notes or descriptions about the day.
+Time spent with electronic device
 Duration of sleep.
 Sleep quality rating.
-Type and duration of exercise.
-Physical activity levels throughout the day.
+Did you exercise and how long?
 Daily stress rating.
+Daily mood rating on a scale.
 Stressors or triggers.
+Emotion tags (happy, sad, anxious, anry).
+Brief notes or descriptions about the day.
    */
 
   /*------------------------------------------------------ /

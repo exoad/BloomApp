@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
-import 'package:blosso_mindfulness/bits/parts.dart';
 
 double clampDouble(
         {required double value,
@@ -128,12 +127,6 @@ IconButton bottomAppBarPageControlledBtn(
           curve: Curves.fastEaseInToSlowEaseOut),
       icon: icon,
     );
-
-Widget wrapAsHomeLabel(
-        {required Widget child,
-        Color color = LaF.empty,
-        EdgeInsets padding = LaF.outerComponentPadding}) =>
-    Block(backgroundColor: color, padding: padding, child: child);
 
 Text withText(
         {required String data,

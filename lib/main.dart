@@ -61,14 +61,35 @@ class _InputTrackerState extends State<_InputTracker> {
     setState(() {});
   }
 
+  
+
   @override
+  
   Widget build(BuildContext context) {
-    return InputDetailsCarousel(
-      firstPage: const (
-        title: "Adding Entry",
-        hint:
-            "This tracker will help you input the right data for an entry."
-      ),
+    Random random = Random();
+  bool completedPromptsToday = false;
+  Map<DateTime, int?> completedPrompts = {};
+  // Check if all prompts are completed
+  void checkIfPromptsCompleted() {
+    if (widget.now.hoursOfSleep != null &&
+        widget.now.sleepRating != null &&
+        widget.now.hoursSpentWithFamily != null &&
+        widget.now.hoursExercising != null &&
+        widget.now.hoursOnScreen != null &&
+        widget.now.howStressed != null &&
+        widget.now.emotionTags.isNotEmpty) {
+      completedPromptsToday = true;
+    }
+  }
+
+  return InputDetailsCarousel(
+    firstPage: const (
+      title: "Adding Entry",
+      hint:
+          "This tracker will help you input the right data for an entry."
+    ),
+      
+      
       otherPages: [
         makeCustomInputDetails(
             title: "How many hours of sleep did you get last night?",
@@ -108,8 +129,8 @@ class _InputTrackerState extends State<_InputTracker> {
                 widget.now.hoursSpentWithFamily = e.toInt();
               },
               min: 0,
-              max: 13,
-              divisions: 13,
+              max: 10,
+              divisions: 10,
               labelConsumer: (val) => val > 12
                   ? "Greater than 12 hours"
                   : val < 1
@@ -220,9 +241,14 @@ class _InputTrackerState extends State<_InputTracker> {
         )
       ],
       submissionCallback: () {
-        setLastEntryIndexOneMore();
-        setLastEntryTimeAsNow();
-      },
+        checkIfPromptsCompleted();
+        if (completedPromptsToday) {
+          int randomFlowerNumber = random.nextInt(7) + 1;
+          completedPrompts[DateTime.now()] = randomFlowerNumber; // Assign a random flower number for the current day
+          setLastEntryIndexOneMore();
+          setLastEntryTimeAsNow();
+        }
+      }
     );
   }
 }
@@ -792,9 +818,11 @@ class _InputDetailsControllerRowState
   }
 }
 
-class GardenPage extends StatefulWidget {
-  const GardenPage({super.key});
 
+
+
+class GardenPage extends StatefulWidget {
+  
   @override
   _GardenPageState createState() => _GardenPageState();
 }
@@ -802,74 +830,102 @@ class GardenPage extends StatefulWidget {
 class _GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
   Random random = Random();
-  DateTime getFirstDayOfWeekForWeek(
-      int weekIndex, int year, int month) {
+  Map<DateTime, int?> completedPrompts = {};
+
+  DateTime getFirstDayOfWeekForWeek(int weekIndex, int year, int month) {
     DateTime firstDayOfMonth = DateTime(year, month, 1);
-    int daysToSkip = weekIndex * 7; // 7 days per week
-    return firstDayOfMonth.add(Duration(days: daysToSkip));
+    while (firstDayOfMonth.weekday != 1) {
+      firstDayOfMonth = firstDayOfMonth.subtract(const Duration(days: 1));
+    }
+    return firstDayOfMonth.add(Duration(days: 7 * weekIndex));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
+        title: Text('${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_left),
           onPressed: () {
-            setState(() {
-              currentMonth = DateTime(
-                  currentMonth.year, currentMonth.month - 1, 1);
-            });
+            if (currentMonth.month > 1 || currentMonth.year > DateTime.now().year) {
+              setState(() {
+                currentMonth = DateTime(currentMonth.year, currentMonth.month - 1, 1);
+              });
+            }
           },
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.arrow_right),
             onPressed: () {
-              setState(() {
-                currentMonth = DateTime(
-                    currentMonth.year, currentMonth.month + 1, 1);
-              });
+              if (currentMonth.month < DateTime.now().month || currentMonth.year < DateTime.now().year) {
+                setState(() {
+                  currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
+                });
+              }
             },
-          ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => setState(
-                () {}), // This will refresh the page and replant the flowers
           ),
         ],
       ),
       body: ListView.builder(
-        itemCount:
-            getNumberOfWeeks(currentMonth.year, currentMonth.month),
+        itemCount: getNumberOfWeeks(currentMonth.year, currentMonth.month),
         itemBuilder: (context, index) {
-          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(
-              index, currentMonth.year, currentMonth.month);
-          String formattedDate =
-              "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
+          int reverseIndex = getNumberOfWeeks(currentMonth.year, currentMonth.month) - 1 - index;
+          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(reverseIndex, currentMonth.year, currentMonth.month);
+          String formattedDate = "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
+
           return Column(
             children: [
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                color: Colors.green, // or any color you prefer
-                child: Center(child: Text('Week of $formattedDate')),
-              ),
-              Stack(
-                children: [
-                  Container(
-                    height: 150.0,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                            'assets/Background/Background1.jpeg'),
-                        fit: BoxFit.cover,
-                      ),
+              InkWell(
+                onTap: () async {
+                  DateTime? selectedDate = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Choose a day for the week of $formattedDate'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(7, (idx) {
+                            DateTime day = firstDayOfWeek.add(Duration(days: idx));
+                            return ListTile(
+                              title: Text('${DateFormat.EEEE().format(day)} ${day.day}'),
+                              onTap: () => Navigator.pop(context, day),
+                            );
+                          }),
+                        ),
+                      );
+                    },
+                  );
+
+                  if (selectedDate != null && completedPrompts[selectedDate] == null) {
+                    completedPrompts[selectedDate] = random.nextInt(7) + 1;
+                    setState(() {});
+                  }
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10.0),
+                      color: Colors.green,
+                      child: Center(child: Text('Week of $formattedDate')),
                     ),
-                  ),
-                  ...generateFlowers(), // Spread operator to put the list of flowers onto the stack
-                ],
+                    Stack(
+                      children: [
+                        Container(
+                          height: index == 0 ? 250.0 : 150.0,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/Background/Background1.jpeg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        ...generateFlowersForWeek(firstDayOfWeek),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           );
@@ -880,46 +936,39 @@ class _GardenPageState extends State<GardenPage> {
 
   int getNumberOfWeeks(int year, int month) {
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
-    int weekdayOfFirst = DateTime(year, month, 1).weekday;
-    int weekdayOfLast = lastDayOfMonth.weekday;
-    int daysInFirstWeek = 8 - weekdayOfFirst;
-    int daysInLastWeek = weekdayOfLast;
-    int daysInBetween =
-        lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
-    return (daysInBetween / 7).ceil() + 2;
+    return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7).ceil();
   }
 
-  List<Widget> generateFlowers() {
+  List<Widget> generateFlowersForWeek(DateTime startOfWeek) {
     List<Widget> flowers = [];
-
-    // Defining 7 spots for the flowers on the background
     List<Offset> spots = [
-      const Offset(50, 100),
-      const Offset(100, 100),
-      const Offset(150, 100),
-      const Offset(200, 100),
-      const Offset(250, 100),
-      const Offset(300, 100),
-      const Offset(350, 100),
+      const Offset(50, 150),
+      const Offset(100, 150),
+      const Offset(150, 150),
+      const Offset(200, 150),
+      const Offset(250, 150),
+      const Offset(300, 150),
+      const Offset(350, 150),
     ];
 
-    for (var spot in spots) {
-      int flowerNum =
-          random.nextInt(7) + 1; // Random number between 1 and 7
-      flowers.add(
-        Positioned(
-          left: spot.dx,
-          top: spot.dy,
-          child: Image.asset('assets/Flowers/Flower$flowerNum.png',
-              width: 50,
-              height: 50), // Adjust width and height as needed
-        ),
-      );
+    DateTime day = startOfWeek;
+    for (int i = 0; i < 7; i++) {
+      int? flowerNum = completedPrompts[day];
+      if (flowerNum != null) {
+        flowers.add(
+          Positioned(
+            left: spots[i].dx,
+            top: spots[i].dy,
+            child: Image.asset('assets/Flowers/Flower$flowerNum.png', width: 75, height: 75),
+          ),
+        );
+      }
+      day = day.add(const Duration(days: 1));
     }
-
     return flowers;
   }
 }
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -975,7 +1024,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(20),
               color: Colors.red,
               child: const Text(
-                'Complete your prompts for the day or your tree won\'t be planted!',
+                'Complete your prompts for the day or your flower won\'t be planted!',
                 style: TextStyle(color: Colors.white, fontSize: 18),
                 textAlign: TextAlign.center,
               ),
@@ -1135,7 +1184,7 @@ class _MainAppState extends State<MainApp> {
             const HomePage(), // 0
             debug_wrapPageNumber(
                 bg: Colors.purple, text: "Tips Page"), // 1
-            const GardenPage(), // 2
+             GardenPage(), // 2
             _StatsPage(), // 3
             const DebuggingStuffs(), // 4
           ],

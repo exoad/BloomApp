@@ -79,6 +79,70 @@ Widget makeTextInputDetails(
       ]);
 }
 
+String monthNumToName(int monthNum) {
+  return monthNum == DateTime.january
+      ? "January"
+      : monthNum == DateTime.february
+          ? "February"
+          : monthNum == DateTime.march
+              ? "March"
+              : monthNum == DateTime.april
+                  ? "April"
+                  : monthNum == DateTime.may
+                      ? "May"
+                      : monthNum == DateTime.june
+                          ? "June"
+                          : monthNum == DateTime.july
+                              ? "July"
+                              : monthNum == DateTime.august
+                                  ? "August"
+                                  : monthNum == DateTime.september
+                                      ? "September"
+                                      : monthNum == DateTime.october
+                                          ? "October"
+                                          : monthNum ==
+                                                  DateTime.november
+                                              ? "November"
+                                              : monthNum ==
+                                                      DateTime
+                                                          .december
+                                                  ? "December"
+                                                  : "Unknown";
+}
+
+Color monthColor(int monthNum) {
+  return monthNum == DateTime.january
+      ? Colors.pink
+      : monthNum == DateTime.february
+          ? Colors.blue
+          : monthNum == DateTime.march
+              ? Colors.green.shade700
+              : monthNum == DateTime.april
+                  ? Colors.orange
+                  : monthNum == DateTime.may
+                      ? Colors.purple
+                      : monthNum == DateTime.june
+                          ? Colors.red
+                          : monthNum == DateTime.july
+                              ? Colors.teal
+                              : monthNum == DateTime.august
+                                  ? Colors.cyan
+                                  : monthNum == DateTime.september
+                                      ? Colors.indigo
+                                      : monthNum == DateTime.october
+                                          ? const Color.fromARGB(
+                                              255, 192, 209, 40)
+                                          : monthNum ==
+                                                  DateTime.november
+                                              ? Colors.orange.shade600
+                                              : monthNum ==
+                                                      DateTime
+                                                          .december
+                                                  ? Colors
+                                                      .pink.shade800
+                                                  : Colors.black;
+}
+
 Widget makeCustomInputDetails(
     {required String title,
     TextStyle? titleStyle,

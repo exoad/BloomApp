@@ -665,14 +665,17 @@ class _InputDetailsControllerRowState
           ],
         ),
         const SizedBox(height: 10),
-        Text(
-            "${widget.pageController.page!.toInt() + 1} / ${widget.pageViewChildren.length}")
+        if (widget.pageController.page != null)
+          Text(
+              "${widget.pageController.page!.toInt() + 1} / ${widget.pageViewChildren.length}")
       ],
     );
   }
 }
 
 class GardenPage extends StatefulWidget {
+  const GardenPage({super.key});
+
   @override
   _GardenPageState createState() => _GardenPageState();
 }
@@ -800,6 +803,8 @@ class _GardenPageState extends State<GardenPage> {
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }

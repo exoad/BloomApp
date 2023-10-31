@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:blosso_mindfulness/bits/debug.dart';
 import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -679,21 +680,25 @@ class GardenPage extends StatefulWidget {
 class _GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
   Random random = Random();
-  DateTime getFirstDayOfWeekForWeek(int weekIndex, int year, int month) {
-        DateTime firstDayOfMonth = DateTime(year, month, 1);
-        int daysToSkip = weekIndex * 7;  // 7 days per week
-        return firstDayOfMonth.add(Duration(days: daysToSkip));
-      }
+  DateTime getFirstDayOfWeekForWeek(
+      int weekIndex, int year, int month) {
+    DateTime firstDayOfMonth = DateTime(year, month, 1);
+    int daysToSkip = weekIndex * 7; // 7 days per week
+    return firstDayOfMonth.add(Duration(days: daysToSkip));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
+        title: Text(
+            '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_left),
           onPressed: () {
             setState(() {
-              currentMonth = DateTime(currentMonth.year, currentMonth.month - 1, 1);
+              currentMonth = DateTime(
+                  currentMonth.year, currentMonth.month - 1, 1);
             });
           },
         ),
@@ -702,26 +707,31 @@ class _GardenPageState extends State<GardenPage> {
             icon: const Icon(Icons.arrow_right),
             onPressed: () {
               setState(() {
-                currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
+                currentMonth = DateTime(
+                    currentMonth.year, currentMonth.month + 1, 1);
               });
             },
           ),
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => setState(() {}), // This will refresh the page and replant the flowers
+            onPressed: () => setState(
+                () {}), // This will refresh the page and replant the flowers
           ),
         ],
       ),
       body: ListView.builder(
-        itemCount: getNumberOfWeeks(currentMonth.year, currentMonth.month),
+        itemCount:
+            getNumberOfWeeks(currentMonth.year, currentMonth.month),
         itemBuilder: (context, index) {
-          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(index, currentMonth.year, currentMonth.month);
-          String formattedDate = "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
+          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(
+              index, currentMonth.year, currentMonth.month);
+          String formattedDate =
+              "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
           return Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(10.0),
-                color: Colors.green,  // or any color you prefer
+                color: Colors.green, // or any color you prefer
                 child: Center(child: Text('Week of $formattedDate')),
               ),
               Stack(
@@ -730,29 +740,30 @@ class _GardenPageState extends State<GardenPage> {
                     height: 150.0,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/Background/Background1.jpeg'),
+                        image: AssetImage(
+                            'assets/Background/Background1.jpeg'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  ...generateFlowers(),  // Spread operator to put the list of flowers onto the stack
+                  ...generateFlowers(), // Spread operator to put the list of flowers onto the stack
                 ],
               ),
             ],
           );
         },
       ),
-      
     );
   }
-  
+
   int getNumberOfWeeks(int year, int month) {
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
     int weekdayOfFirst = DateTime(year, month, 1).weekday;
     int weekdayOfLast = lastDayOfMonth.weekday;
     int daysInFirstWeek = 8 - weekdayOfFirst;
     int daysInLastWeek = weekdayOfLast;
-    int daysInBetween = lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
+    int daysInBetween =
+        lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
     return (daysInBetween / 7).ceil() + 2;
   }
 
@@ -771,13 +782,15 @@ class _GardenPageState extends State<GardenPage> {
     ];
 
     for (var spot in spots) {
-      int flowerNum = random.nextInt(7) + 1; // Random number between 1 and 7
+      int flowerNum =
+          random.nextInt(7) + 1; // Random number between 1 and 7
       flowers.add(
-      
         Positioned(
           left: spot.dx,
           top: spot.dy,
-          child: Image.asset('assets/Flowers/Flower$flowerNum.png', width: 50, height: 50), // Adjust width and height as needed
+          child: Image.asset('assets/Flowers/Flower$flowerNum.png',
+              width: 50,
+              height: 50), // Adjust width and height as needed
         ),
       );
     }
@@ -785,12 +798,15 @@ class _GardenPageState extends State<GardenPage> {
     return flowers;
   }
 }
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-class _HomePageState extends State<HomePage>{
-  bool hasCompletedTask = false; //NEED TO CHANGE BASED ON IF THEY COMPLETED OR NOT
+
+class _HomePageState extends State<HomePage> {
+  bool hasCompletedTask =
+      false; //NEED TO CHANGE BASED ON IF THEY COMPLETED OR NOT
 
   @override
   Widget build(BuildContext context) {
@@ -817,12 +833,14 @@ class _HomePageState extends State<HomePage>{
                 children: [
                   Text(
                     'Your Mood Today: Happy', // Replace 'Happy' with actual mood data
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style:
+                        TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   SizedBox(height: 10),
                   Text(
                     'Rating: 4.5/5', // Replace '4.5/5' with actual rating data
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style:
+                        TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),
@@ -844,6 +862,7 @@ class _HomePageState extends State<HomePage>{
     );
   }
 }
+
 class _MainAppState extends State<MainApp> {
   final PageController pageController =
       PageController(initialPage: 0);
@@ -998,7 +1017,7 @@ class _MainAppState extends State<MainApp> {
           allowImplicitScrolling: false,
           children: <Widget>[
             //const Page1_Home(),
-            HomePage(),// 0
+            HomePage(), // 0
             debug_wrapPageNumber(
                 bg: Colors.purple, text: "Tips Page"), // 1
             GardenPage(), // 2

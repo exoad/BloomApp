@@ -92,6 +92,9 @@ Widget makeCustomInputDetails(
       ]);
 }
 
+String fmtDateTime(DateTime time) =>
+    "${time.hour}:${time.minute} ${time.month}/${time.day}/${time.year}";
+
 Widget makeListTile_SideDrawer(
     {required IconData icon,
     required String title,

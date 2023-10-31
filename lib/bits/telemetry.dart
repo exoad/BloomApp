@@ -4,31 +4,18 @@ import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 class EphemeralTelemetry {
-  /*
-Time spent relaxing
-Time spent with friends/family
-Time spent with electronic device
-Duration of sleep.
-Sleep quality rating.
-Did you exercise and how long?
-Daily stress rating.
-Daily mood rating on a scale.
-Stressors or triggers.
-Emotion tags (happy, sad, anxious, anry).
-Brief notes or descriptions about the day.
-   */
-
-  /*------------------------------------------------------ /
-  / double dateTimeStamp;                                  /
-  / int moodScale;                                         /
-  / double minutesSpentRelaxing;                           /
-  / double minutesSpentWithFamily;                         /
-  / double minutesSpentWithFriends;                        /
-  / double hoursOfSleep;                                   /
-  / String briefNote;                                      /
-  /                                                        /
-  / EphemeralTelemetry({this.dailyMoods = const <int>[]}); /
-  /-------------------------------------------------------*/
+/*
+How much sleep did you get last night
+Sleep quality rating scale of 1-10
+Time spent relaxing with friends/family
+How much did you exercise today
+How long were you on your screen today
+How stressed were you on a scale of 1-10
+What were some stressors for you yesterday
+10.Daily Mood Rating
+Emotion Tags
+Brief notes about day
+*/
 
   final double entryIndex;
 
@@ -50,7 +37,6 @@ Brief notes or descriptions about the day.
 void invalidateEphemeral() {
   // basically resets the user data to default
   setIsNewUser(true);
-  setEngagementTime(0);
   setUserName("");
   setLastEntryTime(DateTime.fromMillisecondsSinceEpoch(0));
 }
@@ -84,12 +70,6 @@ String getUserSex() => prefs.getString("userSex") ?? "?";
 
 void setUserSex(String newValue) =>
     prefs.setString("userSex", newValue);
-
-double getEngagementTime() =>
-    prefs.getDouble("engagementTime") ?? 0.0;
-
-void setEngagementTime(double newValue) =>
-    prefs.setDouble("engagementTime", newValue);
 
 int getLastEntryTime() => prefs.getInt("lastEntryTime") ?? 00;
 
@@ -147,7 +127,6 @@ EphemeralTelemetry? getEntry(double index) {
 }
 
 void firstTimeValidateTelemetry() {
-  setEngagementTime(0.0);
   setLastEntryIndex(0.0);
   setLastEntryTime(DateTime.now());
 }

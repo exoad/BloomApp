@@ -1,11 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:ui';
-
 import 'package:blosso_mindfulness/bits/parts.dart';
 import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:blosso_mindfulness/bits/debug.dart';
 import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
@@ -28,6 +25,99 @@ void main() {
     });
   });
 }
+
+Widget launchDailyEntryCarousel() => InputDetailsCarousel(
+      firstPage: const (
+        title: "Adding Entry",
+        hint:
+            "This tracker will help you input the right data for an entry."
+      ),
+      otherPages: [
+        makeCustomInputDetails(
+            title: "How many hours of sleep did you get last night?",
+            child: ActionableSlider(
+              consumer: (e) {},
+              min: 0,
+              max: 13,
+              divisions: 13,
+              labelConsumer: (val) => val > 12
+                  ? "Greater than 12 hours"
+                  : val < 1
+                      ? "Less than 1 hour"
+                      : "$val hours",
+            )),
+        makeCustomInputDetails(
+            title: "Rate your sleep quality",
+            child: ActionableSlider(
+              consumer: (e) {},
+              min: 0,
+              max: 10,
+              divisions: 10,
+              labelConsumer: (e) => e <= 3
+                  ? "🙁 Poor"
+                  : e >= 4 && e <= 6
+                      ? "😐 Decent"
+                      : "😄 Good",
+            )),
+        makeCustomInputDetails(
+            title:
+                "How many hours did you spend with family or friends?",
+            child: ActionableSlider(
+              consumer: (e) {},
+              min: 0,
+              max: 13,
+              divisions: 13,
+              labelConsumer: (val) => val > 12
+                  ? "Greater than 12 hours"
+                  : val < 1
+                      ? "Less than 1 hour"
+                      : "$val hours",
+            )),
+        makeCustomInputDetails(
+            title: "How many hours of exercise did you get?",
+            child: ActionableSlider(
+              consumer: (e) {},
+              min: 0,
+              max: 8,
+              divisions: 13,
+              labelConsumer: (val) => val > 8
+                  ? "Greater than 8 hours"
+                  : val < 1
+                      ? "Less than 1 hour"
+                      : "$val hours",
+            )),
+        makeCustomInputDetails(
+            title: "How many hours were you on an electronic device?",
+            child: ActionableSlider(
+              consumer: (e) {},
+              min: 0,
+              max: 13,
+              divisions: 13,
+              labelConsumer: (val) => val > 12
+                  ? "Greater than 12 hours"
+                  : val < 1
+                      ? "Less than 1 hour"
+                      : "$val hours",
+            )),
+        makeCustomInputDetails(
+            title: "How stressed were you?",
+            child: ActionableSlider(
+              consumer: (e) {},
+              min: 0,
+              max: 10,
+              divisions: 10,
+              labelConsumer: (e) => e >= 7
+                  ? "🙁 Very stressed"
+                  : e >= 4 && e <= 6
+                      ? "😐 Kind of stressed"
+                      : "😄 Not really stressed",
+            )),
+      ],
+      submissionCallback: () {
+        setLastEntryIndexOneMore();
+        setLastEntryTimeAsNow();
+      },
+    );
 
 Widget launchCarousel() => InputDetailsCarousel(
       firstPage: (
@@ -277,6 +367,15 @@ class MainApp extends StatefulWidget {
 }
 
 class _StatsPage extends StatelessWidget {
+  static Widget _makeBorderComponent({required Widget child}) =>
+      Container(
+          decoration: const BoxDecoration(
+              color: LaF.primaryColor,
+              borderRadius:
+                  BorderRadius.all(LaF.roundedRectBorderRadius)),
+          child: Padding(
+              padding: const EdgeInsets.all(10), child: child));
+
   @override
   Widget build(BuildContext context) {
     List<Widget> telemetryData = <Widget>[];
@@ -285,81 +384,113 @@ class _StatsPage extends StatelessWidget {
       telemetryData
           .add(Text("Index: ${getEntry(i.toDouble())?.entryIndex}"));
     }
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-                color: LaF.primaryColor,
-                borderRadius:
-                    BorderRadius.all(LaF.roundedRectBorderRadius)),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Center(
-                child: Flex(
-                  direction: Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 0,
-                      child: RandomAvatar(getUserAvatarSVG(),
-                          height: 134, width: 134),
-                    ),
-                    const SizedBox(width: 40),
-                    Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
-                              Text(getUserName(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 28)),
-                              const SizedBox(height: 6),
-                              Text.rich(
-                                  TextSpan(children: [
-                                    const TextSpan(
-                                        text: "Gender: ",
-                                        style: TextStyle(
-                                            fontWeight:
-                                                FontWeight.w800)),
-                                    TextSpan(
-                                      text: (getUserSex() == "female"
-                                          ? "♀️ Female"
-                                          : getUserSex() == "male"
-                                              ? "♂️ Male"
-                                              : "❓ Not specified"),
-                                    )
-                                  ]),
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.normal)),
-                              const SizedBox(height: 6),
-                              Text.rich(
-                                  TextSpan(children: [
-                                    const TextSpan(
-                                        text: "Age Range: ",
-                                        style: TextStyle(
-                                            fontWeight:
-                                                FontWeight.w800)),
-                                    TextSpan(
-                                      text:
-                                          "${getUserAgeGroup().toInt()}-${getUserAgeGroup().toInt() + 10}",
-                                    )
-                                  ]),
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.normal))
-                            ]))
-                  ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _makeBorderComponent(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 0,
+                        child: RandomAvatar(getUserAvatarSVG(),
+                            height: 134, width: 134),
+                      ),
+                      const SizedBox(width: 40),
+                      Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                Text(getUserName(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 28)),
+                                const SizedBox(height: 6),
+                                Text.rich(
+                                    TextSpan(children: [
+                                      const TextSpan(
+                                          text: "Gender: ",
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w800)),
+                                      TextSpan(
+                                        text: (getUserSex() ==
+                                                "female"
+                                            ? "♀️ Female"
+                                            : getUserSex() == "male"
+                                                ? "♂️ Male"
+                                                : "❓ Not specified"),
+                                      )
+                                    ]),
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight:
+                                            FontWeight.normal)),
+                                const SizedBox(height: 6),
+                                Text.rich(
+                                    TextSpan(children: [
+                                      const TextSpan(
+                                          text: "Age Range: ",
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w800)),
+                                      TextSpan(
+                                        text:
+                                            "${getUserAgeGroup().toInt()}-${getUserAgeGroup().toInt() + 10}",
+                                      )
+                                    ]),
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight:
+                                            FontWeight.normal))
+                              ]))
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 10),
+            _makeBorderComponent(
+                child: SizedBox(
+                    width: double.infinity,
+                    child: Text.rich(TextSpan(children: [
+                      const TextSpan(
+                          text: "Statistics\n",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w800)),
+                      const TextSpan(
+                          text: "Last Entry Time: ",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600)),
+                      TextSpan(
+                          text: fmtDateTime(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  getLastEntryTime())),
+                          style: const TextStyle(fontSize: 18)),
+                      const TextSpan(
+                          text: "\nTotal entries: ",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600)),
+                      TextSpan(
+                          text:
+                              getLastEntryIndex().toInt().toString(),
+                          style: const TextStyle(fontSize: 18))
+                    ]))))
+          ],
+        ),
       ),
     );
   }
@@ -459,73 +590,82 @@ class _InputDetailsControllerRowState
     extends State<_InputDetailsControllerRow> {
   @override
   Widget build(BuildContext context) {
-    return Flex(
-      direction: Axis.horizontal,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Flexible(
-          flex: 0,
-          fit: FlexFit.tight,
-          child: IconButton(
-            onPressed: () {
-              if (widget.pageController.page! - 1 >= 0) {
-                widget.pageController
-                    .animateToPage(
-                      (widget.pageController.page! - 1).toInt(),
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                    )
-                    .then((value) => setState(
-                        () {})); // most lazy repaint scheduling XD
-              }
-            },
-            icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                size: 32),
-          ),
+        Flex(
+          direction: Axis.horizontal,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              flex: 0,
+              fit: FlexFit.tight,
+              child: IconButton(
+                onPressed: () {
+                  if (widget.pageController.page! - 1 >= 0) {
+                    widget.pageController
+                        .animateToPage(
+                          (widget.pageController.page! - 1).toInt(),
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.linear,
+                        )
+                        .then((value) => setState(
+                            () {})); // most lazy repaint scheduling XD
+                  }
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                    size: 32),
+              ),
+            ),
+            Flexible(
+                flex: 0,
+                fit: FlexFit.tight,
+                child: Builder(builder: (_) {
+                  // man for some reason it can have fractional pages ?!??!!?!? wtf
+                  return widget.pageController.page != null &&
+                          widget.pageController.page! + 1 ==
+                              widget.pageViewChildren.length
+                      ? IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                              return const MainApp();
+                            }));
+                            widget.submissionCallback?.call();
+                          },
+                          icon: const Icon(Icons.check_rounded,
+                              size: 32))
+                      : const SizedBox(width: 42, height: 42);
+                })), // getting this arrow to work took me way too fucking long
+            Flexible(
+              flex: 0,
+              fit: FlexFit.tight,
+              child: IconButton(
+                onPressed: () {
+                  if (widget.pageController.page! + 1 <=
+                      widget.pageViewChildren.length - 1) {
+                    widget.pageController
+                        .animateToPage(
+                          (widget.pageController.page! + 1)
+                              .toInt(), // as int fails for conversions
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.linear,
+                        )
+                        .then((value) => setState(
+                            () {})); // most lazy repaint scheduling XD
+                  }
+                },
+                icon: const Icon(Icons.arrow_forward_ios_rounded,
+                    size: 32),
+              ),
+            ),
+          ],
         ),
-        Flexible(
-            flex: 0,
-            fit: FlexFit.tight,
-            child: Builder(builder: (_) {
-              // man for some reason it can have fractional pages ?!??!!?!? wtf
-              return widget.pageController.page != null &&
-                      widget.pageController.page! + 1 ==
-                          widget.pageViewChildren.length
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                          return const MainApp();
-                        }));
-                        widget.submissionCallback?.call();
-                      },
-                      icon: const Icon(Icons.check_rounded, size: 32))
-                  : const SizedBox(width: 42, height: 42);
-            })), // getting this arrow to work took me way too fucking long
-        Flexible(
-          flex: 0,
-          fit: FlexFit.tight,
-          child: IconButton(
-            onPressed: () {
-              if (widget.pageController.page! + 1 <=
-                  widget.pageViewChildren.length - 1) {
-                widget.pageController
-                    .animateToPage(
-                      (widget.pageController.page! + 1)
-                          .toInt(), // as int fails for conversions
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                    )
-                    .then((value) => setState(
-                        () {})); // most lazy repaint scheduling XD
-              }
-            },
-            icon:
-                const Icon(Icons.arrow_forward_ios_rounded, size: 32),
-          ),
-        ),
+        const SizedBox(height: 10),
+        Text(
+            "${widget.pageController.page!.toInt() + 1} / ${widget.pageViewChildren.length}")
       ],
     );
   }
@@ -844,10 +984,12 @@ class _MainAppState extends State<MainApp> {
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
-          onPressed: () => pageController.animateToPage(6,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.fastEaseInToSlowEaseOut),
-          child: const Icon(Ionicons.chatbubble),
+          tooltip: "Add an entry",
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (ctxt) => launchDailyEntryCarousel()));
+          },
+          child: const Icon(Icons.add_box_rounded),
         ),
         body: PageView(
           controller: pageController,

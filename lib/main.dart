@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:ui';
+
 import 'package:blosso_mindfulness/bits/parts.dart';
 import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
@@ -283,14 +285,81 @@ class _StatsPage extends StatelessWidget {
           .add(Text("Index: ${getEntry(i.toDouble())?.entryIndex}"));
     }
     return Padding(
-      padding: const EdgeInsets.all(18),
-      child: CustomScrollView(slivers: <Widget>[
-        SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-          return telemetryData[
-              index]; // dangerous area if we dont have the valid delegates for the required widgets fed into the stats tree
-        }, childCount: telemetryData.length))
-      ]),
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+                color: LaF.primaryColor,
+                borderRadius:
+                    BorderRadius.all(LaF.roundedRectBorderRadius)),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 0,
+                      child: RandomAvatar(getUserAvatarSVG(),
+                          height: 134, width: 134),
+                    ),
+                    const SizedBox(width: 40),
+                    Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              Text(getUserName(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 28)),
+                              const SizedBox(height: 6),
+                              Text.rich(
+                                  TextSpan(children: [
+                                    const TextSpan(
+                                        text: "Gender: ",
+                                        style: TextStyle(
+                                            fontWeight:
+                                                FontWeight.w800)),
+                                    TextSpan(
+                                      text: (getUserSex() == "female"
+                                          ? "♀️ Female"
+                                          : getUserSex() == "male"
+                                              ? "♂️ Male"
+                                              : "❓ Not specified"),
+                                    )
+                                  ]),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal)),
+                              const SizedBox(height: 6),
+                              Text.rich(
+                                  TextSpan(children: [
+                                    const TextSpan(
+                                        text: "Age Range: ",
+                                        style: TextStyle(
+                                            fontWeight:
+                                                FontWeight.w800)),
+                                    TextSpan(
+                                      text:
+                                          "${getUserAgeGroup().toInt()}-${getUserAgeGroup().toInt() + 10}",
+                                    )
+                                  ]),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal))
+                            ]))
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

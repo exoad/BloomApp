@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:blosso_mindfulness/bits/parts.dart';
 
+double clampDouble(
+        {required double value,
+        required double min,
+        required double max}) =>
+    value < min
+        ? min
+        : value > max
+            ? max
+            : value;
+
 /// Creates a labled Icon Button in the format that the label is vertically under the Icon Button.
 /// [button] refers to the target IconButton and the [label] is the label for it and the optional [labelStyle]
 Widget labeledIconBtn(

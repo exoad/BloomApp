@@ -32,7 +32,6 @@ final class LaF {
   static const EdgeInsets homeComponentPadding =
       EdgeInsets.only(bottom: 4, left: 6, right: 6, top: 4);
   static const Radius roundedRectBorderRadius = Radius.circular(20);
-
   static String languageLocale = "en_US"; // ! NOTE: this is default
 
   static const TextStyle blockTitleTextStyle = TextStyle(

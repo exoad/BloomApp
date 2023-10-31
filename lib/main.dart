@@ -21,50 +21,51 @@ void main() {
           appHome:
               !getIsNewUser() // oh fuck, dont reverse the conditions here. first time did it and got the wrong results. im too lazy to reverse the values of the resultants so just inverting the condition itself :/
                   ? const MainApp()
-                  : InputDetailsCarousel(
-                      firstPage: (
-                        title: "Let's set you up",
-                        hint: "Tap > for the next step"
-                      ),
-                      submissionCallback: () {
-                        setIsNewUser(false);
-                        firstTimeValidateTelemetry();
-                      },
-                      otherPages: [
-                        makeTextInputDetails(
-                            title: "What should we call you?",
-                            hintText: "John",
-                            callback: setUserName),
-                        makeCustomInputDetails(
-                            title: "What is your age range?",
-                            child: Center(
-                              child: ActionableSlider(
-                                consumer: setUserAgeGroup,
-                                min: 10,
-                                max: 90,
-                                divisions: 8,
-                                labelConsumer: (val) =>
-                                    "Age Range: ${val.toInt()}-${(val + 10).toInt()}",
-                              ),
-                            )),
-                        makeCustomInputDetails(
-                            title: "Note",
-                            child: const Text(
-                              "The following forms are just to build your profile. They are not required.",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.center,
-                            )),
-                        makeCustomInputDetails(
-                            title: "Your sex",
-                            child: const _UserSexSelection()),
-                        makeCustomInputDetails(
-                            title: "Select an avatar",
-                            child: const _UserSelectAvatar())
-                      ],
-                    )));
+                  : launchCarousel()));
     });
   });
 }
+
+Widget launchCarousel() => InputDetailsCarousel(
+      firstPage: (
+        title: "Let's set you up",
+        hint: "Tap > for the next step"
+      ),
+      submissionCallback: () {
+        setIsNewUser(false);
+        firstTimeValidateTelemetry();
+      },
+      otherPages: [
+        makeTextInputDetails(
+            title: "What should we call you?",
+            hintText: "John",
+            callback: setUserName),
+        makeCustomInputDetails(
+            title: "What is your age range?",
+            child: Center(
+              child: ActionableSlider(
+                consumer: setUserAgeGroup,
+                min: 10,
+                max: 90,
+                divisions: 8,
+                labelConsumer: (val) =>
+                    "Age Range: ${val.toInt()}-${(val + 10).toInt()}",
+              ),
+            )),
+        makeCustomInputDetails(
+            title: "Note",
+            child: const Text(
+              "The following forms are just to build your profile. They are not required.",
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            )),
+        makeCustomInputDetails(
+            title: "Your sex", child: const _UserSexSelection()),
+        makeCustomInputDetails(
+            title: "Select an avatar",
+            child: const _UserSelectAvatar())
+      ],
+    );
 
 class _UserSelectAvatar extends StatefulWidget {
   const _UserSelectAvatar({
@@ -605,16 +606,6 @@ class _MainAppState extends State<MainApp> {
                               });
                             }),
                         makeListTile_SideDrawer(
-                            icon: Ionicons.chatbubble,
-                            title: "Chat",
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              _animateToPage(5);
-                              setState(() {
-                                appBarTitle = "Personal Chat";
-                              });
-                            }),
-                        makeListTile_SideDrawer(
                             icon: Icons.lightbulb_rounded,
                             title: "Tips",
                             onTap: () {
@@ -644,6 +635,15 @@ class _MainAppState extends State<MainApp> {
                               setState(() {
                                 appBarTitle = "Garden";
                               });
+                            }),
+                        makeListTile_SideDrawer(
+                            icon: Icons.change_circle_rounded,
+                            title: "Change Profile",
+                            onTap: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (ctxt) =>
+                                          launchCarousel()));
                             }),
                         if (APP_DEVELOPMENT_MODE)
                           makeListTile_SideDrawer(
@@ -683,8 +683,6 @@ class _MainAppState extends State<MainApp> {
             const GardenPage(), // 2
             _StatsPage(), // 3
             const DebuggingStuffs(), // 4
-            debug_wrapPageNumber(
-                bg: Colors.red, text: "Chat Page"), // 5
           ],
         ));
   }

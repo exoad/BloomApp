@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:blosso_mindfulness/bits/debug.dart';
 import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +26,44 @@ void main() {
   });
 }
 
-Widget launchDailyEntryCarousel() => InputDetailsCarousel(
+Widget launchDailyEntryCarousel(EphemeralTelemetry now) =>
+    _InputTracker(now: now);
+
+class _InputTracker extends StatefulWidget {
+  final EphemeralTelemetry now;
+  const _InputTracker({super.key, required this.now});
+
+  @override
+  State<_InputTracker> createState() => _InputTrackerState();
+}
+
+class _InputTrackerState extends State<_InputTracker> {
+  Widget _buildCheckbox(
+      String label, bool value, void Function(bool?) onChanged) {
+    return Row(
+      children: [
+        Checkbox(
+          value: value,
+          onChanged: onChanged,
+        ),
+        Text(label),
+      ],
+    );
+  }
+
+  void _handleEmotionTag(String tag, bool value) {
+    if (value) {
+      widget.now.emotionTags += "$tag,";
+    } else {
+      widget.now.emotionTags =
+          widget.now.emotionTags.replaceAll("$tag,", "");
+    }
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InputDetailsCarousel(
       firstPage: const (
         title: "Adding Entry",
         hint:
@@ -37,7 +73,9 @@ Widget launchDailyEntryCarousel() => InputDetailsCarousel(
         makeCustomInputDetails(
             title: "How many hours of sleep did you get last night?",
             child: ActionableSlider(
-              consumer: (e) {},
+              consumer: (e) {
+                widget.now.hoursOfSleep = e.toInt();
+              },
               min: 0,
               max: 13,
               divisions: 13,
@@ -50,7 +88,9 @@ Widget launchDailyEntryCarousel() => InputDetailsCarousel(
         makeCustomInputDetails(
             title: "Rate your sleep quality",
             child: ActionableSlider(
-              consumer: (e) {},
+              consumer: (e) {
+                widget.now.sleepRating = e.toInt();
+              },
               min: 0,
               max: 10,
               divisions: 10,
@@ -64,7 +104,9 @@ Widget launchDailyEntryCarousel() => InputDetailsCarousel(
             title:
                 "How many hours did you spend with family or friends?",
             child: ActionableSlider(
-              consumer: (e) {},
+              consumer: (e) {
+                widget.now.hoursSpentWithFamily = e.toInt();
+              },
               min: 0,
               max: 13,
               divisions: 13,
@@ -77,7 +119,9 @@ Widget launchDailyEntryCarousel() => InputDetailsCarousel(
         makeCustomInputDetails(
             title: "How many hours of exercise did you get?",
             child: ActionableSlider(
-              consumer: (e) {},
+              consumer: (e) {
+                widget.now.hoursExercising = e.toInt();
+              },
               min: 0,
               max: 8,
               divisions: 13,
@@ -90,7 +134,9 @@ Widget launchDailyEntryCarousel() => InputDetailsCarousel(
         makeCustomInputDetails(
             title: "How many hours were you on an electronic device?",
             child: ActionableSlider(
-              consumer: (e) {},
+              consumer: (e) {
+                widget.now.hoursOnScreen = e.toInt();
+              },
               min: 0,
               max: 13,
               divisions: 13,
@@ -103,7 +149,9 @@ Widget launchDailyEntryCarousel() => InputDetailsCarousel(
         makeCustomInputDetails(
             title: "How stressed were you?",
             child: ActionableSlider(
-              consumer: (e) {},
+              consumer: (e) {
+                widget.now.howStressed = e.toInt();
+              },
               min: 0,
               max: 10,
               divisions: 10,
@@ -113,12 +161,71 @@ Widget launchDailyEntryCarousel() => InputDetailsCarousel(
                       ? "😐 Kind of stressed"
                       : "😄 Not really stressed",
             )),
+        makeCustomInputDetails(
+          title: "Tag emotions to this day",
+          child: SizedBox(
+            height: 400, // Adjust the height as needed
+            child: Scrollbar(
+              child: ListView(
+                children: [
+                  _buildCheckbox(
+                    "Happy 😃",
+                    widget.now.emotionTags.contains("happy"),
+                    (val) => _handleEmotionTag("happy", val!),
+                  ),
+                  _buildCheckbox(
+                    "Sad 😢",
+                    widget.now.emotionTags.contains("sad"),
+                    (val) => _handleEmotionTag("sad", val!),
+                  ),
+                  _buildCheckbox(
+                    "Angry 😠",
+                    widget.now.emotionTags.contains("angry"),
+                    (val) => _handleEmotionTag("angry", val!),
+                  ),
+                  _buildCheckbox(
+                    "Anxious 😰",
+                    widget.now.emotionTags.contains("anxious"),
+                    (val) => _handleEmotionTag("anxious", val!),
+                  ),
+                  _buildCheckbox(
+                    "Depressed 😔",
+                    widget.now.emotionTags.contains("depressed"),
+                    (val) => _handleEmotionTag("depressed", val!),
+                  ),
+                  _buildCheckbox(
+                    "Excited 😁",
+                    widget.now.emotionTags.contains("excited"),
+                    (val) => _handleEmotionTag("excited", val!),
+                  ),
+                  _buildCheckbox(
+                    "Calm 😌",
+                    widget.now.emotionTags.contains("calm"),
+                    (val) => _handleEmotionTag("calm", val!),
+                  ),
+                  _buildCheckbox(
+                    "Frustrated 😡",
+                    widget.now.emotionTags.contains("frustrated"),
+                    (val) => _handleEmotionTag("frustrated", val!),
+                  ),
+                  _buildCheckbox(
+                    "Surprised 😲",
+                    widget.now.emotionTags.contains("surprised"),
+                    (val) => _handleEmotionTag("surprised", val!),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
       ],
       submissionCallback: () {
         setLastEntryIndexOneMore();
         setLastEntryTimeAsNow();
       },
     );
+  }
+}
 
 Widget launchCarousel() => InputDetailsCarousel(
       firstPage: (
@@ -381,9 +488,9 @@ class _StatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> telemetryData = <Widget>[];
 
-    for (int i = 0; i < getLastEntryIndex(); i++) {
+    for (int i = 0; i <= getLastEntryIndex(); i++) {
       telemetryData
-          .add(Text("Index: ${getEntry(i.toDouble())?.entryIndex}"));
+          .add(Text("${getEntry_JSON(i.toDouble())}"));
     }
     return SingleChildScrollView(
       child: Padding(
@@ -489,7 +596,19 @@ class _StatsPage extends StatelessWidget {
                           text:
                               getLastEntryIndex().toInt().toString(),
                           style: const TextStyle(fontSize: 18))
-                    ]))))
+                    ])))),
+            const SizedBox(height: 10),
+            if (getLastEntryIndex() == 0)
+              const Text.rich(TextSpan(children: [
+                TextSpan(
+                    text: "No entries found!",
+                    style: TextStyle(
+                        color: Color.fromARGB(150, 180, 180, 180),
+                        fontWeight: FontWeight.w800,
+                        fontSize: 24))
+              ]))
+            else
+              ...telemetryData
           ],
         ),
       ),
@@ -939,16 +1058,6 @@ class _MainAppState extends State<MainApp> {
                               });
                             }),
                         makeListTile_SideDrawer(
-                            icon: Ionicons.chatbubble,
-                            title: "Chat",
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              _animateToPage(6);
-                              setState(() {
-                                appBarTitle = "Personal Chat";
-                              });
-                            }),
-                        makeListTile_SideDrawer(
                             icon: Icons.lightbulb_rounded,
                             title: "Tips",
                             onTap: () {
@@ -1011,7 +1120,8 @@ class _MainAppState extends State<MainApp> {
           tooltip: "Add an entry",
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctxt) => launchDailyEntryCarousel()));
+                builder: (ctxt) => launchDailyEntryCarousel(
+                    EphemeralTelemetry(getLastEntryIndex()))));
           },
           child: const Icon(Icons.add_box_rounded),
         ),
@@ -1022,10 +1132,10 @@ class _MainAppState extends State<MainApp> {
           allowImplicitScrolling: false,
           children: <Widget>[
             //const Page1_Home(),
-            HomePage(), // 0
+            const HomePage(), // 0
             debug_wrapPageNumber(
                 bg: Colors.purple, text: "Tips Page"), // 1
-            GardenPage(), // 2
+            const GardenPage(), // 2
             _StatsPage(), // 3
             const DebuggingStuffs(), // 4
           ],

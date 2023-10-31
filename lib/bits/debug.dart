@@ -144,6 +144,8 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
             _makeProperty(name: "userName"),
             _makeProperty(name: "lastEntryTime"),
             _makeProperty(name: "lastEntryIndex"),
+            _makeProperty(name: "userAgeGroup"),
+            _makeProperty(name: "userSex")
           ], style: const TextStyle(fontSize: 18))),
         ],
       ),

@@ -1,11 +1,15 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:ui';
+
+import 'package:blosso_mindfulness/bits/parts.dart';
 import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:blosso_mindfulness/bits/debug.dart';
 import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
+import 'package:random_avatar/random_avatar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
@@ -20,36 +24,236 @@ void main() {
           appHome:
               !getIsNewUser() // oh fuck, dont reverse the conditions here. first time did it and got the wrong results. im too lazy to reverse the values of the resultants so just inverting the condition itself :/
                   ? const MainApp()
-                  : InputDetailsCarousel(
-                      firstPage: (
-                        title: "Let's set you up",
-                        hint: "Tap > for the next step"
-                      ),
-                      submissionCallback: () {
-                        setIsNewUser(false);
-                        firstTimeValidateTelemetry();
-                      },
-                      otherPages: [
-                        makeTextInputDetails(
-                            title: "What should we call you?",
-                            hintText: "John",
-                            callback: setUserName),
-                        makeCustomInputDetails(
-                            title: "What is your age range?",
-                            child: Center(
-                              child: Slider(
-                                value: 20,
-                                onChanged: (val) {},
-                                min: 10,
-                                max: 90,
-                                allowedInteraction:
-                                    SliderInteraction.tapAndSlide,
-                              ),
-                            ))
-                      ],
-                    )));
+                  : launchCarousel()));
     });
   });
+}
+
+Widget launchCarousel() => InputDetailsCarousel(
+      firstPage: (
+        title: "Let's set you up",
+        hint: "Tap > for the next step"
+      ),
+      submissionCallback: () {
+        setIsNewUser(false);
+        firstTimeValidateTelemetry();
+      },
+      otherPages: [
+        makeTextInputDetails(
+            title: "What should we call you?",
+            hintText: "John",
+            callback: setUserName),
+        makeCustomInputDetails(
+            title: "What is your age range?",
+            child: Center(
+              child: ActionableSlider(
+                consumer: setUserAgeGroup,
+                min: 10,
+                max: 90,
+                divisions: 8,
+                labelConsumer: (val) =>
+                    "Age Range: ${val.toInt()}-${(val + 10).toInt()}",
+              ),
+            )),
+        makeCustomInputDetails(
+            title: "Note",
+            child: const Text(
+              "The following forms are just to build your profile. They are not required.",
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            )),
+        makeCustomInputDetails(
+            title: "Your sex", child: const _UserSexSelection()),
+        makeCustomInputDetails(
+            title: "Select an avatar",
+            child: const _UserSelectAvatar())
+      ],
+    );
+
+class _UserSelectAvatar extends StatefulWidget {
+  const _UserSelectAvatar({
+    super.key,
+  });
+
+  @override
+  State<_UserSelectAvatar> createState() => _UserSelectAvatarState();
+}
+
+class _UserSelectAvatarState extends State<_UserSelectAvatar> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      RandomAvatar(getUserAvatarSVG(), width: 108, height: 108),
+      const SizedBox(height: 40),
+      TextButton.icon(
+          onPressed: () {
+            String svg = RandomAvatarString(
+                DateTime.now().toIso8601String(),
+                trBackground: false);
+            setUserAvatarSVG(svg);
+            setState(() {});
+          },
+          icon: const Icon(Icons.replay_rounded),
+          label: const Text("Generate"))
+    ]);
+  }
+}
+
+class _UserSexSelection extends StatelessWidget {
+  const _UserSexSelection({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _FemaleSex(),
+          SizedBox(width: 20),
+          _MaleSex(),
+        ]);
+  }
+}
+
+class _MaleSex extends StatefulWidget {
+  const _MaleSex({
+    super.key,
+  });
+
+  @override
+  State<_MaleSex> createState() => _MaleSexState();
+}
+
+class _MaleSexState extends State<_MaleSex> {
+  Color maleButtonColor = Colors.blue;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => setUserSex("male"),
+      onTapDown: (details) {
+        setState(() {
+          maleButtonColor = Colors.blue.shade200;
+        });
+      },
+      onTapUp: (details) {
+        setState(() {
+          maleButtonColor = Colors.blue;
+        });
+        setUserSex("male");
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+          color: maleButtonColor,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.male_rounded,
+                size: 64,
+                color: Colors.white,
+              ),
+              Text(
+                "Male",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FemaleSex extends StatefulWidget {
+  const _FemaleSex({
+    super.key,
+  });
+
+  @override
+  State<_FemaleSex> createState() => _FemaleSexState();
+}
+
+class _FemaleSexState extends State<_FemaleSex> {
+  Color femaleButtonColor = Colors.pink;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => setUserSex("female"),
+      onTapDown: (details) {
+        setState(() {
+          femaleButtonColor = Colors.pink.shade200;
+        });
+      },
+      onTapUp: (details) {
+        setState(() {
+          femaleButtonColor = Colors.pink;
+        });
+        setUserSex("female");
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+          color: femaleButtonColor,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.female_rounded,
+                size: 64,
+                color: Colors.white,
+              ),
+              Text(
+                "Female",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AgeSlider extends StatefulWidget {
+  final void Function(double) consumer;
+  const _AgeSlider({super.key, required this.consumer});
+
+  @override
+  State<_AgeSlider> createState() => _AgeSliderState();
+}
+
+class _AgeSliderState extends State<_AgeSlider> {
+  double _sliderVal = 50;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slider(
+      value: _sliderVal,
+      onChanged: (val) {
+        setState(() {
+          _sliderVal = val;
+        });
+      },
+      min: 10,
+      max: 90,
+      divisions: 9,
+      allowedInteraction: SliderInteraction.tapAndSlide,
+    );
+  }
 }
 
 class _AppWrapper extends StatelessWidget {
@@ -82,14 +286,81 @@ class _StatsPage extends StatelessWidget {
           .add(Text("Index: ${getEntry(i.toDouble())?.entryIndex}"));
     }
     return Padding(
-      padding: const EdgeInsets.all(18),
-      child: CustomScrollView(slivers: <Widget>[
-        SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-          return telemetryData[
-              index]; // dangerous area if we dont have the valid delegates for the required widgets fed into the stats tree
-        }, childCount: telemetryData.length))
-      ]),
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+                color: LaF.primaryColor,
+                borderRadius:
+                    BorderRadius.all(LaF.roundedRectBorderRadius)),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 0,
+                      child: RandomAvatar(getUserAvatarSVG(),
+                          height: 134, width: 134),
+                    ),
+                    const SizedBox(width: 40),
+                    Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              Text(getUserName(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 28)),
+                              const SizedBox(height: 6),
+                              Text.rich(
+                                  TextSpan(children: [
+                                    const TextSpan(
+                                        text: "Gender: ",
+                                        style: TextStyle(
+                                            fontWeight:
+                                                FontWeight.w800)),
+                                    TextSpan(
+                                      text: (getUserSex() == "female"
+                                          ? "♀️ Female"
+                                          : getUserSex() == "male"
+                                              ? "♂️ Male"
+                                              : "❓ Not specified"),
+                                    )
+                                  ]),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal)),
+                              const SizedBox(height: 6),
+                              Text.rich(
+                                  TextSpan(children: [
+                                    const TextSpan(
+                                        text: "Age Range: ",
+                                        style: TextStyle(
+                                            fontWeight:
+                                                FontWeight.w800)),
+                                    TextSpan(
+                                      text:
+                                          "${getUserAgeGroup().toInt()}-${getUserAgeGroup().toInt() + 10}",
+                                    )
+                                  ]),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal))
+                            ]))
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -510,7 +781,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(6);
                               setState(() {
-                                appBarTitle = "Bloom";
+                                appBarTitle = "Personal Chat";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -520,17 +791,17 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(1);
                               setState(() {
-                                appBarTitle = "Bloom";
+                                appBarTitle = "Personalized Tips";
                               });
                             }),
                         makeListTile_SideDrawer(
-                            icon: Icons.calculate_rounded,
-                            title: "Statistics",
+                            icon: Icons.person_rounded,
+                            title: "Profile",
                             onTap: () {
                               Navigator.of(context).pop();
                               _animateToPage(3);
                               setState(() {
-                                appBarTitle = "Bloom";
+                                appBarTitle = "Personal Statistics";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -545,13 +816,13 @@ class _MainAppState extends State<MainApp> {
                               });
                             }),
                         makeListTile_SideDrawer(
-                            icon: Icons.settings_rounded,
-                            title: "Settings",
+                            icon: Icons.change_circle_rounded,
+                            title: "Change Profile",
                             onTap: () {
                               Navigator.of(context).pop();
                               _animateToPage(4);
                               setState(() {
-                                appBarTitle = "Bloom";
+                                appBarTitle = "Settings";
                               });
                             }),
                         if (APP_DEVELOPMENT_MODE)
@@ -560,7 +831,7 @@ class _MainAppState extends State<MainApp> {
                               title: "APP_DEBUG",
                               onTap: () {
                                 Navigator.of(context).pop();
-                                _animateToPage(5);
+                                _animateToPage(4);
                               })
                       ]));
                 }));
@@ -590,10 +861,7 @@ class _MainAppState extends State<MainApp> {
                 bg: Colors.purple, text: "Tips Page"), // 1
             GardenPage(), // 2
             _StatsPage(), // 3
-            debug_wrapPageNumber(
-                bg: Colors.red, text: "Settings Page"), // 4
-            const DebuggingStuffs(), // 5
-            debug_wrapPageNumber(bg: Colors.red, text: "Chat Page"), // 6
+            const DebuggingStuffs(), // 4
           ],
         ));
   }

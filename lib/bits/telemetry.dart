@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:blosso_mindfulness/bits/consts.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 class EphemeralTelemetry {
   /*
@@ -54,36 +55,35 @@ void invalidateEphemeral() {
   setLastEntryTime(DateTime.fromMillisecondsSinceEpoch(0));
 }
 
-T _safeGet<T>(String key, T defaultValue) {
-  // primary fx for when we have to rewrite the datatype of an object and thus saves us the pain of debugging errors
-  // probably not going to use this fx anyways
-  late T obj;
-  try {
-    obj = prefs.get(key) as T;
-  } catch (e) {
-    obj = defaultValue;
-    if (T.runtimeType == int) {
-      prefs.setInt(key, defaultValue as int);
-    } else if (T.runtimeType == double) {
-      prefs.setDouble(key, defaultValue as double);
-    } else if (T.runtimeType == String) {
-      prefs.setString(key, defaultValue.toString());
-    } else if (T.runtimeType == List<String>) {
-      prefs.setStringList(key, defaultValue as List<String>);
-    }
-  }
-  return obj;
-}
-
 bool getIsNewUser() => prefs.getBool("isNewUser") ?? true;
 
 void setIsNewUser(bool newValue) =>
     prefs.setBool("isNewUser", newValue);
 
+String getUserAvatarSVG() =>
+    prefs.getString("userAvatarSVG") ??
+    RandomAvatarString(
+      DateTime.now().toIso8601String(),
+      trBackground: false,
+    );
+
+void setUserAvatarSVG(String newValue) =>
+    prefs.setString("userAvatarSVG", newValue);
+
 String getUserName() => prefs.getString("userName") ?? "";
 
 void setUserName(String newValue) =>
     prefs.setString("userName", newValue);
+
+double getUserAgeGroup() => prefs.getDouble("userAgeGroup") ?? 0;
+
+void setUserAgeGroup(double newValue) =>
+    prefs.setDouble("userAgeGroup", newValue);
+
+String getUserSex() => prefs.getString("userSex") ?? "?";
+
+void setUserSex(String newValue) =>
+    prefs.setString("userSex", newValue);
 
 double getEngagementTime() =>
     prefs.getDouble("engagementTime") ?? 0.0;

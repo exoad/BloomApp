@@ -32,17 +32,7 @@ final class LaF {
   static const EdgeInsets homeComponentPadding =
       EdgeInsets.only(bottom: 4, left: 6, right: 6, top: 4);
   static const Radius roundedRectBorderRadius = Radius.circular(20);
-
   static String languageLocale = "en_US"; // ! NOTE: this is default
-
-  static const TextStyle blockTitleTextStyle = TextStyle(
-      fontFamily: "FiraMono",
-      fontWeight: FontWeight.w700,
-      fontSize: 58);
-  static const TextStyle blockSubTextStyle = TextStyle(
-      fontFamily: "FiraMono",
-      fontWeight: FontWeight.w500,
-      fontSize: 30);
 }
 
 const bool APP_DEVELOPMENT_MODE = true;

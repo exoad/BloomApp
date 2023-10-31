@@ -98,7 +98,14 @@ String? getEntry_JSON(double index) {
   return null;
 }
 
-EphemeralTelemetry? getEntry(double index) {
+void invalidateAllEntries() {
+  for (double i = 0; i <= getLastEntryIndex(); i++) {
+    prefs.remove("userEntry_EphemeralData$i");
+  }
+  setLastEntryIndex(0);
+}
+
+EphemeralTelemetry getEntry(double index) {
   if (prefs.getString("userEntry_EphemeralData$index") != null) {
     Map<String, dynamic> jsonData =
         jsonDecode(prefs.getString("userEntry_EphemeralData$index")!);
@@ -115,7 +122,7 @@ EphemeralTelemetry? getEntry(double index) {
         hoursSpentWithFamily: jsonData["hoursSpentWithFamily"] as int,
         sleepRating: jsonData["sleepRating"] as int);
   }
-  return null;
+  return EphemeralTelemetry(index);
 }
 
 class EphemeralTelemetry {

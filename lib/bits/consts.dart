@@ -43,6 +43,7 @@ ThemeData appLaF() {
       useMaterial3: false,
       primaryColor: LaF.primaryColor,
       primaryColorDark: LaF.primaryColor,
+      appBarTheme: const AppBarTheme(shadowColor: Colors.transparent),
       scaffoldBackgroundColor: LaF.primaryBackground,
       bottomAppBarTheme: const BottomAppBarTheme(
         color: LaF.primaryColor,
@@ -50,9 +51,11 @@ ThemeData appLaF() {
         surfaceTintColor: LaF.primaryColorTint,
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: LaF.primaryColor,
-        foregroundColor: LaF.primaryColorFgContrast,
-      ),
+          backgroundColor: LaF.primaryColor,
+          foregroundColor: LaF.primaryColorFgContrast,
+          shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.all(LaF.roundedRectBorderRadius))),
       shadowColor: LaF.empty,
       iconButtonTheme: const IconButtonThemeData(
           style: ButtonStyle(

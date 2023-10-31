@@ -129,6 +129,12 @@ class _DebuggingStuffsState extends State<DebuggingStuffs> {
                 setState(() {});
               }),
           _dbgButton(
+              text: "RESET_USER_ENTRIES",
+              icon: Icons.reset_tv_rounded,
+              onPressed: () {
+                invalidateAllEntries();
+              }),
+          _dbgButton(
               text: "SET_LAST_ENTRY_TIME_NOW",
               icon: Icons.calendar_today_rounded,
               onPressed: () {

@@ -8,6 +8,7 @@ import 'package:blosso_mindfulness/bits/helper.dart';
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -260,26 +261,28 @@ class _InputDetailsControllerRowState
 }
 
 class GardenPage extends StatefulWidget {
-  const GardenPage({super.key});
-  //got this to work
   @override
   _GardenPageState createState() => _GardenPageState();
 }
 
 class _GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
+  Random random = Random();
+  DateTime getFirstDayOfWeekForWeek(int weekIndex, int year, int month) {
+        DateTime firstDayOfMonth = DateTime(year, month, 1);
+        int daysToSkip = weekIndex * 7;  // 7 days per week
+        return firstDayOfMonth.add(Duration(days: daysToSkip));
+      }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
+        title: Text('${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_left),
           onPressed: () {
             setState(() {
-              currentMonth = DateTime(
-                  currentMonth.year, currentMonth.month - 1, 1);
+              currentMonth = DateTime(currentMonth.year, currentMonth.month - 1, 1);
             });
           },
         ),
@@ -288,51 +291,148 @@ class _GardenPageState extends State<GardenPage> {
             icon: const Icon(Icons.arrow_right),
             onPressed: () {
               setState(() {
-                currentMonth = DateTime(
-                    currentMonth.year, currentMonth.month + 1, 1);
+                currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
               });
             },
-          )
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => setState(() {}), // This will refresh the page and replant the flowers
+          ),
         ],
       ),
       body: ListView.builder(
-        itemCount:
-            getNumberOfWeeks(currentMonth.year, currentMonth.month),
+        itemCount: getNumberOfWeeks(currentMonth.year, currentMonth.month),
         itemBuilder: (context, index) {
-          if (index == 0) {
-            return Container(
-              height: 150.0,
-              color: Colors.green,
-              child:
-                  const Center(child: Text('Current Weeks Garden')),
-            );
-          } else {
-            return Container(
-              height: 100.0,
-              color: Colors.green[300 + (index * 100) % 300],
-              child: Center(child: Text('Week ${index + 1} Garden')),
-            );
-          }
+          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(index, currentMonth.year, currentMonth.month);
+          String formattedDate = "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
+          return Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                color: Colors.green,  // or any color you prefer
+                child: Center(child: Text('Week of $formattedDate')),
+              ),
+              Stack(
+                children: [
+                  Container(
+                    height: 150.0,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/Background/Background1.jpeg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  ...generateFlowers(),  // Spread operator to put the list of flowers onto the stack
+                ],
+              ),
+            ],
+          );
         },
       ),
+      
     );
   }
-
+  
   int getNumberOfWeeks(int year, int month) {
-    //able to display months and weeks accurately
-    //i need to go to sleep now fuck
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
     int weekdayOfFirst = DateTime(year, month, 1).weekday;
     int weekdayOfLast = lastDayOfMonth.weekday;
     int daysInFirstWeek = 8 - weekdayOfFirst;
     int daysInLastWeek = weekdayOfLast;
-    int daysInBetween =
-        lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
-    return (daysInBetween / 7).ceil() +
-        2; //adds for first and last week yo
+    int daysInBetween = lastDayOfMonth.day - daysInFirstWeek - daysInLastWeek;
+    return (daysInBetween / 7).ceil() + 2;
+  }
+
+  List<Widget> generateFlowers() {
+    List<Widget> flowers = [];
+
+    // Defining 7 spots for the flowers on the background
+    List<Offset> spots = [
+      const Offset(50, 100),
+      const Offset(100, 100),
+      const Offset(150, 100),
+      const Offset(200, 100),
+      const Offset(250, 100),
+      const Offset(300, 100),
+      const Offset(350, 100),
+    ];
+
+    for (var spot in spots) {
+      int flowerNum = random.nextInt(7) + 1; // Random number between 1 and 7
+      flowers.add(
+      
+        Positioned(
+          left: spot.dx,
+          top: spot.dy,
+          child: Image.asset('assets/Flowers/Flower$flowerNum.png', width: 50, height: 50), // Adjust width and height as needed
+        ),
+      );
+    }
+
+    return flowers;
   }
 }
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+class _HomePageState extends State<HomePage>{
+  bool hasCompletedTask = false; //NEED TO CHANGE BASED ON IF THEY COMPLETED OR NOT
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (hasCompletedTask) ...[
+            // Show Mood and Rating
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Colors.purple, Colors.blue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Column(
+                children: [
+                  Text(
+                    'Your Mood Today: Happy', // Replace 'Happy' with actual mood data
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Rating: 4.5/5', // Replace '4.5/5' with actual rating data
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ],
+              ),
+            )
+          ] else ...[
+            // Reminder to complete the task
+            Container(
+              padding: const EdgeInsets.all(20),
+              color: Colors.red,
+              child: const Text(
+                'Complete your prompts for the day or your tree won\'t be planted!',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
 class _MainAppState extends State<MainApp> {
   final PageController pageController =
       PageController(initialPage: 0);
@@ -400,7 +500,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(0);
                               setState(() {
-                                appBarTitle = "Home";
+                                appBarTitle = "Bloom";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -410,7 +510,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(6);
                               setState(() {
-                                appBarTitle = "Personal Chat";
+                                appBarTitle = "Bloom";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -420,7 +520,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(1);
                               setState(() {
-                                appBarTitle = "Personalized Tips";
+                                appBarTitle = "Bloom";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -430,7 +530,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(3);
                               setState(() {
-                                appBarTitle = "Personal Statistics";
+                                appBarTitle = "Bloom";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -441,7 +541,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(2);
                               setState(() {
-                                appBarTitle = "Garden";
+                                appBarTitle = "Bloom";
                               });
                             }),
                         makeListTile_SideDrawer(
@@ -451,7 +551,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).pop();
                               _animateToPage(4);
                               setState(() {
-                                appBarTitle = "Settings";
+                                appBarTitle = "Bloom";
                               });
                             }),
                         if (APP_DEVELOPMENT_MODE)
@@ -485,11 +585,10 @@ class _MainAppState extends State<MainApp> {
           allowImplicitScrolling: false,
           children: <Widget>[
             //const Page1_Home(),
-            debug_wrapPageNumber(
-                bg: Colors.purple, text: "Home Page"), // 0
+            HomePage(),// 0
             debug_wrapPageNumber(
                 bg: Colors.purple, text: "Tips Page"), // 1
-            const GardenPage(), // 2
+            GardenPage(), // 2
             _StatsPage(), // 3
             debug_wrapPageNumber(
                 bg: Colors.red, text: "Settings Page"), // 4

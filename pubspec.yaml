@@ -14,6 +14,7 @@ dependencies:
   shared_preferences: ^2.2.2
   yaml: ^3.1.2
 
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -25,6 +26,14 @@ flutter:
     - assets/app_icon/icon_512x512.png
     - assets/i18n/en_US.yaml
     - assets/app_icon/icon_64x64.png
+    - assets/Background/Background1.jpeg
+    - assets/Flowers/Flower1.png
+    - assets/Flowers/Flower2.png
+    - assets/Flowers/Flower3.png
+    - assets/Flowers/Flower4.png
+    - assets/Flowers/Flower5.png
+    - assets/Flowers/Flower6.png
+    - assets/Flowers/Flower7.png
   fonts:
     - family: FiraMono
     - fonts:

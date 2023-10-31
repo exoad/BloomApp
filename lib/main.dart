@@ -16,13 +16,11 @@ void main() {
   SharedPreferences.getInstance().then((value) {
     prefs = value;
     prefs.reload();
-    init().then((_) {
-      runApp(_AppWrapper(
-          appHome:
-              !getIsNewUser() // oh fuck, dont reverse the conditions here. first time did it and got the wrong results. im too lazy to reverse the values of the resultants so just inverting the condition itself :/
-                  ? const MainApp()
-                  : launchCarousel()));
-    });
+    runApp(_AppWrapper(
+        appHome:
+            !getIsNewUser() // oh fuck, dont reverse the conditions here. first time did it and got the wrong results. im too lazy to reverse the values of the resultants so just inverting the condition itself :/
+                ? const MainApp()
+                : launchCarousel()));
   });
 }
 

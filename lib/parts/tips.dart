@@ -18,13 +18,29 @@ final List<Tip> _tipsData = <Tip>[
     contentBody:
         "The American Academy of Sleep Medicine recommends over 7 hours for those ages 20 and up.",
     condition: (telemetry) =>
-        telemetry.hoursOfSleep > 7 && getUserAgeGroup() >= 20,
+        telemetry.hoursOfSleep < 7 && getUserAgeGroup() >= 20,
     color: Colors.orange
   ),
-  
-  
   (
-    source: "North Shore University Hospital",
+    source: "Columbia University of Pyschiatry",
+    contentTitle: "Sleep More!",
+    contentBody:
+        "The American Academy of Sleep Medicine recommends over 8 hours for those ages 13-18 to have adequate energy and focus during the day.",
+    condition: (telemetry) =>
+        telemetry.hoursOfSleep < 8 && getUserAgeGroup() <= 18 && getUserAgeGroup() >= 13,
+    color: Colors.orange
+  ),
+  (
+    source: "Columbia University of Pyschiatry",
+    contentTitle: "Sleep More!",
+    contentBody:
+        "The American Academy of Sleep Medicine recommends at least 9 hours of sleep for those under the age of 12 to improve mental and physical development ",
+    condition: (telemetry) =>
+        telemetry.hoursOfSleep < 7 && getUserAgeGroup() < 12,
+    color: Colors.orange
+  ),
+  (
+    source: "Columbia University of Psychiatry",
     contentTitle: "Try to Relax!",
     contentBody:  
       "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
@@ -33,16 +49,16 @@ final List<Tip> _tipsData = <Tip>[
     color: Color.fromARGB(255, 147, 237, 150)
   ),
   (
-    source: "",
+    source: "Columbia University of Pyschiatry",
     contentTitle: "Be Nice to Yourself",
     contentBody:
         "If you really are struggling to be nice to yourself, do something nice for someone else. Then, compliment yourself on doing it!",
-    condition: (telemetry) => telemetry.moodScale > 6,
+    condition: (telemetry) => telemetry.moodScale < 6,
     color: Colors.red
   ),
   (
     source: "Columbia University of Pyschiatry",
-    contentTitle: "Sleep More!",
+    contentTitle: "Sleep well",
     contentBody:
         "The American Academy of Sleep Medicine recommends between 8-10 hours of sleep per night for teenagers.",
     condition: (telemetry) =>
@@ -50,7 +66,7 @@ final List<Tip> _tipsData = <Tip>[
     color: Colors.orange
   ),
   (
-    source: "Center for Disease Control and Prevention",
+    source: "Columbia University of Psychiatry",
     contentTitle: "Seek Quality Sleep!",
     contentBody: 
         "Ensure your room is dark and quiet for a better sleep experience. Limit screen time before bed to enhance sleep quality.",
@@ -66,18 +82,18 @@ final List<Tip> _tipsData = <Tip>[
     color: Colors.lightBlue
   ),
   (
-    source: "National Institute of Health",
+    source: "Columbia University of Psychiatry",
     contentTitle: "Get Active!",
     contentBody:
-        "Engaging in regular physical activity can improve your cognitive health, help manage weight, reduce the risk of disease, strengthen bones and muscles, and reduce anxiety.",
-    condition: (telemetry) => telemetry.exercised == true,
+        "Engaging in regular physical activity can elevate mood and reduce feelings of anxiety.",
+    condition: (telemetry) => telemetry.exercised == false,
     color: Colors.greenAccent
   ),
   (
-    source:  "United States Forest Service",
+    source:  "Columbia University of Psychiatry",
     contentTitle: "Nature's Boost!",
     contentBody:
-        "Spending time outside can refresh your mind and reduce your stress. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
+        "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
     condition: (telemetry) => telemetry.hoursOutside > 2,
     color: Colors.lightGreen
   ),
@@ -86,8 +102,8 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Screen Break!",
     contentBody:
         "Extended screen time can strain your eyes. Make sure to take short breaks and reduce screen brightness in low light.",
-    condition: (telemetry) => telemetry.hoursOnScreen > 3,
-    color: Color.fromARGB(255, 197, 103, 255)
+    condition: (telemetry) => telemetry.hoursOnScreen < 3,
+    color: Colors.deepPurple
   ),
   (
     source: "",
@@ -102,14 +118,14 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Take Breaks!",
     contentBody:
         "Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
-    condition: (telemetry) => telemetry.hoursProductive > 6,
+    condition: (telemetry) => telemetry.hoursProductive < 6,
     color: Colors.teal
   ),
   (
-    source: "Mayo Clinic",
+    source: "Columbia University of Psychiatry",
     contentTitle: "Re-energize!",
     contentBody:
-        "Low energy levels can be a sign of poor nutrition, dehydration, or sleep. Consider checking your diet or water intake and sleeping more.",
+        "Low energy levels can be a sign of poor nutrition or dehydration. Consider checking your diet or water intake.",
     condition: (telemetry) => telemetry.energyLevelRating > 4,
     color: Colors.yellow
   ),

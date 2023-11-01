@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class GardenPage extends StatefulWidget {
 
 class GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
-  Map<DateTime, bool> completedPrompts = {DateTime.now(): true};
+  Map<DateTime, bool> completedPrompts = {};
 
   DateTime getFirstDayOfWeekForWeek(
       int weekIndex, int year, int month) {
@@ -70,8 +72,15 @@ class GardenPageState extends State<GardenPage> {
                   currentMonth.year, currentMonth.month) -
               1 -
               index;
+
           DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(
               reverseIndex, currentMonth.year, currentMonth.month);
+          for (int i = 0;
+              i <
+                  getNumberOfWeeks(
+                      currentMonth.year, currentMonth.month);
+              i++) {
+          }
           String formattedDate =
               "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
           return Column(
@@ -112,23 +121,28 @@ class GardenPageState extends State<GardenPage> {
                   if (selectedDate != null) {
                     bool entryExists =
                         isEntryThereByDay(selectedDate);
-                    print("ENTRY_EXISTS $entryExists\n");
-                    if (!entryExists) {
-                      bool completedTracker =
-                          isEntryThereByDay(selectedDate);
-                      if (completedTracker) {
-                        setState(() {
-                          completedPrompts[selectedDate] = true;
-                        });
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                              'An entry already exists for this date.'),
-                        ),
-                      );
-                    }
+                    completedPrompts[selectedDate] = entryExists;
+
+                    setState(() {});
+                    /*--------------------------------------------------- /
+                    / if (!entryExists) {                                 /
+                    /   bool completedTracker =                           /
+                    /       isEntryThereByDay(selectedDate);              /
+                    /   if (completedTracker) {                           /
+                    /                                                     /
+                    /   }                                                 /
+                    / } else {                                            /
+                    /   ScaffoldMessenger.of(context).showSnackBar(       /
+                    /     const SnackBar(                                 /
+                    /       content: Text(                                /
+                    /           'An entry already exists for this date.', /
+                    /           style: TextStyle(                         /
+                    /               fontSize: 16,                         /
+                    /               fontWeight: FontWeight.w700)),        /
+                    /     ),                                              /
+                    /   );                                                /
+                    / }                                                   /
+                    /----------------------------------------------------*/
                   }
                 },
                 child: Column(
@@ -145,7 +159,7 @@ class GardenPageState extends State<GardenPage> {
                     Stack(
                       children: [
                         Container(
-                          height: index == 0 ? 250.0 : 150.0,
+                          height: 250.0,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage(
@@ -154,6 +168,7 @@ class GardenPageState extends State<GardenPage> {
                             ),
                           ),
                         ),
+                        ...generateFlowers(firstDayOfWeek)
                       ],
                     ),
                   ],
@@ -170,5 +185,36 @@ class GardenPageState extends State<GardenPage> {
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
     return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7)
         .ceil();
+  }
+
+  Random rng = Random();
+
+  List<Widget> generateFlowers(DateTime startOfweek) {
+    List<Widget> flowers = [];
+    List<Offset> spots = [
+      const Offset(50, 150),
+      const Offset(100, 150),
+      const Offset(150, 150),
+      const Offset(200, 150),
+      const Offset(250, 150),
+      const Offset(300, 150),
+      const Offset(350, 150)
+    ];
+    DateTime week = startOfweek;
+    for (int i = 0; i < 7; i++) {
+      if (completedPrompts[week] != null) {
+        if (completedPrompts[week]!) {
+          int flowerNum = rng.nextInt(7) + 1;
+          flowers.add(Positioned(
+            left: spots[i].dx,
+            top: spots[i].dy,
+            child: Image.asset("assets/Flowers/Flower$flowerNum.png",
+                width: 75, height: 75),
+          ));
+        }
+      }
+      week = week.add(const Duration(days: 1));
+    }
+    return flowers;
   }
 }

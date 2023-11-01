@@ -10,6 +10,57 @@ void invalidateEphemeral() {
   setLastEntryTime(DateTime.fromMillisecondsSinceEpoch(0));
 }
 
+bool _safeGetBool(String key, bool defaultVal) {
+  bool? val = prefs.getBool(key);
+  if (val == null) {
+    prefs.setBool(key, defaultVal);
+  }
+  return prefs.getBool(key)!;
+}
+
+double _safeGetDouble(String key, double defaultVal) {
+  double? val = prefs.getDouble(key);
+  if (val == null) {
+    prefs.setDouble(key, defaultVal);
+  }
+  return prefs.getDouble(key)!;
+}
+
+int _safeGetInt(String key, int defaultVal) {
+  int? val = prefs.getInt(key);
+  if (val == null) {
+    prefs.setInt(key, defaultVal);
+  }
+  return prefs.getInt(key)!;
+}
+
+String _safeGetString(String key, String defaultVal) {
+  String? val = prefs.getString(key);
+  if (val == null) {
+    prefs.setString(key, defaultVal);
+  }
+  return prefs.getString(key)!;
+}
+
+bool _hasBeen24Hours(DateTime from, DateTime now) {
+  return now.difference(from).inHours >= 24;
+}
+
+void updateStreak() {
+  DateTime lastEntryTime =
+      DateTime.fromMillisecondsSinceEpoch(getLastEntryTime());
+  if (_hasBeen24Hours(lastEntryTime, DateTime.now())) {
+    setUserStreak(getUserStreak() + 1);
+  } else {
+    setUserStreak(0);
+  }
+}
+
+void setUserStreak(int newValue) =>
+    prefs.setInt("userStreak", newValue);
+
+int getUserStreak() => prefs.getInt("userStreak") ?? 0;
+
 bool getIsNewUser() => prefs.getBool("isNewUser") ?? true;
 
 void setIsNewUser(bool newValue) =>

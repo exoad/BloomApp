@@ -1,6 +1,7 @@
 import 'package:blosso_mindfulness/bits/bits.dart';
 import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 typedef Tip = ({
   String source,
@@ -98,11 +99,18 @@ class TipsPage extends StatelessWidget {
 
     return ListView(
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-          child: Text("Recommended",
-              style: TextStyle(
-                  fontWeight: FontWeight.w800, fontSize: 28)),
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 15),
+          child: Row(
+            children: [
+              RandomAvatar(getUserAvatarSVG(), width: 32, height: 32),
+              const SizedBox(width: 10),
+              const Text("Recommended",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800, fontSize: 28)),
+            ],
+          ),
         ),
         if (recommendedTips_Widget.isEmpty)
           const Text.rich(TextSpan(children: [
@@ -120,9 +128,15 @@ class TipsPage extends StatelessWidget {
           ...recommendedTips_Widget,
         const Padding(
           padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-          child: Text("All tips",
-              style: TextStyle(
-                  fontWeight: FontWeight.w800, fontSize: 28)),
+          child: Row(
+            children: [
+              Icon(Icons.all_inbox_rounded, size: 32),
+              SizedBox(width: 10),
+              Text("All tips",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800, fontSize: 28)),
+            ],
+          ),
         ),
         ...otherTips_Widget
       ],

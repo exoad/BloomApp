@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
@@ -28,6 +31,8 @@ class GardenPageState extends State<GardenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: LaF.primaryColor,
+        foregroundColor: Colors.black,
         title: Text(
             '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
         leading: IconButton(
@@ -101,8 +106,6 @@ class GardenPageState extends State<GardenPage> {
                     bool entryExists =
                         await checkIfEntryExists(selectedDate);
                     if (!entryExists) {
-                      // Prompt user to complete the tracker for the selected day.
-                      // Assume navigateToTracker is a function that navigates to the tracker screen and returns a boolean value indicating whether the tracker was completed.
                       bool completedTracker =
                           await navigateToTracker(selectedDate);
                       if (completedTracker) {
@@ -111,7 +114,6 @@ class GardenPageState extends State<GardenPage> {
                         });
                       }
                     } else {
-                      // Notify user that an entry already exists for this day.
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
@@ -125,7 +127,7 @@ class GardenPageState extends State<GardenPage> {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10.0),
-                      color: Colors.green,
+                      color: Colors.green.shade300,
                       child: Center(
                           child: Text('Week of $formattedDate')),
                     ),
@@ -155,16 +157,10 @@ class GardenPageState extends State<GardenPage> {
   }
 
   Future<bool> checkIfEntryExists(DateTime date) async {
-    // Implement the logic to check if an entry exists for the provided date.
-    // Placeholder for actual implementation.
-    // Return true if an entry exists, otherwise return false.
     return false;
   }
 
   Future<bool> navigateToTracker(DateTime date) async {
-    // Navigate to the tracker screen and pass the selected date.
-    // Placeholder for actual navigation implementation.
-    // Return true if the tracker was completed, otherwise return false.
     return false;
   }
 

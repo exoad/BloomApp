@@ -139,11 +139,10 @@ class _MainAppState extends State<MainApp> {
                             icon: Icons.change_circle_rounded,
                             title: "Change Profile",
                             onTap: () {
-                              Navigator.of(context).pop();
-                              _animateToPage(4);
-                              setState(() {
-                                appBarTitle = "Settings";
-                              });
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (ctxt) =>
+                                          launchCarousel()));
                             }),
                         if (APP_DEVELOPMENT_MODE)
                           makeListTile_SideDrawer(

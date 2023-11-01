@@ -4,7 +4,6 @@ import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 void invalidateEphemeral() {
-  // basically resets the user data to default
   setIsNewUser(true);
   setUserName("");
   setLastEntryTime(DateTime.fromMillisecondsSinceEpoch(0));
@@ -115,8 +114,7 @@ bool didTodaysEntry() {
       now.day == lastEntryTime.day;
 }
 
-void setLastEntryIndexOneLess() => getLastEntryIndex() - 1 <
-        0 // we dont have to be null aware as this fx takes care of the nullability check
+void setLastEntryIndexOneLess() => getLastEntryIndex() - 1 < 0
     ? prefs.setDouble("lastEntryIndex", 0)
     : prefs.setDouble("lastEntryIndex", getLastEntryIndex() - 1);
 
@@ -175,6 +173,17 @@ EphemeralTelemetry getEntryByDate(DateTime time) {
   return EphemeralTelemetry(0);
 }
 
+bool isEntryThereByDate(DateTime time) {
+  int timeMS = time.millisecondsSinceEpoch;
+  for (int i = 0; i < getLastEntryIndex(); i++) {
+    EphemeralTelemetry curr = getEntry(i.toDouble());
+    if (curr.entryTimeEpochMS == timeMS) {
+      return true;
+    }
+  }
+  return false;
+}
+
 String? getEntry_JSON(double index) {
   if (prefs.getString("userEntry_EphemeralData$index") != null) {
     Map<String, dynamic> jsonData =
@@ -213,23 +222,9 @@ EphemeralTelemetry getEntry(double index) {
 }
 
 class EphemeralTelemetry {
-/*
-How much sleep did you get last night
-Sleep quality rating scale of 1-10
-Time spent relaxing with friends/family
-How much did you exercise today
-How long were you on your screen today
-How stressed were you on a scale of 1-10
-What were some stressors for you yesterday
-10.Daily Mood Rating
-Emotion Tags
-Brief notes about day
-*/
-
   final double entryIndex;
 
-  // the below are actual related data to the user
-  int moodScale; // out of 10
+  int moodScale;
   String briefNote;
   String emotionTags;
   String stressorsOfToday;
@@ -239,7 +234,7 @@ Brief notes about day
   int hoursSpentWithFamily;
   int sleepRating;
   int hoursOfSleep;
-  int entryTimeEpochMS; // using DateTime.frommillisecondsfromepoch or something
+  int entryTimeEpochMS;
 
   EphemeralTelemetry(this.entryIndex,
       {this.moodScale = -1,

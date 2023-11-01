@@ -30,8 +30,7 @@ class _InputDetailsCarouselState extends State<InputDetailsCarousel> {
         Text.rich(
           TextSpan(children: [
             TextSpan(
-                text:
-                    "${widget.firstPage!.title}\n\n\n", // fuck the null checking, we can ignore after null check previous
+                text: "${widget.firstPage!.title}\n\n\n",
                 style: const TextStyle(
                     fontSize: 34, fontWeight: FontWeight.w800)),
             TextSpan(
@@ -90,7 +89,6 @@ class _InputDetailsControllerRow extends StatefulWidget {
       _InputDetailsControllerRowState();
 }
 
-// this works now woohoo!
 class _InputDetailsControllerRowState
     extends State<_InputDetailsControllerRow> {
   @override
@@ -115,8 +113,7 @@ class _InputDetailsControllerRowState
                           duration: const Duration(milliseconds: 100),
                           curve: Curves.linear,
                         )
-                        .then((value) => setState(
-                            () {})); // most lazy repaint scheduling XD
+                        .then((value) => setState(() {}));
                   }
                 },
                 icon: const Icon(Icons.arrow_back_ios_new_rounded,
@@ -127,7 +124,6 @@ class _InputDetailsControllerRowState
                 flex: 0,
                 fit: FlexFit.tight,
                 child: Builder(builder: (_) {
-                  // man for some reason it can have fractional pages ?!??!!?!? wtf
                   return widget.pageController.page != null &&
                           widget.pageController.page! + 1 ==
                               widget.pageViewChildren.length
@@ -143,7 +139,7 @@ class _InputDetailsControllerRowState
                           icon: const Icon(Icons.check_rounded,
                               size: 32))
                       : const SizedBox(width: 42, height: 42);
-                })), // getting this arrow to work took me way too fucking long
+                })),
             Flexible(
               flex: 0,
               fit: FlexFit.tight,
@@ -153,13 +149,11 @@ class _InputDetailsControllerRowState
                       widget.pageViewChildren.length - 1) {
                     widget.pageController
                         .animateToPage(
-                          (widget.pageController.page! + 1)
-                              .toInt(), // as int fails for conversions
+                          (widget.pageController.page! + 1).toInt(),
                           duration: const Duration(milliseconds: 100),
                           curve: Curves.linear,
                         )
-                        .then((value) => setState(
-                            () {})); // most lazy repaint scheduling XD
+                        .then((value) => setState(() {}));
                   }
                 },
                 icon: const Icon(Icons.arrow_forward_ios_rounded,

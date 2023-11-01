@@ -146,7 +146,7 @@ class _InputTrackerState extends State<InputTracker> {
         makeCustomInputDetails(
           title: "Tag emotions to this day (scroll below)",
           child: SizedBox(
-            height: 200, // Adjust the height as needed
+            height: 200,
             child: Scrollbar(
               child: ListView(
                 children: [

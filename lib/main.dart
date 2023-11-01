@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:blosso_mindfulness/bits/bits.dart';
 import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +12,7 @@ void main() {
     prefs.reload();
     runApp(_AppWrapper(
         appHome:
-            !getIsNewUser() 
-                ? const MainApp()
-                : launchCarousel()));
+            !getIsNewUser() ? const MainApp() : launchCarousel()));
   });
 }
 
@@ -44,10 +40,10 @@ class GardenPage extends StatefulWidget {
   const GardenPage({super.key});
 
   @override
-  _GardenPageState createState() => _GardenPageState();
+  GardenPageState createState() => GardenPageState();
 }
 
-class _GardenPageState extends State<GardenPage> {
+class GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
   Random random = Random();
   Map<DateTime, int?> completedPrompts = {};
@@ -216,12 +212,11 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  bool hasCompletedTask =
-      false; //NEED TO CHANGE BASED ON IF THEY COMPLETED OR NOT
+class HomePageState extends State<HomePage> {
+  bool hasCompletedTask = false;
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +228,6 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (hasCompletedTask) ...[
-            // Show Mood and Rating
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -247,13 +241,13 @@ class _HomePageState extends State<HomePage> {
               child: const Column(
                 children: [
                   Text(
-                    'Your Mood Today: Happy', // Replace 'Happy' with actual mood data
+                    'Your Mood Today: Happy',
                     style:
                         TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Rating: 4.5/5', // Replace '4.5/5' with actual rating data
+                    'Rating: 4.5/5',
                     style:
                         TextStyle(color: Colors.white, fontSize: 18),
                   ),
@@ -261,7 +255,6 @@ class _HomePageState extends State<HomePage> {
               ),
             )
           ] else ...[
-            // Reminder to complete the task
             Container(
               padding: const EdgeInsets.all(20),
               color: Colors.red,
@@ -422,13 +415,12 @@ class _MainAppState extends State<MainApp> {
           padEnds: false,
           allowImplicitScrolling: false,
           children: <Widget>[
-            //const Page1_Home(),
-            const HomePage(), // 0
+            const HomePage(),
             debug_wrapPageNumber(
-                bg: Colors.purple, text: "Tips Page"), // 1
-            const GardenPage(), // 2
-            const ProfilePage(), // 3
-            const DebuggingStuffs(), // 4
+                bg: Colors.purple, text: "Tips Page"),
+            const GardenPage(),
+            const ProfilePage(),
+            const DebuggingStuffs(),
           ],
         ));
   }

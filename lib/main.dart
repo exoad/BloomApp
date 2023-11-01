@@ -145,7 +145,7 @@ class _InputTrackerState extends State<_InputTracker> {
               },
               min: 0,
               max: 8,
-              divisions: 8,
+              divisions: 13,
               labelConsumer: (val) => val > 8
                   ? "Greater than 8 hours"
                   : val < 1
@@ -183,24 +183,9 @@ class _InputTrackerState extends State<_InputTracker> {
                       : "😄 Not really stressed",
             )),
         makeCustomInputDetails(
-            title: "Rate your day",
-            child: ActionableSlider(
-              consumer: (e) {
-                widget.now.moodScale = e.toInt();
-              },
-              min: 0,
-              max: 10,
-              divisions: 10,
-              labelConsumer: (e) => e <= 3
-                  ? "🙁 Dpressing"
-                  : e >= 4 && e <= 6
-                      ? "😐 It was ok"
-                      : "😄 Memorable",
-            )),
-        makeCustomInputDetails(
           title: "Tag emotions to this day",
           child: SizedBox(
-            height: 200, // Adjust the height as needed
+            height: 400, // Adjust the height as needed
             child: Scrollbar(
               child: ListView(
                 children: [
@@ -253,17 +238,17 @@ class _InputTrackerState extends State<_InputTracker> {
               ),
             ),
           ),
-        ),
-        makeTextInputDetails(
-            title: "Add a brief note to your entry",
-            callback: (str) {
-              widget.now.briefNote = str;
-            })
+        )
       ],
       submissionCallback: () {
-        setLastEntryIndexOneMore();
-        setLastEntryTimeAsNow();
-      },
+        checkIfPromptsCompleted();
+        if (completedPromptsToday) {
+          int randomFlowerNumber = random.nextInt(7) + 1;
+          completedPrompts[DateTime.now()] = randomFlowerNumber; // Assign a random flower number for the current day
+          setLastEntryIndexOneMore();
+          setLastEntryTimeAsNow();
+        }
+      }
     );
   }
 }
@@ -528,59 +513,10 @@ class _StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> telemetryData = <Widget>[];
-    int lastYear = -1;
-    int lastMonth = -1;
-    late bool makeNewMonthDivision;
-    for (double i = 0; i <= getLastEntryIndex(); i++) {
-      EphemeralTelemetry iTele = getEntry(i);
-      DateTime iTeleTimeStamp =
-          DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS);
-      if (lastYear == -1 || lastMonth == -1) {
-        lastYear = iTeleTimeStamp.year;
-        lastMonth = iTeleTimeStamp.month;
-        makeNewMonthDivision = true;
-      } else {
-        if (lastMonth != iTeleTimeStamp.month) {
-          lastMonth = iTeleTimeStamp.month;
-          makeNewMonthDivision = true;
-        } else {
-          makeNewMonthDivision = false;
-        }
-      }
-      telemetryData.add(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (makeNewMonthDivision)
-              Text.rich(TextSpan(children: [
-                TextSpan(
-                    text: monthNumToName(lastMonth),
-                    style: TextStyle(
-                        color: monthColor(lastMonth),
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700)),
-                TextSpan(
-                    text: " $lastYear",
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500))
-              ])),
-            if (makeNewMonthDivision) const SizedBox(height: 10),
-            _makeBorderComponent(
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(children: [
-                  Text.rich(TextSpan(children: [
-                    TextSpan(text: "Entry: ${iTele.entryIndex}")
-                  ]))
-                ]),
-              ),
-            ),
-            const SizedBox(height: 10)
-          ],
-        ),
-      );
+
+    for (int i = 0; i <= getLastEntryIndex(); i++) {
+      telemetryData
+          .add(Text("${getEntry_JSON(i.toDouble())}"));
     }
     return SingleChildScrollView(
       child: Padding(
@@ -1236,7 +1172,7 @@ class _MainAppState extends State<MainApp> {
                 builder: (ctxt) => launchDailyEntryCarousel(
                     EphemeralTelemetry(getLastEntryIndex()))));
           },
-          child: const Icon(Icons.add_box_rounded, size: 32),
+          child: const Icon(Icons.add_box_rounded),
         ),
         body: PageView(
           controller: pageController,

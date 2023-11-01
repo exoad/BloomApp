@@ -151,7 +151,6 @@ class GardenPageState extends State<GardenPage> {
                             ),
                           ),
                         ),
-                        ...generateFlowersForWeek(firstDayOfWeek),
                       ],
                     ),
                   ],
@@ -176,35 +175,5 @@ class GardenPageState extends State<GardenPage> {
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
     return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7)
         .ceil();
-  }
-
-  List<Widget> generateFlowersForWeek(DateTime startOfWeek) {
-    List<Widget> flowers = [];
-    List<Offset> spots = [
-      const Offset(50, 150),
-      const Offset(100, 150),
-      const Offset(150, 150),
-      const Offset(200, 150),
-      const Offset(250, 150),
-      const Offset(300, 150),
-      const Offset(350, 150),
-    ];
-
-    DateTime day = startOfWeek;
-    for (int i = 0; i < 7; i++) {
-      if (completedPrompts[day] == true) {
-        int flowerNum = random.nextInt(7) + 1;
-        flowers.add(
-          Positioned(
-            left: spots[i].dx,
-            top: spots[i].dy,
-            child: Image.asset('assets/Flowers/Flower$flowerNum.png',
-                width: 75, height: 75),
-          ),
-        );
-      }
-      day = day.add(const Duration(days: 1));
-    }
-    return flowers;
   }
 }

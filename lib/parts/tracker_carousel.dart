@@ -122,6 +122,19 @@ class _InputTrackerState extends State<InputTracker> {
                   actionableSliderHoursContext(1, 10, val),
             )),
         makeCustomInputDetails(
+            title: "Did you exercise?",
+            child: ActionableSlider(
+              consumer: (e) {
+                widget.now.exercised = e == 1;
+              },
+              min: 0,
+              max: 1,
+              divisions: 1,
+              labelConsumer: (val) => val == 1
+                  ? "Yes, I exercised"
+                  : "No, I did not exercise",
+            )),
+        makeCustomInputDetails(
             title: "How many hours did you spend outside?",
             child: ActionableSlider(
               consumer: (e) {
@@ -157,7 +170,6 @@ class _InputTrackerState extends State<InputTracker> {
               labelConsumer: (val) =>
                   actionableSliderHoursContext(1, 8, val),
             )),
-
         makeCustomInputDetails(
             title: "How many hours were you on an electronic device?",
             child: ActionableSlider(

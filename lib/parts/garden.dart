@@ -30,7 +30,7 @@ class GardenPageState extends State<GardenPage> {
 
   @override
   Widget build(BuildContext context) {
-    completedPrompts[DateTime(2023, 10, 30)] = true;
+    completedPrompts[DateTime(2023, 11, 1)] = true;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: LaF.primaryColor,
@@ -69,19 +69,11 @@ class GardenPageState extends State<GardenPage> {
         itemCount:
             getNumberOfWeeks(currentMonth.year, currentMonth.month),
         itemBuilder: (context, index) {
-          int reverseIndex = getNumberOfWeeks(
-                  currentMonth.year, currentMonth.month) -
-              1 -
-              index;
+          int reverseIndex = index;
 
           DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(
               reverseIndex, currentMonth.year, currentMonth.month);
-          for (int i = 0;
-              i <
-                  getNumberOfWeeks(
-                      currentMonth.year, currentMonth.month);
-              i++) {
-          }
+
           String formattedDate =
               "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
           return Column(

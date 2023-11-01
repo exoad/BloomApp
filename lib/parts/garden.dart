@@ -30,6 +30,7 @@ class GardenPageState extends State<GardenPage> {
 
   @override
   Widget build(BuildContext context) {
+    completedPrompts[DateTime(2023, 10, 30)] = true;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: LaF.primaryColor,

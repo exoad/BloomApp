@@ -13,7 +13,7 @@ void main() {
     setLastEntryIndex(0);
     runApp(_AppWrapper(
         appHome:
-            !getIsNewUser() ? const MainApp() : launchCarousel()));
+            !getIsNewUser() ? const MainApp() : launchCarousel(true)));
   });
 }
 
@@ -145,7 +145,7 @@ class _MainAppState extends State<MainApp> {
                               Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (ctxt) =>
-                                          launchCarousel()));
+                                          launchCarousel(false)));
                             }),
                         if (APP_DEVELOPMENT_MODE)
                           makeListTile_SideDrawer(

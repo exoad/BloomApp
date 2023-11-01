@@ -3,14 +3,15 @@ import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
 import 'package:random_avatar/random_avatar.dart';
 
-Widget launchCarousel() => InputDetailsCarousel(
+Widget launchCarousel(bool firstTimeFull) => InputDetailsCarousel(
       firstPage: (
         title: "Let's set you up",
         hint: "Tap > for the next step"
       ),
       submissionCallback: () {
         setIsNewUser(false);
-        firstTimeValidateTelemetry();
+        if(firstTimeFull)
+          firstTimeValidateTelemetry();
       },
       otherPages: [
         makeTextInputDetails(

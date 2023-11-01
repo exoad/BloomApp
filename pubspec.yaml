@@ -33,9 +33,3 @@ flutter:
     - assets/Flowers/Flower5.png
     - assets/Flowers/Flower6.png
     - assets/Flowers/Flower7.png
-  fonts:
-    - family: FiraMono
-    - fonts:
-      - asset: fonts/FiraMono-Bold.ttf
-      - asset: fonts/FiraMono-Medium.ttf
-      - asset: fonts/FiraMono-Regular.ttf

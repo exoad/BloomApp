@@ -27,7 +27,9 @@ final List<Tip> _tipsData = <Tip>[
     contentBody:
         "The American Academy of Sleep Medicine recommends over 8 hours for those ages 13-18 to have adequate energy and focus during the day.",
     condition: (telemetry) =>
-        telemetry.hoursOfSleep < 8 && getUserAgeGroup() <= 18 && getUserAgeGroup() >= 13,
+        telemetry.hoursOfSleep < 8 &&
+        getUserAgeGroup() <= 18 &&
+        getUserAgeGroup() >= 13,
     color: Colors.orange
   ),
   (
@@ -42,10 +44,9 @@ final List<Tip> _tipsData = <Tip>[
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Try to Relax!",
-    contentBody:  
-      "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
-    condition: (telemetry) =>
-        telemetry.howStressed > 4,
+    contentBody:
+        "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
+    condition: (telemetry) => telemetry.howStressed > 4,
     color: Color.fromARGB(255, 147, 237, 150)
   ),
   (

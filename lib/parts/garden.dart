@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
+import "tracker_carousel.dart";
 
 class GardenPage extends StatefulWidget {
   const GardenPage({super.key});

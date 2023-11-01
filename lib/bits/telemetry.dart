@@ -89,6 +89,32 @@ void removeAllEntries() {
   }
 }
 
+EphemeralTelemetry getEntryByDate(DateTime time) {
+  for (double i = 0; i <= getLastEntryIndex(); i++) {
+    if (prefs.getString("userEntry_EphemeralData$i") != null) {
+      Map<String, dynamic> jsonData =
+          jsonDecode(prefs.getString("userEntry_EphemeralData$i")!);
+      if (jsonData["entryTimeEpochMS"] ==
+          time.millisecondsSinceEpoch) {
+        return EphemeralTelemetry(i,
+            moodScale: jsonData["moodScale"] as int,
+            briefNote: jsonData["briefNote"].toString(),
+            hoursOfSleep: jsonData["hoursOfSleep"] as int,
+            entryTime: jsonData["entryTimeEpochMS"] as int,
+            emotionTags: jsonData["emotionTags"].toString(),
+            stressorsOfToday: jsonData["stressorsOfToday"].toString(),
+            hoursOnScreen: jsonData["hoursOnScreen"] as int,
+            hoursExercising: jsonData["hoursExercising"] as int,
+            howStressed: jsonData["howStressed"] as int,
+            hoursSpentWithFamily:
+                jsonData["hoursSpentWithFamily"] as int,
+            sleepRating: jsonData["sleepRating"] as int);
+      }
+    }
+  }
+  return EphemeralTelemetry(0);
+}
+
 String? getEntry_JSON(double index) {
   if (prefs.getString("userEntry_EphemeralData$index") != null) {
     Map<String, dynamic> jsonData =

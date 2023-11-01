@@ -107,17 +107,18 @@ class _InputTrackerState extends State<InputTracker> {
                   actionableSliderHoursContext(1, 12, val),
             )),
         makeCustomInputDetails(
-            title: "How many hours of exercise did you get?",
+            title: "How many hours of physical activity did you get?",
             child: ActionableSlider(
               consumer: (e) {
                 widget.now.hoursExercising = e.toInt();
               },
               min: 0,
-              max: 8,
-              divisions: 8,
+              max: 5,
+              divisions: 5,
               labelConsumer: (val) =>
-                  actionableSliderHoursContext(1, 8, val),
+                  actionableSliderHoursContext(1, 5, val),
             )),
+        
         makeCustomInputDetails(
             title: "How many hours were you on an electronic device?",
             child: ActionableSlider(

@@ -21,31 +21,15 @@ final List<Tip> _tipsData = <Tip>[
         telemetry.hoursOfSleep < 7 && getUserAgeGroup() >= 20,
     color: Colors.orange
   ),
-  (
-    source: "Columbia University of Pyschiatry",
-    contentTitle: "Sleep More!",
-    contentBody:
-        "The American Academy of Sleep Medicine recommends over 8 hours for those ages 13-18 to have adequate energy and focus during the day.",
-    condition: (telemetry) =>
-        telemetry.hoursOfSleep < 8 && getUserAgeGroup() <= 18 && getUserAgeGroup() >= 13,
-    color: Colors.orange
-  ),
-  (
-    source: "Columbia University of Pyschiatry",
-    contentTitle: "Sleep More!",
-    contentBody:
-        "The American Academy of Sleep Medicine recommends at least 9 hours of sleep for those under the age of 12 to improve mental and physical development ",
-    condition: (telemetry) =>
-        telemetry.hoursOfSleep < 7 && getUserAgeGroup() < 12,
-    color: Colors.orange
-  ),
+
+
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Try to Relax!",
     contentBody:  
       "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
     condition: (telemetry) =>
-        telemetry.howStressed > 4,
+        telemetry.howStressed < 4, 
     color: Color.fromARGB(255, 147, 237, 150)
   ),
   (
@@ -64,6 +48,70 @@ final List<Tip> _tipsData = <Tip>[
     condition: (telemetry) =>
         telemetry.hoursOfSleep < 8 && getUserAgeGroup() < 20,
     color: Colors.orange
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Seek Quality Sleep!",
+    contentBody: 
+        "Ensure your room is dark and quiet for a better sleep experience. Limit screen time before bed to enhance sleep quality.",
+    condition: (telemetry) => telemetry.sleepRating < 5,
+    color: Colors.blueGrey
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Stay Connected!",
+    contentBody:
+        "Spending time with loved ones can boost your mood and provide support during challenging times.",
+    condition: (telemetry) => telemetry.hoursSpentWithFamily < 2,
+    color: Colors.lightBlue
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Get Active!",
+    contentBody:
+        "Engaging in regular physical activity can elevate mood and reduce feelings of anxiety.",
+    condition: (telemetry) => telemetry.hoursExercising < 1,
+    color: Colors.greenAccent
+  ),
+  (
+    source:  "Columbia University of Psychiatry",
+    contentTitle: "Nature's Boost!",
+    contentBody:
+        "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
+    condition: (telemetry) => telemetry."" < 1,
+    color: Colors.lightGreen
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Screen Break!",
+    contentBody:
+        "Extended screen time can strain your eyes. Make sure to take short breaks and reduce screen brightness in low light.",
+    condition: (telemetry) => telemetry.hoursOnScreen > 5,
+    color: Colors.deepPurple
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Balance is Key!",
+    contentBody:
+        "Taking time to relax is crucial for mental health. Consider adding relaxation techniques like meditation to your routine.",
+    condition: (telemetry) => telemetry."" < 1,
+    color: Colors.purpleAccent
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Break It Down!",
+    contentBody:
+        "Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
+    condition: (telemetry) => telemetry."" > 7,
+    color: Colors.teal
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Re-energize!",
+    contentBody:
+        "Low energy levels can be a sign of poor nutrition or dehydration. Consider checking your diet or water intake.",
+    condition: (telemetry) => telemetry."" < 4,
+    color: Colors.yellow
   ),
 ];
 

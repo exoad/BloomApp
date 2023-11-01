@@ -20,7 +20,7 @@ final List<Tip> _tipsData = <Tip>[
     contentBody:
       "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
     condition: (telemetry) =>
-        telemetry.howStressed > 4,
+        telemetry.howStressed <= 4,
     color: Color.fromARGB(255, 147, 237, 150)
   ),
   (
@@ -37,7 +37,7 @@ final List<Tip> _tipsData = <Tip>[
     contentBody:
         "The American Academy of Sleep Medicine recommends between 8-10 hours of sleep per night for teenagers.",
     condition: (telemetry) =>
-        telemetry.hoursOfSleep < 8 && getUserAgeGroup() < 20,
+        telemetry.hoursOfSleep <= 8 && getUserAgeGroup() < 20,
     color: Colors.orange
   ),
   (
@@ -45,7 +45,7 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Seek Quality Sleep!",
     contentBody:
         "Ensure your room is dark and quiet for a better sleep experience. Limit screen time before bed to enhance sleep quality.",
-    condition: (telemetry) => telemetry.sleepRating > 5,
+    condition: (telemetry) => telemetry.sleepRating <= 5,
     color: Colors.blueGrey
   ),
   (
@@ -53,7 +53,7 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Stay Connected!",
     contentBody:
         "Spending time with loved ones can boost your mood and provide support during challenging times.",
-    condition: (telemetry) => telemetry.hoursSpentWithFamily > 2,
+    condition: (telemetry) => telemetry.hoursSpentWithFamily <= 2,
     color: Colors.lightBlue
   ),
   (
@@ -61,7 +61,7 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Get Active!",
     contentBody:
         "Engaging in regular physical activity can elevate mood, reduce feelings of anxiety, and improve your cognitive health",
-    condition: (telemetry) => telemetry.exercised == false,
+    condition: (telemetry) => telemetry.exercised == true,
     color: Colors.greenAccent
   ),
   (
@@ -69,7 +69,7 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Nature's Boost!",
     contentBody:
         "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
-    condition: (telemetry) => telemetry.hoursOutside < 2,
+    condition: (telemetry) => telemetry.hoursOutside > 2,
     color: Colors.lightGreen
   ),
   (
@@ -77,7 +77,7 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Screen Break!",
     contentBody:
         "Extended screen time can strain your eyes. Make sure to take short breaks and reduce screen brightness in low light.",
-    condition: (telemetry) => telemetry.hoursOnScreen > 3,
+    condition: (telemetry) => telemetry.hoursOnScreen <= 3,
     color: Colors.deepPurple
   ),
   (
@@ -93,7 +93,7 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Take Breaks!",
     contentBody:
         "Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
-    condition: (telemetry) => telemetry.hoursProductive < 6,
+    condition: (telemetry) => telemetry.hoursProductive > 6,
     color: Colors.teal
   ),
   (

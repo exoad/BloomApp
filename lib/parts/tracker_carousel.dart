@@ -207,6 +207,7 @@ class _InputTrackerState extends State<InputTracker> {
             })
       ],
       submissionCallback: () {
+        insertEntry(widget.now);
         setLastEntryIndexOneMore();
         setLastEntryTimeAsNow();
       },

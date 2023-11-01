@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
     int lastYear = -1;
     int lastMonth = -1;
     late bool makeNewMonthDivision;
-    for (double i = 0; i <= getLastEntryIndex(); i++) {
+    for (double i = 0; i < getLastEntryIndex(); i++) {
       EphemeralTelemetry iTele = getEntry(i);
       DateTime iTeleTimeStamp =
           DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS);

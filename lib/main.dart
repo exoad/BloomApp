@@ -208,69 +208,6 @@ class GardenPageState extends State<GardenPage> {
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  HomePageState createState() => HomePageState();
-}
-
-class HomePageState extends State<HomePage> {
-  bool hasCompletedTask = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (hasCompletedTask) ...[
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Colors.purple, Colors.blue],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const Column(
-                children: [
-                  Text(
-                    'Your Mood Today: Happy',
-                    style:
-                        TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Rating: 4.5/5',
-                    style:
-                        TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ],
-              ),
-            )
-          ] else ...[
-            Container(
-              padding: const EdgeInsets.all(20),
-              color: Colors.red,
-              child: const Text(
-                'Complete your prompts for the day or your flower won\'t be planted!',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
 class _MainAppState extends State<MainApp> {
   final PageController pageController =
       PageController(initialPage: 0);

@@ -12,33 +12,8 @@ typedef Tip = ({
 });
 
 final List<Tip> _tipsData = <Tip>[
-  (
-    source: "Columbia University of Pyschiatry",
-    contentTitle: "Sleep More!",
-    contentBody:
-        "The American Academy of Sleep Medicine recommends over 7 hours for those ages 20 and up.",
-    condition: (telemetry) =>
-        telemetry.hoursOfSleep < 7 && getUserAgeGroup() >= 20,
-    color: Colors.orange
-  ),
-  (
-    source: "Columbia University of Pyschiatry",
-    contentTitle: "Sleep More!",
-    contentBody:
-        "The American Academy of Sleep Medicine recommends over 8 hours for those ages 13-18 to have adequate energy and focus during the day.",
-    condition: (telemetry) =>
-        telemetry.hoursOfSleep < 8 && getUserAgeGroup() <= 18 && getUserAgeGroup() >= 13,
-    color: Colors.orange
-  ),
-  (
-    source: "Columbia University of Pyschiatry",
-    contentTitle: "Sleep More!",
-    contentBody:
-        "The American Academy of Sleep Medicine recommends at least 9 hours of sleep for those under the age of 12 to improve mental and physical development ",
-    condition: (telemetry) =>
-        telemetry.hoursOfSleep < 7 && getUserAgeGroup() < 12,
-    color: Colors.orange
-  ),
+
+
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Try to Relax!",
@@ -49,15 +24,15 @@ final List<Tip> _tipsData = <Tip>[
     color: Color.fromARGB(255, 147, 237, 150)
   ),
   (
-    source: "Columbia University of Pyschiatry",
+    source: "",
     contentTitle: "Be Nice to Yourself",
     contentBody:
         "If you really are struggling to be nice to yourself, do something nice for someone else. Then, compliment yourself on doing it!",
-    condition: (telemetry) => telemetry.moodScale < 6,
+    condition: (telemetry) => telemetry.moodScale > 6,
     color: Colors.red
   ),
   (
-    source: "Columbia University of Pyschiatry",
+    source: "National Institute of Health",
     contentTitle: "Sleep well",
     contentBody:
         "The American Academy of Sleep Medicine recommends between 8-10 hours of sleep per night for teenagers.",
@@ -66,7 +41,7 @@ final List<Tip> _tipsData = <Tip>[
     color: Colors.orange
   ),
   (
-    source: "Columbia University of Psychiatry",
+    source: "National Institute of Health",
     contentTitle: "Seek Quality Sleep!",
     contentBody:
         "Ensure your room is dark and quiet for a better sleep experience. Limit screen time before bed to enhance sleep quality.",
@@ -82,27 +57,27 @@ final List<Tip> _tipsData = <Tip>[
     color: Colors.lightBlue
   ),
   (
-    source: "Columbia University of Psychiatry",
+    source: "Center for disease Control",
     contentTitle: "Get Active!",
     contentBody:
-        "Engaging in regular physical activity can elevate mood and reduce feelings of anxiety.",
+        "Engaging in regular physical activity can elevate mood, reduce feelings of anxiety, and improve your cognitive health",
     condition: (telemetry) => telemetry.exercised == false,
     color: Colors.greenAccent
   ),
   (
-    source:  "Columbia University of Psychiatry",
+    source:  "United States Forest Service",
     contentTitle: "Nature's Boost!",
     contentBody:
         "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
-    condition: (telemetry) => telemetry.hoursOutside > 2,
+    condition: (telemetry) => telemetry.hoursOutside < 2,
     color: Colors.lightGreen
   ),
   (
-    source: "Columbia University of Psychiatry",
+    source: "Harvard Medical School",
     contentTitle: "Screen Break!",
     contentBody:
         "Extended screen time can strain your eyes. Make sure to take short breaks and reduce screen brightness in low light.",
-    condition: (telemetry) => telemetry.hoursOnScreen < 3,
+    condition: (telemetry) => telemetry.hoursOnScreen > 3,
     color: Colors.deepPurple
   ),
   (
@@ -122,10 +97,10 @@ final List<Tip> _tipsData = <Tip>[
     color: Colors.teal
   ),
   (
-    source: "Columbia University of Psychiatry",
+    source: "Mayo Clinic",
     contentTitle: "Re-energize!",
     contentBody:
-        "Low energy levels can be a sign of poor nutrition or dehydration. Consider checking your diet or water intake.",
+        "Low energy levels can be a sign of poor nutrition, dehydration, or sleep. Consider checking your diet or water intake and getting more sleep.",
     condition: (telemetry) => telemetry.energyLevelRating > 4,
     color: Colors.yellow
   ),

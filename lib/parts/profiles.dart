@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
     int lastYear = -1;
     int lastMonth = -1;
     late bool makeNewMonthDivision;
-    for (double i = 0; i < getLastEntryIndex(); i++) {
+    for (double i = getLastEntryIndex() - 1; i >= 0; i--) {
       EphemeralTelemetry iTele = getEntry(i);
       DateTime iTeleTimeStamp =
           DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS);
@@ -65,7 +65,7 @@ class ProfilePage extends StatelessWidget {
                       Text.rich(TextSpan(children: [
                         TextSpan(
                             text:
-                                "Entry: #${iTele.entryIndex.toInt() + 1}\n",
+                                "Entry: ${DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS).month} / ${DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS).day}\n",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16)),

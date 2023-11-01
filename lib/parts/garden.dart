@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:blosso_mindfulness/bits/consts.dart';
+import 'package:blosso_mindfulness/bits/telemetry.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -92,12 +93,14 @@ class GardenPageState extends State<GardenPage> {
                                 fontSize: 20)),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
-                          children: List.generate(7, (idx) {
+                          children: List.generate(6, (idx) {
                             DateTime day = firstDayOfWeek
                                 .add(Duration(days: idx));
                             return ListTile(
                                 title: Text(
-                                    '${DateFormat.EEEE().format(day)} ${day.day}'),
+                                    '${DateFormat.EEEE().format(day)}, ${day.day}',
+                                    style: const TextStyle(
+                                        fontSize: 16)),
                                 onTap: () => {
                                       Navigator.of(context).pop(day),
                                     });
@@ -106,13 +109,13 @@ class GardenPageState extends State<GardenPage> {
                       );
                     },
                   );
-
                   if (selectedDate != null) {
                     bool entryExists =
-                        await checkIfEntryExists(selectedDate);
+                        isEntryThereByDay(selectedDate);
+                    print("ENTRY_EXISTS $entryExists\n");
                     if (!entryExists) {
                       bool completedTracker =
-                          await navigateToTracker(selectedDate);
+                          isEntryThereByDay(selectedDate);
                       if (completedTracker) {
                         setState(() {
                           completedPrompts[selectedDate] = true;
@@ -161,14 +164,6 @@ class GardenPageState extends State<GardenPage> {
         },
       ),
     );
-  }
-
-  Future<bool> checkIfEntryExists(DateTime date) async {
-    return false;
-  }
-
-  Future<bool> navigateToTracker(DateTime date) async {
-    return false;
   }
 
   int getNumberOfWeeks(int year, int month) {

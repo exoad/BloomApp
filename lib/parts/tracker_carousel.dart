@@ -94,6 +94,21 @@ class _InputTrackerState extends State<InputTracker> {
                       : "😄 Good",
             )),
         makeCustomInputDetails(
+            title: "Rate your energy level",
+            child: ActionableSlider(
+              consumer: (e) {
+                widget.now.energyLevelRating = e.toInt();
+              },
+              min: 0,
+              max: 10,
+              divisions: 10,
+              labelConsumer: (e) => e <= 3
+                  ? "🙁 Poor"
+                  : e >= 4 && e <= 6
+                      ? "😐 Decent"
+                      : "😄 Good",
+            )),
+        makeCustomInputDetails(
             title:
                 "How many hours did you spend with family or friends?",
             child: ActionableSlider(
@@ -104,21 +119,45 @@ class _InputTrackerState extends State<InputTracker> {
               max: 10,
               divisions: 10,
               labelConsumer: (val) =>
-                  actionableSliderHoursContext(1, 12, val),
+                  actionableSliderHoursContext(1, 10, val),
             )),
         makeCustomInputDetails(
-            title: "How many hours of physical activity did you get?",
+            title: "How many hours did you spend outside?",
             child: ActionableSlider(
               consumer: (e) {
-                widget.now.hoursExercising = e.toInt();
+                widget.now.hoursOutside = e.toInt();
               },
               min: 0,
-              max: 5,
-              divisions: 5,
+              max: 10,
+              divisions: 10,
               labelConsumer: (val) =>
-                  actionableSliderHoursContext(1, 5, val),
+                  actionableSliderHoursContext(1, 10, val),
             )),
-        
+        makeCustomInputDetails(
+            title: "How many hours did you spend being productive?",
+            child: ActionableSlider(
+              consumer: (e) {
+                widget.now.hoursProductive = e.toInt();
+              },
+              min: 0,
+              max: 10,
+              divisions: 10,
+              labelConsumer: (val) =>
+                  actionableSliderHoursContext(1, 10, val),
+            )),
+        makeCustomInputDetails(
+            title: "How many hours did you spend recreationally?",
+            child: ActionableSlider(
+              consumer: (e) {
+                widget.now.hoursRecreational = e.toInt();
+              },
+              min: 0,
+              max: 8,
+              divisions: 8,
+              labelConsumer: (val) =>
+                  actionableSliderHoursContext(1, 8, val),
+            )),
+
         makeCustomInputDetails(
             title: "How many hours were you on an electronic device?",
             child: ActionableSlider(

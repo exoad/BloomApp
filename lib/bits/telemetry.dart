@@ -133,10 +133,14 @@ void insertEntry(EphemeralTelemetry newEntry) {
         "emotionTags": newEntry.emotionTags,
         "stressorsOfToday": newEntry.stressorsOfToday,
         "hoursOnScreen": newEntry.hoursOnScreen,
-        "hoursExercising": newEntry.hoursExercising,
+        "hoursExercising": newEntry.exercised,
         "howStressed": newEntry.howStressed,
         "hoursSpentWithFamily": newEntry.hoursSpentWithFamily,
         "sleepRating": newEntry.sleepRating,
+        "hoursOutside": newEntry.hoursOutside,
+        "hoursRecreational": newEntry.hoursRecreational,
+        "hoursProductive": newEntry.hoursProductive,
+        "energyLevelRating": newEntry.energyLevelRating,
       }));
   setLastEntryIndexOneMore();
 }
@@ -162,8 +166,12 @@ EphemeralTelemetry getEntryByDate(DateTime time) {
             emotionTags: jsonData["emotionTags"].toString(),
             stressorsOfToday: jsonData["stressorsOfToday"].toString(),
             hoursOnScreen: jsonData["hoursOnScreen"] as int,
-            hoursExercising: jsonData["hoursExercising"] as int,
+            exercised: jsonData["hoursExercising"] as bool,
             howStressed: jsonData["howStressed"] as int,
+            hoursOutside: jsonData["hoursOutside"] as int,
+            energyLevelRating: jsonData["energyLevelRating"] as int,
+            hoursRecreational: jsonData["houseRecreational"] as int,
+            hoursProductive: jsonData["hoursProductive"] as int,
             hoursSpentWithFamily:
                 jsonData["hoursSpentWithFamily"] as int,
             sleepRating: jsonData["sleepRating"] as int);
@@ -173,11 +181,14 @@ EphemeralTelemetry getEntryByDate(DateTime time) {
   return EphemeralTelemetry(0);
 }
 
-bool isEntryThereByDate(DateTime time) {
-  int timeMS = time.millisecondsSinceEpoch;
+bool isEntryThereByDay(DateTime time) {
   for (int i = 0; i < getLastEntryIndex(); i++) {
     EphemeralTelemetry curr = getEntry(i.toDouble());
-    if (curr.entryTimeEpochMS == timeMS) {
+    DateTime currT =
+        DateTime.fromMillisecondsSinceEpoch(curr.entryTimeEpochMS);
+    if (currT.day == time.day &&
+        currT.month == time.month &&
+        currT.year == time.year) {
       return true;
     }
   }
@@ -213,8 +224,12 @@ EphemeralTelemetry getEntry(double index) {
         emotionTags: jsonData["emotionTags"].toString(),
         stressorsOfToday: jsonData["stressorsOfToday"].toString(),
         hoursOnScreen: jsonData["hoursOnScreen"] as int,
-        hoursExercising: jsonData["hoursExercising"] as int,
+        exercised: jsonData["hoursExercising"] as bool,
         howStressed: jsonData["howStressed"] as int,
+        hoursOutside: jsonData["hoursOutside"] as int,
+        energyLevelRating: jsonData["energyLevelRating"] as int,
+        hoursRecreational: jsonData["hoursRecreational"] as int,
+        hoursProductive: jsonData["hoursProductive"] as int,
         hoursSpentWithFamily: jsonData["hoursSpentWithFamily"] as int,
         sleepRating: jsonData["sleepRating"] as int);
   }
@@ -229,23 +244,31 @@ class EphemeralTelemetry {
   String emotionTags;
   String stressorsOfToday;
   int hoursOnScreen;
-  int hoursExercising;
+  bool exercised;
+  int hoursOutside;
   int howStressed;
   int hoursSpentWithFamily;
   int sleepRating;
   int hoursOfSleep;
   int entryTimeEpochMS;
+  int hoursProductive;
+  int hoursRecreational;
+  int energyLevelRating;
 
   EphemeralTelemetry(this.entryIndex,
       {this.moodScale = -1,
       this.hoursOfSleep = -1,
       this.emotionTags = "",
       this.briefNote = "",
+      this.energyLevelRating = -1,
+      this.hoursOutside = -1,
+      this.hoursProductive = -1,
       this.sleepRating = -1,
+      this.hoursRecreational = -1,
       this.hoursOnScreen = -1,
       this.howStressed = -1,
       this.stressorsOfToday = "",
-      this.hoursExercising = -1,
+      this.exercised = false,
       this.hoursSpentWithFamily = -1,
       int? entryTime})
       : entryTimeEpochMS =

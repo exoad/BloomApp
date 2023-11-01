@@ -103,7 +103,7 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.w700)),
                         TextSpan(
                             text:
-                                "${iTele.hoursExercising == -1 ? "??" : actionableSliderHoursContext(1, 8, iTele.hoursExercising.toDouble())}\n",
+                                "${iTele.exercised ? "Yes" : "No"}\n",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500)),
                         const TextSpan(
@@ -130,6 +130,42 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.w700)),
                         TextSpan(
                             text: "${iTele.emotionTags}\n",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500)),
+                        const TextSpan(
+                            text: "Recreational hours:\n",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700)),
+                        TextSpan(
+                            text:
+                                "${iTele.hoursRecreational == -1 ? "??" : actionableSliderHoursContext(1, 10, iTele.hoursRecreational.toDouble())}\n",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500)),
+                        const TextSpan(
+                            text: "Energy level rating:\n",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700)),
+                        TextSpan(
+                            text:
+                                "${iTele.energyLevelRating == -1 ? "??" : iTele.energyLevelRating}\n",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500)),
+                        const TextSpan(
+                            text: "Productive hours:\n",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700)),
+                        TextSpan(
+                            text:
+                                "${iTele.hoursProductive == -1 ? "??" : actionableSliderHoursContext(1, 10, iTele.hoursProductive.toDouble())}\n",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500)),
+                        const TextSpan(
+                            text: "Hours spent outside:\n",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700)),
+                        TextSpan(
+                            text:
+                                "${iTele.hoursOutside == -1 ? "??" : actionableSliderHoursContext(1, 10, iTele.hoursOutside.toDouble())}\n",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500)),
                         const TextSpan(

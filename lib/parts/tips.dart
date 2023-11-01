@@ -12,15 +12,12 @@ typedef Tip = ({
 });
 
 final List<Tip> _tipsData = <Tip>[
-
-
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Try to Relax!",
     contentBody:
-      "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
-    condition: (telemetry) =>
-        telemetry.howStressed <= 4,
+        "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
+    condition: (telemetry) => telemetry.howStressed <= 4,
     color: Color.fromARGB(255, 147, 237, 150)
   ),
   (
@@ -65,7 +62,7 @@ final List<Tip> _tipsData = <Tip>[
     color: Colors.greenAccent
   ),
   (
-    source:  "United States Forest Service",
+    source: "United States Forest Service",
     contentTitle: "Nature's Boost!",
     contentBody:
         "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",

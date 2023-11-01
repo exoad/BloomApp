@@ -70,15 +70,15 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Seek Quality Sleep!",
     contentBody: 
         "Ensure your room is dark and quiet for a better sleep experience. Limit screen time before bed to enhance sleep quality.",
-    condition: (telemetry) => telemetry.sleepRating < 5,
+    condition: (telemetry) => telemetry.sleepRating > 5,
     color: Colors.blueGrey
   ),
   (
-    source: "Columbia University of Psychiatry",
+    source: "",
     contentTitle: "Stay Connected!",
     contentBody:
         "Spending time with loved ones can boost your mood and provide support during challenging times.",
-    condition: (telemetry) => telemetry.hoursSpentWithFamily < 2,
+    condition: (telemetry) => telemetry.hoursSpentWithFamily > 2,
     color: Colors.lightBlue
   ),
   (
@@ -86,49 +86,49 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Get Active!",
     contentBody:
         "Engaging in regular physical activity can elevate mood and reduce feelings of anxiety.",
-    condition: (telemetry) => telemetry.hoursExercising < 1,
+    condition: (telemetry) => telemetry.exercised == false,
     color: Colors.greenAccent
   ),
-  //(
-    //source:  "Columbia University of Psychiatry",
-    //contentTitle: "Nature's Boost!",
-    //contentBody:
-        //"Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
-    //condition: (telemetry) => telemetry."" < 1,
-    //color: Colors.lightGreen
-  //),
+  (
+    source:  "Columbia University of Psychiatry",
+    contentTitle: "Nature's Boost!",
+    contentBody:
+        "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
+    condition: (telemetry) => telemetry.hoursOutside > 2,
+    color: Colors.lightGreen
+  ),
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Screen Break!",
     contentBody:
         "Extended screen time can strain your eyes. Make sure to take short breaks and reduce screen brightness in low light.",
-    condition: (telemetry) => telemetry.hoursOnScreen > 3,
+    condition: (telemetry) => telemetry.hoursOnScreen < 3,
     color: Colors.deepPurple
   ),
-  //(
-    //source: "Columbia University of Psychiatry",
-    //contentTitle: "Balance is Key!",
-    //contentBody:
-        //"Taking time to relax is crucial for mental health. Consider adding relaxation techniques like meditation to your routine.",
-    //condition: (telemetry) => telemetry."" < 1,
-    //color: Colors.purpleAccent
-  //),
-  //(
-    //source: "Columbia University of Psychiatry",
-    //contentTitle: "Take Breaks!",
-    //contentBody:
-        //"Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
-    //condition: (telemetry) => telemetry."" > 7,
-    //color: Colors.teal
-  //),
-  //(
-    //source: "Columbia University of Psychiatry",
-    //contentTitle: "Re-energize!",
-    //contentBody:
-        //"Low energy levels can be a sign of poor nutrition or dehydration. Consider checking your diet or water intake.",
-    //condition: (telemetry) => telemetry."" < 4,
-    //color: Colors.yellow
-  //),
+  (
+    source: "",
+    contentTitle: "Balance is Key!",
+    contentBody:
+        "Taking time to relax is crucial for mental health. Consider adding relaxation techniques like meditation to your routine.",
+    condition: (telemetry) => telemetry.hoursRecreational > 3,
+    color: Colors.purpleAccent
+  ),
+  (
+    source: "",
+    contentTitle: "Take Breaks!",
+    contentBody:
+        "Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
+    condition: (telemetry) => telemetry.hoursProductive < 6,
+    color: Colors.teal
+  ),
+  (
+    source: "Columbia University of Psychiatry",
+    contentTitle: "Re-energize!",
+    contentBody:
+        "Low energy levels can be a sign of poor nutrition or dehydration. Consider checking your diet or water intake.",
+    condition: (telemetry) => telemetry.energyLevelRating > 4,
+    color: Colors.yellow
+  ),
 ];
 
 Widget _makeTipBox(Tip tip) {

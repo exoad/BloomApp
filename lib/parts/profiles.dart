@@ -169,14 +169,6 @@ class ProfilePage extends StatelessWidget {
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500)),
                         const TextSpan(
-                            text: "Stressors of today:\n",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700)),
-                        TextSpan(
-                            text: "${iTele.stressorsOfToday}\n",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500)),
-                        const TextSpan(
                             text: "Brief note:\n",
                             style: TextStyle(
                                 fontWeight: FontWeight.w700)),

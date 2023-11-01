@@ -42,7 +42,7 @@ final List<Tip> _tipsData = <Tip>[
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Try to Relax!",
-    contentBody:  
+    contentBody:
       "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
     condition: (telemetry) =>
         telemetry.howStressed > 4,
@@ -68,7 +68,7 @@ final List<Tip> _tipsData = <Tip>[
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Seek Quality Sleep!",
-    contentBody: 
+    contentBody:
         "Ensure your room is dark and quiet for a better sleep experience. Limit screen time before bed to enhance sleep quality.",
     condition: (telemetry) => telemetry.sleepRating > 5,
     color: Colors.blueGrey

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the build method from the ProfilePage class, for the Dart programming language.">
+  <title>build method - ProfilePage class - profiles library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">blosso_mindfulness</a></li>
+    <li><a href="../../parts_profiles/parts_profiles-library.html">profiles</a></li>
+    <li><a href="../../parts_profiles/ProfilePage-class.html">ProfilePage</a></li>
+    <li class="self-crumb">build method</li>
+  </ol>
+  <div class="self-name">build</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="parts_profiles&#47;ProfilePage-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-method">build</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>
+<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+      <div class="features"><span class="feature">override</span></div>
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Describes the part of the user interface represented by this widget.</p>
+<p>The framework calls this method when this widget is inserted into the tree
+in a given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> and when the dependencies of this widget change
+(e.g., an <a href="https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html">InheritedWidget</a> referenced by this widget changes). This
+method can potentially be called in every frame and should not have any side
+effects beyond building a widget.</p>
+<p>The framework replaces the subtree below this widget with the widget
+returned by this method, either by updating the existing subtree or by
+removing the subtree and inflating a new subtree, depending on whether the
+widget returned by this method can update the root of the existing
+subtree, as determined by calling <a href="https://api.flutter.dev/flutter/widgets/Widget/canUpdate.html">Widget.canUpdate</a>.</p>
+<p>Typically implementations return a newly created constellation of widgets
+that are configured with information from this widget's constructor and
+from the given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>.</p>
+<p>The given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> contains information about the location in the
+tree at which this widget is being built. For example, the context
+provides the set of inherited widgets for this location in the tree. A
+given widget might be built with multiple different <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>
+arguments over time if the widget is moved around the tree or if the
+widget is inserted into the tree in multiple places at once.</p>
+<p>The implementation of this method must only depend on:</p>
+<ul>
+<li>the fields of the widget, which themselves must not change over time,
+and</li>
+<li>any ambient state obtained from the <code>context</code> using
+<a href="https://api.flutter.dev/flutter/widgets/BuildContext/dependOnInheritedWidgetOfExactType.html">BuildContext.dependOnInheritedWidgetOfExactType</a>.</li>
+</ul>
+<p>If a widget's <a href="../../parts_profiles/ProfilePage/build.html">build</a> method is to depend on anything else, use a
+<a href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a> instead.</p>
+<p>See also:</p>
+<ul>
+<li><a href="https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html">StatelessWidget</a>, which contains the discussion on performance considerations.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@override
+Widget build(BuildContext context) {
+  List&lt;Widget&gt; telemetryData = &lt;Widget&gt;[];
+  int lastYear = -1;
+  int lastMonth = -1;
+  late bool makeNewMonthDivision;
+  for (double i = 0; i &lt;= getLastEntryIndex(); i++) {
+    EphemeralTelemetry iTele = getEntry(i);
+    DateTime iTeleTimeStamp =
+        DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS);
+    if (lastYear == -1 || lastMonth == -1) {
+      lastYear = iTeleTimeStamp.year;
+      lastMonth = iTeleTimeStamp.month;
+      makeNewMonthDivision = true;
+    } else {
+      if (lastMonth != iTeleTimeStamp.month) {
+        lastMonth = iTeleTimeStamp.month;
+        makeNewMonthDivision = true;
+      } else {
+        makeNewMonthDivision = false;
+      }
+    }
+    telemetryData.add(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (makeNewMonthDivision)
+            Text.rich(TextSpan(children: [
+              TextSpan(
+                  text: monthNumToName(lastMonth),
+                  style: TextStyle(
+                      color: monthColor(lastMonth),
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700)),
+              TextSpan(
+                  text: &quot; $lastYear&quot;,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500))
+            ])),
+          if (makeNewMonthDivision) const SizedBox(height: 10),
+          _makeBorderComponent(
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text.rich(TextSpan(children: [
+                      TextSpan(
+                          text:
+                              &quot;Entry: #${iTele.entryIndex.toInt() + 1}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16)),
+                      const TextSpan(
+                          text: &quot;Mood Rating:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text:
+                              &quot;${iTele.moodScale == -1 ? &quot;??&quot; : iTele.moodScale} &#47; 10\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Hours of sleep:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text:
+                              &quot;${iTele.hoursOfSleep == -1 ? &quot;??&quot; : actionableSliderHoursContext(1, 12, iTele.hoursOfSleep.toDouble())}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Sleep quality rating:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text:
+                              &quot;${iTele.sleepRating == -1 ? &quot;??&quot; : iTele.sleepRating} &#47; 10\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Hours spent with family:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text:
+                              &quot;${iTele.hoursSpentWithFamily == -1 ? &quot;??&quot; : actionableSliderHoursContext(1, 12, iTele.hoursSpentWithFamily.toDouble())}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Hours of exercise:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text:
+                              &quot;${iTele.hoursExercising == -1 ? &quot;??&quot; : actionableSliderHoursContext(1, 8, iTele.hoursExercising.toDouble())}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Hours on screen:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text:
+                              &quot;${iTele.hoursOnScreen == -1 ? &quot;??&quot; : actionableSliderHoursContext(1, 12, iTele.hoursOnScreen.toDouble())}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;How stressed were you:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text:
+                              &quot;${iTele.howStressed == -1 ? &quot;??&quot; : iTele.howStressed}&#47;10\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Emotion tags:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text: &quot;${iTele.emotionTags}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Stressors of today:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text: &quot;${iTele.stressorsOfToday}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Brief note:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text: &quot;${iTele.briefNote}\n&quot;,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                      const TextSpan(
+                          text: &quot;Entry time:\n&quot;,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700)),
+                      TextSpan(
+                          text: fmtDateTime(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  iTele.entryTimeEpochMS)),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500)),
+                    ]))
+                  ]),
+            ),
+          ),
+          const SizedBox(height: 10)
+        ],
+      ),
+    );
+  }
+  return SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _makeBorderComponent(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 0,
+                      child: RandomAvatar(getUserAvatarSVG(),
+                          height: 134, width: 134),
+                    ),
+                    const SizedBox(width: 40),
+                    Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              Text(getUserName(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 28)),
+                              const SizedBox(height: 6),
+                              Text.rich(
+                                  TextSpan(children: [
+                                    const TextSpan(
+                                        text: &quot;Gender: &quot;,
+                                        style: TextStyle(
+                                            fontWeight:
+                                                FontWeight.w800)),
+                                    TextSpan(
+                                      text: (getUserSex() ==
+                                              &quot;female&quot;
+                                          ? &quot;♀️ Female&quot;
+                                          : getUserSex() == &quot;male&quot;
+                                              ? &quot;♂️ Male&quot;
+                                              : &quot;❓ Not specified&quot;),
+                                    )
+                                  ]),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight:
+                                          FontWeight.normal)),
+                              const SizedBox(height: 6),
+                              Text.rich(
+                                  TextSpan(children: [
+                                    const TextSpan(
+                                        text: &quot;Age Range: &quot;,
+                                        style: TextStyle(
+                                            fontWeight:
+                                                FontWeight.w800)),
+                                    TextSpan(
+                                      text:
+                                          &quot;${getUserAgeGroup().toInt()}-${getUserAgeGroup().toInt() + 10}&quot;,
+                                    )
+                                  ]),
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight:
+                                          FontWeight.normal))
+                            ]))
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          _makeBorderComponent(
+              child: SizedBox(
+                  width: double.infinity,
+                  child: Text.rich(TextSpan(children: [
+                    const TextSpan(
+                        text: &quot;Statistics\n&quot;,
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800)),
+                    const TextSpan(
+                        text: &quot;Last Entry Time: &quot;,
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600)),
+                    TextSpan(
+                        text: fmtDateTime(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                getLastEntryTime())),
+                        style: const TextStyle(fontSize: 18)),
+                    const TextSpan(
+                        text: &quot;\nTotal entries: &quot;,
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600)),
+                    TextSpan(
+                        text:
+                            getLastEntryIndex().toInt().toString(),
+                        style: const TextStyle(fontSize: 18))
+                  ])))),
+          const SizedBox(height: 10),
+          if (getLastEntryIndex() == 0)
+            const Text.rich(TextSpan(children: [
+              TextSpan(
+                  text: &quot;No entries found!&quot;,
+                  style: TextStyle(
+                      color: Color.fromARGB(150, 180, 180, 180),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 24))
+            ]))
+          else
+            ...telemetryData
+        ],
+      ),
+    ),
+  );
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">blosso_mindfulness</a></li>
+    <li><a href="../../parts_profiles/parts_profiles-library.html">profiles</a></li>
+    <li><a href="../../parts_profiles/ProfilePage-class.html">ProfilePage</a></li>
+    <li class="self-crumb">build method</li>
+</ol>
+
+
+    <h5>ProfilePage class</h5>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    blosso_mindfulness
+      0.1.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

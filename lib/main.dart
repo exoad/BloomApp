@@ -1,11 +1,6 @@
-// ignore_for_file: library_private_types_in_public_api
-
-import 'package:blosso_mindfulness/bits/parts.dart';
-import 'package:blosso_mindfulness/bits/telemetry.dart';
+import 'package:blosso_mindfulness/bits/bits.dart';
+import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
-import 'package:blosso_mindfulness/bits/debug.dart';
-import 'package:blosso_mindfulness/bits/helper.dart';
-import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -16,15 +11,15 @@ void main() {
   SharedPreferences.getInstance().then((value) {
     prefs = value;
     prefs.reload();
-    init().then((_) {
+    
       runApp(_AppWrapper(
           appHome:
               !getIsNewUser() // oh fuck, dont reverse the conditions here. first time did it and got the wrong results. im too lazy to reverse the values of the resultants so just inverting the condition itself :/
                   ? const MainApp()
                   : launchCarousel()));
     });
-  });
-}
+  }
+
 
 Widget launchDailyEntryCarousel(EphemeralTelemetry now) =>
     _InputTracker(now: now);
@@ -66,8 +61,9 @@ class _InputTrackerState extends State<_InputTracker> {
   @override
   
   Widget build(BuildContext context) {
+    Random random = Random();
   bool completedPromptsToday = false;
-  Map<DateTime, bool> completedPrompts = {};
+  Map<DateTime, int?> completedPrompts = {};
   // Check if all prompts are completed
   void checkIfPromptsCompleted() {
     if (widget.now.hoursOfSleep != null &&
@@ -144,7 +140,7 @@ class _InputTrackerState extends State<_InputTracker> {
               },
               min: 0,
               max: 8,
-              divisions: 13,
+              divisions: 8,
               labelConsumer: (val) => val > 8
                   ? "Greater than 8 hours"
                   : val < 1
@@ -182,9 +178,24 @@ class _InputTrackerState extends State<_InputTracker> {
                       : "😄 Not really stressed",
             )),
         makeCustomInputDetails(
+            title: "Rate your day",
+            child: ActionableSlider(
+              consumer: (e) {
+                widget.now.moodScale = e.toInt();
+              },
+              min: 0,
+              max: 10,
+              divisions: 10,
+              labelConsumer: (e) => e <= 3
+                  ? "🙁 Dpressing"
+                  : e >= 4 && e <= 6
+                      ? "😐 It was ok"
+                      : "😄 Memorable",
+            )),
+        makeCustomInputDetails(
           title: "Tag emotions to this day",
           child: SizedBox(
-            height: 400, // Adjust the height as needed
+            height: 200, // Adjust the height as needed
             child: Scrollbar(
               child: ListView(
                 children: [
@@ -237,16 +248,17 @@ class _InputTrackerState extends State<_InputTracker> {
               ),
             ),
           ),
-        )
+        ),
+        makeTextInputDetails(
+            title: "Add a brief note to your entry",
+            callback: (str) {
+              widget.now.briefNote = str;
+            })
       ],
       submissionCallback: () {
-        checkIfPromptsCompleted();
-        if (completedPromptsToday) {
-          completedPrompts[DateTime.now()] = true; // Update for the current day
-          setLastEntryIndexOneMore();
-          setLastEntryTimeAsNow();
-        }
-      }
+        setLastEntryIndexOneMore();
+        setLastEntryTimeAsNow();
+      },
     );
   }
 }
@@ -511,10 +523,59 @@ class _StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> telemetryData = <Widget>[];
-
-    for (int i = 0; i <= getLastEntryIndex(); i++) {
-      telemetryData
-          .add(Text("${getEntry_JSON(i.toDouble())}"));
+    int lastYear = -1;
+    int lastMonth = -1;
+    late bool makeNewMonthDivision;
+    for (double i = 0; i <= getLastEntryIndex(); i++) {
+      EphemeralTelemetry iTele = getEntry(i);
+      DateTime iTeleTimeStamp =
+          DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS);
+      if (lastYear == -1 || lastMonth == -1) {
+        lastYear = iTeleTimeStamp.year;
+        lastMonth = iTeleTimeStamp.month;
+        makeNewMonthDivision = true;
+      } else {
+        if (lastMonth != iTeleTimeStamp.month) {
+          lastMonth = iTeleTimeStamp.month;
+          makeNewMonthDivision = true;
+        } else {
+          makeNewMonthDivision = false;
+        }
+      }
+      telemetryData.add(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (makeNewMonthDivision)
+              Text.rich(TextSpan(children: [
+                TextSpan(
+                    text: monthNumToName(lastMonth),
+                    style: TextStyle(
+                        color: monthColor(lastMonth),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700)),
+                TextSpan(
+                    text: " $lastYear",
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500))
+              ])),
+            if (makeNewMonthDivision) const SizedBox(height: 10),
+            _makeBorderComponent(
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(children: [
+                  Text.rich(TextSpan(children: [
+                    TextSpan(text: "Entry: ${iTele.entryIndex}")
+                  ]))
+                ]),
+              ),
+            ),
+            const SizedBox(height: 10)
+          ],
+        ),
+      );
     }
     return SingleChildScrollView(
       child: Padding(
@@ -820,20 +881,23 @@ class _InputDetailsControllerRowState
 
 
 class GardenPage extends StatefulWidget {
-  
+  const GardenPage({super.key});
+
   @override
-  _GardenPageState createState() => _GardenPageState();
+  GardenPageState createState() => GardenPageState();
 }
 
-class _GardenPageState extends State<GardenPage> {
+class GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
   Random random = Random();
   Map<DateTime, bool> completedPrompts = {};
 
-  DateTime getFirstDayOfWeekForWeek(int weekIndex, int year, int month) {
+  DateTime getFirstDayOfWeekForWeek(
+      int weekIndex, int year, int month) {
     DateTime firstDayOfMonth = DateTime(year, month, 1);
     while (firstDayOfMonth.weekday != 1) {
-      firstDayOfMonth = firstDayOfMonth.subtract(const Duration(days: 1));
+      firstDayOfMonth =
+          firstDayOfMonth.subtract(const Duration(days: 1));
     }
     return firstDayOfMonth.add(Duration(days: 7 * weekIndex));
   }
@@ -842,13 +906,16 @@ class _GardenPageState extends State<GardenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
+        title: Text(
+            '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_left),
           onPressed: () {
-            if (currentMonth.month > 1 || currentMonth.year > DateTime.now().year) {
+            if (currentMonth.month > 1 ||
+                currentMonth.year > DateTime.now().year) {
               setState(() {
-                currentMonth = DateTime(currentMonth.year, currentMonth.month - 1, 1);
+                currentMonth = DateTime(
+                    currentMonth.year, currentMonth.month - 1, 1);
               });
             }
           },
@@ -857,9 +924,11 @@ class _GardenPageState extends State<GardenPage> {
           IconButton(
             icon: const Icon(Icons.arrow_right),
             onPressed: () {
-              if (currentMonth.month < DateTime.now().month || currentMonth.year < DateTime.now().year) {
+              if (currentMonth.month < DateTime.now().month ||
+                  currentMonth.year < DateTime.now().year) {
                 setState(() {
-                  currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
+                  currentMonth = DateTime(
+                      currentMonth.year, currentMonth.month + 1, 1);
                 });
               }
             },
@@ -867,11 +936,17 @@ class _GardenPageState extends State<GardenPage> {
         ],
       ),
       body: ListView.builder(
-        itemCount: getNumberOfWeeks(currentMonth.year, currentMonth.month),
+        itemCount:
+            getNumberOfWeeks(currentMonth.year, currentMonth.month),
         itemBuilder: (context, index) {
-          int reverseIndex = getNumberOfWeeks(currentMonth.year, currentMonth.month) - 1 - index;
-          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(reverseIndex, currentMonth.year, currentMonth.month);
-          String formattedDate = "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
+          int reverseIndex = getNumberOfWeeks(
+                  currentMonth.year, currentMonth.month) -
+              1 -
+              index;
+          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(
+              reverseIndex, currentMonth.year, currentMonth.month);
+          String formattedDate =
+              "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
 
           return Column(
             children: [
@@ -881,22 +956,27 @@ class _GardenPageState extends State<GardenPage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Choose a day for the week of $formattedDate'),
+                        title: Text(
+                            'Choose a day for the week of $formattedDate'),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: List.generate(7, (idx) {
-                            DateTime day = firstDayOfWeek.add(Duration(days: idx));
+                            DateTime day = firstDayOfWeek
+                                .add(Duration(days: idx));
                             return ListTile(
-                              title: Text('${DateFormat.EEEE().format(day)} ${day.day}'),
-                              onTap: () => Navigator.pop(context, day),
+                              title: Text(
+                                  '${DateFormat.EEEE().format(day)} ${day.day}'),
+                              onTap: () =>
+                                  Navigator.pop(context, day),
                             );
                           }),
                         ),
                       );
                     },
                   );
-                  if (selectedDate != null) {
-                    completedPrompts[selectedDate] = true;
+
+                  if (selectedDate != null && completedPrompts[selectedDate] == null) {
+                    completedPrompts[selectedDate] = random.nextInt(7) + 1;
                     setState(() {});
                   }
                 },
@@ -905,7 +985,8 @@ class _GardenPageState extends State<GardenPage> {
                     Container(
                       padding: const EdgeInsets.all(10.0),
                       color: Colors.green,
-                      child: Center(child: Text('Week of $formattedDate')),
+                      child: Center(
+                          child: Text('Week of $formattedDate')),
                     ),
                     Stack(
                       children: [
@@ -913,7 +994,8 @@ class _GardenPageState extends State<GardenPage> {
                           height: index == 0 ? 250.0 : 150.0,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('assets/Background/Background1.jpeg'),
+                              image: AssetImage(
+                                  'assets/Background/Background1.jpeg'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -933,7 +1015,8 @@ class _GardenPageState extends State<GardenPage> {
 
   int getNumberOfWeeks(int year, int month) {
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
-    return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7).ceil();
+    return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7)
+        .ceil();
   }
 
   List<Widget> generateFlowersForWeek(DateTime startOfWeek) {
@@ -956,7 +1039,8 @@ class _GardenPageState extends State<GardenPage> {
           Positioned(
             left: spots[i].dx,
             top: spots[i].dy,
-            child: Image.asset('assets/Flowers/Flower$flowerNum.png', width: 75, height: 75),
+            child: Image.asset('assets/Flowers/Flower$flowerNum.png',
+                width: 75, height: 75),
           ),
         );
       }
@@ -966,17 +1050,15 @@ class _GardenPageState extends State<GardenPage> {
   }
 }
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  bool hasCompletedTask =
-      false; //NEED TO CHANGE BASED ON IF THEY COMPLETED OR NOT
+class HomePageState extends State<HomePage> {
+  bool hasCompletedTask = false;
 
   @override
   Widget build(BuildContext context) {
@@ -988,7 +1070,6 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (hasCompletedTask) ...[
-            // Show Mood and Rating
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -1002,13 +1083,13 @@ class _HomePageState extends State<HomePage> {
               child: const Column(
                 children: [
                   Text(
-                    'Your Mood Today: Happy', // Replace 'Happy' with actual mood data
+                    'Your Mood Today: Happy',
                     style:
                         TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Rating: 4.5/5', // Replace '4.5/5' with actual rating data
+                    'Rating: 4.5/5',
                     style:
                         TextStyle(color: Colors.white, fontSize: 18),
                   ),
@@ -1016,7 +1097,6 @@ class _HomePageState extends State<HomePage> {
               ),
             )
           ] else ...[
-            // Reminder to complete the task
             Container(
               padding: const EdgeInsets.all(20),
               color: Colors.red,
@@ -1177,13 +1257,12 @@ class _MainAppState extends State<MainApp> {
           padEnds: false,
           allowImplicitScrolling: false,
           children: <Widget>[
-            //const Page1_Home(),
-            const HomePage(), // 0
+            const HomePage(),
             debug_wrapPageNumber(
-                bg: Colors.purple, text: "Tips Page"), // 1
-             GardenPage(), // 2
-            _StatsPage(), // 3
-            const DebuggingStuffs(), // 4
+                bg: Colors.purple, text: "Tips Page"),
+            const GardenPage(),
+            const ProfilePage(),
+            const DebuggingStuffs(),
           ],
         ));
   }

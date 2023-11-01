@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yaml/yaml.dart';
-import 'pipe.dart';
 
 final class LaF {
   static const String appName = "Bloom";
@@ -69,8 +68,3 @@ ThemeData appLaF() {
 late final SharedPreferences prefs;
 
 late YamlMap uiText;
-
-Future<void> init() async {
-  uiText = await loadYaml(await loadString_sync(
-      "assets/i18n/${LaF.languageLocale}.yaml"));
-}

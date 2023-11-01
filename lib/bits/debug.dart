@@ -1,6 +1,6 @@
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:blosso_mindfulness/bits/telemetry.dart';
-import 'package:blosso_mindfulness/main.dart';
+import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
 
 Widget debug_wrapPageNumber(

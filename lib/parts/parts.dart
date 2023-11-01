@@ -1,5 +1,10 @@
-import 'package:blosso_mindfulness/bits/helper.dart';
+import 'package:blosso_mindfulness/bits/bits.dart';
 import 'package:flutter/material.dart';
+
+export "profiles.dart";
+export "input_carousel.dart";
+export 'tracker_carousel.dart';
+export "setup_carousel.dart";
 
 class ActionableSlider extends StatefulWidget {
   final void Function(double) consumer;

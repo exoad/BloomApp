@@ -143,6 +143,14 @@ Color monthColor(int monthNum) {
                                                   : Colors.black;
 }
 
+String actionableSliderHoursContext(
+        double min, double max, double val) =>
+    val > max
+        ? "Greater than $max hours"
+        : val < min
+            ? "Less than $min hour"
+            : "$val hours";
+
 Widget makeCustomInputDetails(
     {required String title,
     TextStyle? titleStyle,

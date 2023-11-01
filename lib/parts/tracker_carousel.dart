@@ -214,57 +214,59 @@ class _InputTrackerState extends State<InputTracker> {
             )),
         makeCustomInputDetails(
           title: "Tag emotions to this day (scroll below)",
-          child: SizedBox(
-            height: 200,
-            child: Scrollbar(
-              child: ListView(
-                children: [
-                  _buildCheckbox(
-                    "Happy 😃",
-                    widget.now.emotionTags.contains("happy"),
-                    (val) => _handleEmotionTag("happy", val!),
-                  ),
-                  _buildCheckbox(
-                    "Sad 😢",
-                    widget.now.emotionTags.contains("sad"),
-                    (val) => _handleEmotionTag("sad", val!),
-                  ),
-                  _buildCheckbox(
-                    "Angry 😠",
-                    widget.now.emotionTags.contains("angry"),
-                    (val) => _handleEmotionTag("angry", val!),
-                  ),
-                  _buildCheckbox(
-                    "Anxious 😰",
-                    widget.now.emotionTags.contains("anxious"),
-                    (val) => _handleEmotionTag("anxious", val!),
-                  ),
-                  _buildCheckbox(
-                    "Depressed 😔",
-                    widget.now.emotionTags.contains("depressed"),
-                    (val) => _handleEmotionTag("depressed", val!),
-                  ),
-                  _buildCheckbox(
-                    "Excited 😁",
-                    widget.now.emotionTags.contains("excited"),
-                    (val) => _handleEmotionTag("excited", val!),
-                  ),
-                  _buildCheckbox(
-                    "Calm 😌",
-                    widget.now.emotionTags.contains("calm"),
-                    (val) => _handleEmotionTag("calm", val!),
-                  ),
-                  _buildCheckbox(
-                    "Frustrated 😡",
-                    widget.now.emotionTags.contains("frustrated"),
-                    (val) => _handleEmotionTag("frustrated", val!),
-                  ),
-                  _buildCheckbox(
-                    "Surprised 😲",
-                    widget.now.emotionTags.contains("surprised"),
-                    (val) => _handleEmotionTag("surprised", val!),
-                  ),
-                ],
+          child: Expanded(
+            child: SizedBox(
+              height: 200,
+              child: Scrollbar(
+                child: ListView(
+                  children: [
+                    _buildCheckbox(
+                      "Happy 😃",
+                      widget.now.emotionTags.contains("happy"),
+                      (val) => _handleEmotionTag("happy", val!),
+                    ),
+                    _buildCheckbox(
+                      "Sad 😢",
+                      widget.now.emotionTags.contains("sad"),
+                      (val) => _handleEmotionTag("sad", val!),
+                    ),
+                    _buildCheckbox(
+                      "Angry 😠",
+                      widget.now.emotionTags.contains("angry"),
+                      (val) => _handleEmotionTag("angry", val!),
+                    ),
+                    _buildCheckbox(
+                      "Anxious 😰",
+                      widget.now.emotionTags.contains("anxious"),
+                      (val) => _handleEmotionTag("anxious", val!),
+                    ),
+                    _buildCheckbox(
+                      "Depressed 😔",
+                      widget.now.emotionTags.contains("depressed"),
+                      (val) => _handleEmotionTag("depressed", val!),
+                    ),
+                    _buildCheckbox(
+                      "Excited 😁",
+                      widget.now.emotionTags.contains("excited"),
+                      (val) => _handleEmotionTag("excited", val!),
+                    ),
+                    _buildCheckbox(
+                      "Calm 😌",
+                      widget.now.emotionTags.contains("calm"),
+                      (val) => _handleEmotionTag("calm", val!),
+                    ),
+                    _buildCheckbox(
+                      "Frustrated 😡",
+                      widget.now.emotionTags.contains("frustrated"),
+                      (val) => _handleEmotionTag("frustrated", val!),
+                    ),
+                    _buildCheckbox(
+                      "Surprised 😲",
+                      widget.now.emotionTags.contains("surprised"),
+                      (val) => _handleEmotionTag("surprised", val!),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

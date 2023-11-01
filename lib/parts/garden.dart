@@ -1,10 +1,6 @@
-import 'package:blosso_mindfulness/bits/bits.dart';
-import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
-import "tracker_carousel.dart";
 
 class GardenPage extends StatefulWidget {
   const GardenPage({super.key});
@@ -18,10 +14,12 @@ class GardenPageState extends State<GardenPage> {
   Random random = Random();
   Map<DateTime, bool> completedPrompts = {};
 
-  DateTime getFirstDayOfWeekForWeek(int weekIndex, int year, int month) {
+  DateTime getFirstDayOfWeekForWeek(
+      int weekIndex, int year, int month) {
     DateTime firstDayOfMonth = DateTime(year, month, 1);
     while (firstDayOfMonth.weekday != DateTime.monday) {
-      firstDayOfMonth = firstDayOfMonth.subtract(const Duration(days: 1));
+      firstDayOfMonth =
+          firstDayOfMonth.subtract(const Duration(days: 1));
     }
     return firstDayOfMonth.add(Duration(days: 7 * weekIndex));
   }
@@ -30,13 +28,16 @@ class GardenPageState extends State<GardenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
+        title: Text(
+            '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_left),
           onPressed: () {
-            if (currentMonth.month > 1 || currentMonth.year > DateTime.now().year) {
+            if (currentMonth.month > 1 ||
+                currentMonth.year > DateTime.now().year) {
               setState(() {
-                currentMonth = DateTime(currentMonth.year, currentMonth.month - 1, 1);
+                currentMonth = DateTime(
+                    currentMonth.year, currentMonth.month - 1, 1);
               });
             }
           },
@@ -45,9 +46,11 @@ class GardenPageState extends State<GardenPage> {
           IconButton(
             icon: const Icon(Icons.arrow_right),
             onPressed: () {
-              if (currentMonth.month < DateTime.now().month || currentMonth.year < DateTime.now().year) {
+              if (currentMonth.month < DateTime.now().month ||
+                  currentMonth.year < DateTime.now().year) {
                 setState(() {
-                  currentMonth = DateTime(currentMonth.year, currentMonth.month + 1, 1);
+                  currentMonth = DateTime(
+                      currentMonth.year, currentMonth.month + 1, 1);
                 });
               }
             },
@@ -55,11 +58,17 @@ class GardenPageState extends State<GardenPage> {
         ],
       ),
       body: ListView.builder(
-        itemCount: getNumberOfWeeks(currentMonth.year, currentMonth.month),
+        itemCount:
+            getNumberOfWeeks(currentMonth.year, currentMonth.month),
         itemBuilder: (context, index) {
-          int reverseIndex = getNumberOfWeeks(currentMonth.year, currentMonth.month) - 1 - index;
-          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(reverseIndex, currentMonth.year, currentMonth.month);
-          String formattedDate = "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
+          int reverseIndex = getNumberOfWeeks(
+                  currentMonth.year, currentMonth.month) -
+              1 -
+              index;
+          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(
+              reverseIndex, currentMonth.year, currentMonth.month);
+          String formattedDate =
+              "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
 
           return Column(
             children: [
@@ -69,14 +78,18 @@ class GardenPageState extends State<GardenPage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Choose a day for the week of $formattedDate'),
+                        title: Text(
+                            'Choose a day for the week of $formattedDate'),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: List.generate(7, (idx) {
-                            DateTime day = firstDayOfWeek.add(Duration(days: idx));
+                            DateTime day = firstDayOfWeek
+                                .add(Duration(days: idx));
                             return ListTile(
-                              title: Text('${DateFormat.EEEE().format(day)} ${day.day}'),
-                              onTap: () => Navigator.pop(context, day),
+                              title: Text(
+                                  '${DateFormat.EEEE().format(day)} ${day.day}'),
+                              onTap: () =>
+                                  Navigator.pop(context, day),
                             );
                           }),
                         ),
@@ -85,11 +98,13 @@ class GardenPageState extends State<GardenPage> {
                   );
 
                   if (selectedDate != null) {
-                    bool entryExists = await checkIfEntryExists(selectedDate);
+                    bool entryExists =
+                        await checkIfEntryExists(selectedDate);
                     if (!entryExists) {
                       // Prompt user to complete the tracker for the selected day.
                       // Assume navigateToTracker is a function that navigates to the tracker screen and returns a boolean value indicating whether the tracker was completed.
-                      bool completedTracker = await navigateToTracker(selectedDate);
+                      bool completedTracker =
+                          await navigateToTracker(selectedDate);
                       if (completedTracker) {
                         setState(() {
                           completedPrompts[selectedDate] = true;
@@ -99,7 +114,8 @@ class GardenPageState extends State<GardenPage> {
                       // Notify user that an entry already exists for this day.
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('An entry already exists for this date.'),
+                          content: Text(
+                              'An entry already exists for this date.'),
                         ),
                       );
                     }
@@ -110,7 +126,8 @@ class GardenPageState extends State<GardenPage> {
                     Container(
                       padding: const EdgeInsets.all(10.0),
                       color: Colors.green,
-                      child: Center(child: Text('Week of $formattedDate')),
+                      child: Center(
+                          child: Text('Week of $formattedDate')),
                     ),
                     Stack(
                       children: [
@@ -118,7 +135,8 @@ class GardenPageState extends State<GardenPage> {
                           height: index == 0 ? 250.0 : 150.0,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('assets/Background/Background1.jpeg'),
+                              image: AssetImage(
+                                  'assets/Background/Background1.jpeg'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -152,7 +170,8 @@ class GardenPageState extends State<GardenPage> {
 
   int getNumberOfWeeks(int year, int month) {
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
-    return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7).ceil();
+    return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7)
+        .ceil();
   }
 
   List<Widget> generateFlowersForWeek(DateTime startOfWeek) {
@@ -175,7 +194,8 @@ class GardenPageState extends State<GardenPage> {
           Positioned(
             left: spots[i].dx,
             top: spots[i].dy,
-            child: Image.asset('assets/Flowers/Flower$flowerNum.png', width: 75, height: 75),
+            child: Image.asset('assets/Flowers/Flower$flowerNum.png',
+                width: 75, height: 75),
           ),
         );
       }

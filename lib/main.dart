@@ -2,8 +2,6 @@ import 'package:blosso_mindfulness/bits/bits.dart';
 import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
-import 'dart:math';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

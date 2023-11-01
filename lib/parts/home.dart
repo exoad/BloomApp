@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                 child: Builder(builder: (ctxt) {
                   List<int> moodScale = [];
                   int current_i = getLastEntryIndex().toInt();
-                  for (int i = 0; i <= 5; i++) {
+                  for (int i = 0; i <= 7; i++) {
                     if (current_i - i < 0) {
                       break;
                     }
@@ -270,11 +270,11 @@ class _HomePageState extends State<HomePage> {
                       height: 250,
                       width: double.infinity,
                       child: SimpleLineChart(
-                          title: "Mood of past 5 entries",
+                          title: "Mood of past 7 entries",
                           data: moodScale,
                           minX: 0,
                           minY: 0,
-                          maxX: 5,
+                          maxX: 7,
                           maxY: 10));
                 }),
               ),
@@ -283,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                 child: Builder(builder: (ctxt) {
                   List<int> hoursSlept = [];
                   int current_i = getLastEntryIndex().toInt();
-                  for (int i = 0; i <= 5; i++) {
+                  for (int i = 0; i <= 7; i++) {
                     if (current_i - i < 0) {
                       break;
                     }
@@ -300,11 +300,11 @@ class _HomePageState extends State<HomePage> {
                       height: 250,
                       width: double.infinity,
                       child: SimpleLineChart(
-                          title: "Hours slept of past 5 entries",
+                          title: "Hours slept of past 7 entries",
                           data: hoursSlept,
                           minX: 0,
                           minY: 0,
-                          maxX: 5,
+                          maxX: 7,
                           maxY: 12));
                 }),
               ),
@@ -313,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                 child: Builder(builder: (ctxt) {
                   List<int> hoursOnScreen = [];
                   int current_i = getLastEntryIndex().toInt();
-                  for (int i = 0; i <= 5; i++) {
+                  for (int i = 0; i <= 7; i++) {
                     if (current_i - i < 0) {
                       break;
                     }
@@ -330,11 +330,11 @@ class _HomePageState extends State<HomePage> {
                       height: 250,
                       width: double.infinity,
                       child: SimpleLineChart(
-                          title: "Hours on screen of past 5 entries",
+                          title: "Hours on screen of past 7 entries",
                           data: hoursOnScreen,
                           minX: 0,
                           minY: 0,
-                          maxX: 5,
+                          maxX: 7,
                           maxY: 12));
                 }),
               ),

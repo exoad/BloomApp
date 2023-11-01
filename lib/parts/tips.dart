@@ -89,46 +89,46 @@ final List<Tip> _tipsData = <Tip>[
     condition: (telemetry) => telemetry.hoursExercising < 1,
     color: Colors.greenAccent
   ),
-  (
-    source:  "Columbia University of Psychiatry",
-    contentTitle: "Nature's Boost!",
-    contentBody:
-        "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
-    condition: (telemetry) => telemetry."" < 1,
-    color: Colors.lightGreen
-  ),
+  //(
+    //source:  "Columbia University of Psychiatry",
+    //contentTitle: "Nature's Boost!",
+    //contentBody:
+        //"Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
+    //condition: (telemetry) => telemetry."" < 1,
+    //color: Colors.lightGreen
+  //),
   (
     source: "Columbia University of Psychiatry",
     contentTitle: "Screen Break!",
     contentBody:
         "Extended screen time can strain your eyes. Make sure to take short breaks and reduce screen brightness in low light.",
-    condition: (telemetry) => telemetry.hoursOnScreen > 5,
+    condition: (telemetry) => telemetry.hoursOnScreen > 3,
     color: Colors.deepPurple
   ),
-  (
-    source: "Columbia University of Psychiatry",
-    contentTitle: "Balance is Key!",
-    contentBody:
-        "Taking time to relax is crucial for mental health. Consider adding relaxation techniques like meditation to your routine.",
-    condition: (telemetry) => telemetry."" < 1,
-    color: Colors.purpleAccent
-  ),
-  (
-    source: "Columbia University of Psychiatry",
-    contentTitle: "Break It Down!",
-    contentBody:
-        "Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
-    condition: (telemetry) => telemetry."" > 7,
-    color: Colors.teal
-  ),
-  (
-    source: "Columbia University of Psychiatry",
-    contentTitle: "Re-energize!",
-    contentBody:
-        "Low energy levels can be a sign of poor nutrition or dehydration. Consider checking your diet or water intake.",
-    condition: (telemetry) => telemetry."" < 4,
-    color: Colors.yellow
-  ),
+  //(
+    //source: "Columbia University of Psychiatry",
+    //contentTitle: "Balance is Key!",
+    //contentBody:
+        //"Taking time to relax is crucial for mental health. Consider adding relaxation techniques like meditation to your routine.",
+    //condition: (telemetry) => telemetry."" < 1,
+    //color: Colors.purpleAccent
+  //),
+  //(
+    //source: "Columbia University of Psychiatry",
+    //contentTitle: "Take Breaks!",
+    //contentBody:
+        //"Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
+    //condition: (telemetry) => telemetry."" > 7,
+    //color: Colors.teal
+  //),
+  //(
+    //source: "Columbia University of Psychiatry",
+    //contentTitle: "Re-energize!",
+    //contentBody:
+        //"Low energy levels can be a sign of poor nutrition or dehydration. Consider checking your diet or water intake.",
+    //condition: (telemetry) => telemetry."" < 4,
+    //color: Colors.yellow
+  //),
 ];
 
 Widget _makeTipBox(Tip tip) {

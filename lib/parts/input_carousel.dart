@@ -124,21 +124,17 @@ class _InputDetailsControllerRowState
                 flex: 0,
                 fit: FlexFit.tight,
                 child: Builder(builder: (_) {
-                  return widget.pageController.page != null &&
-                          widget.pageController.page! + 1 ==
-                              widget.pageViewChildren.length
-                      ? IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) {
-                              return const MainApp();
-                            }));
-                            widget.submissionCallback?.call();
-                          },
-                          icon: const Icon(Icons.check_rounded,
-                              size: 32))
-                      : const SizedBox(width: 42, height: 42);
+                  return IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                          return const MainApp();
+                        }));
+                        widget.submissionCallback?.call();
+                      },
+                      icon:
+                          const Icon(Icons.check_rounded, size: 32));
                 })),
             Flexible(
               flex: 0,

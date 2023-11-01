@@ -66,9 +66,8 @@ class _InputTrackerState extends State<_InputTracker> {
   @override
   
   Widget build(BuildContext context) {
-    Random random = Random();
   bool completedPromptsToday = false;
-  Map<DateTime, int?> completedPrompts = {};
+  Map<DateTime, bool> completedPrompts = {};
   // Check if all prompts are completed
   void checkIfPromptsCompleted() {
     if (widget.now.hoursOfSleep != null &&
@@ -243,8 +242,7 @@ class _InputTrackerState extends State<_InputTracker> {
       submissionCallback: () {
         checkIfPromptsCompleted();
         if (completedPromptsToday) {
-          int randomFlowerNumber = random.nextInt(7) + 1;
-          completedPrompts[DateTime.now()] = randomFlowerNumber; // Assign a random flower number for the current day
+          completedPrompts[DateTime.now()] = true; // Update for the current day
           setLastEntryIndexOneMore();
           setLastEntryTimeAsNow();
         }
@@ -830,7 +828,7 @@ class GardenPage extends StatefulWidget {
 class _GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
   Random random = Random();
-  Map<DateTime, int?> completedPrompts = {};
+  Map<DateTime, bool> completedPrompts = {};
 
   DateTime getFirstDayOfWeekForWeek(int weekIndex, int year, int month) {
     DateTime firstDayOfMonth = DateTime(year, month, 1);
@@ -897,9 +895,8 @@ class _GardenPageState extends State<GardenPage> {
                       );
                     },
                   );
-
-                  if (selectedDate != null && completedPrompts[selectedDate] == null) {
-                    completedPrompts[selectedDate] = random.nextInt(7) + 1;
+                  if (selectedDate != null) {
+                    completedPrompts[selectedDate] = true;
                     setState(() {});
                   }
                 },
@@ -953,8 +950,8 @@ class _GardenPageState extends State<GardenPage> {
 
     DateTime day = startOfWeek;
     for (int i = 0; i < 7; i++) {
-      int? flowerNum = completedPrompts[day];
-      if (flowerNum != null) {
+      if (completedPrompts[day] == true) {
+        int flowerNum = random.nextInt(7) + 1;
         flowers.add(
           Positioned(
             left: spots[i].dx,

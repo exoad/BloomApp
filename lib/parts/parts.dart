@@ -6,6 +6,7 @@ export "input_carousel.dart";
 export 'tracker_carousel.dart';
 export "setup_carousel.dart";
 export "home.dart";
+export "garden.dart";
 
 class ActionableSlider extends StatefulWidget {
   final void Function(double) consumer;

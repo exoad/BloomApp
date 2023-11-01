@@ -36,175 +36,67 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
-class GardenPage extends StatefulWidget {
-  const GardenPage({super.key});
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  GardenPageState createState() => GardenPageState();
+  HomePageState createState() => HomePageState();
 }
 
-class GardenPageState extends State<GardenPage> {
-  DateTime currentMonth = DateTime.now();
-  Random random = Random();
-  Map<DateTime, bool> completedPrompts = {};
-
-  DateTime getFirstDayOfWeekForWeek(
-      int weekIndex, int year, int month) {
-    DateTime firstDayOfMonth = DateTime(year, month, 1);
-    while (firstDayOfMonth.weekday != 1) {
-      firstDayOfMonth =
-          firstDayOfMonth.subtract(const Duration(days: 1));
-    }
-    return firstDayOfMonth.add(Duration(days: 7 * weekIndex));
-  }
+class HomePageState extends State<HomePage> {
+  bool hasCompletedTask = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '${DateFormat.MMMM().format(currentMonth)} ${currentMonth.year}'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_left),
-          onPressed: () {
-            if (currentMonth.month > 1 ||
-                currentMonth.year > DateTime.now().year) {
-              setState(() {
-                currentMonth = DateTime(
-                    currentMonth.year, currentMonth.month - 1, 1);
-              });
-            }
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_right),
-            onPressed: () {
-              if (currentMonth.month < DateTime.now().month ||
-                  currentMonth.year < DateTime.now().year) {
-                setState(() {
-                  currentMonth = DateTime(
-                      currentMonth.year, currentMonth.month + 1, 1);
-                });
-              }
-            },
-          ),
+        title: const Text('Home'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (hasCompletedTask) ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Colors.purple, Colors.blue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Column(
+                children: [
+                  Text(
+                    'Your Mood Today: Happy',
+                    style:
+                        TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Rating: 4.5/5',
+                    style:
+                        TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ],
+              ),
+            )
+          ] else ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              color: Colors.red,
+              child: const Text(
+                'Complete your prompts for the day or your flower won\'t be planted!',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ],
       ),
-      body: ListView.builder(
-        itemCount:
-            getNumberOfWeeks(currentMonth.year, currentMonth.month),
-        itemBuilder: (context, index) {
-          int reverseIndex = getNumberOfWeeks(
-                  currentMonth.year, currentMonth.month) -
-              1 -
-              index;
-          DateTime firstDayOfWeek = getFirstDayOfWeekForWeek(
-              reverseIndex, currentMonth.year, currentMonth.month);
-          String formattedDate =
-              "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
-
-          return Column(
-            children: [
-              InkWell(
-                onTap: () async {
-                  DateTime? selectedDate = await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text(
-                            'Choose a day for the week of $formattedDate'),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: List.generate(7, (idx) {
-                            DateTime day = firstDayOfWeek
-                                .add(Duration(days: idx));
-                            return ListTile(
-                              title: Text(
-                                  '${DateFormat.EEEE().format(day)} ${day.day}'),
-                              onTap: () =>
-                                  Navigator.pop(context, day),
-                            );
-                          }),
-                        ),
-                      );
-                    },
-                  );
-
-                  if (selectedDate != null &&
-                      completedPrompts[selectedDate] == null) {
-                    completedPrompts[selectedDate] =
-                        (random.nextInt(7) + 1) as bool;
-                    setState(() {});
-                  }
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                      color: Colors.green,
-                      child: Center(
-                          child: Text('Week of $formattedDate')),
-                    ),
-                    Stack(
-                      children: [
-                        Container(
-                          height: index == 0 ? 250.0 : 150.0,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/Background/Background1.jpeg'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        ...generateFlowersForWeek(firstDayOfWeek),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
     );
-  }
-
-  int getNumberOfWeeks(int year, int month) {
-    DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
-    return ((lastDayOfMonth.day + lastDayOfMonth.weekday - 1) / 7)
-        .ceil();
-  }
-
-  List<Widget> generateFlowersForWeek(DateTime startOfWeek) {
-    List<Widget> flowers = [];
-    List<Offset> spots = [
-      const Offset(50, 150),
-      const Offset(100, 150),
-      const Offset(150, 150),
-      const Offset(200, 150),
-      const Offset(250, 150),
-      const Offset(300, 150),
-      const Offset(350, 150),
-    ];
-
-    DateTime day = startOfWeek;
-    for (int i = 0; i < 7; i++) {
-      if (completedPrompts[day] == true) {
-        int flowerNum = random.nextInt(7) + 1;
-        flowers.add(
-          Positioned(
-            left: spots[i].dx,
-            top: spots[i].dy,
-            child: Image.asset('assets/Flowers/Flower$flowerNum.png',
-                width: 75, height: 75),
-          ),
-        );
-      }
-      day = day.add(const Duration(days: 1));
-    }
-    return flowers;
   }
 }
 
@@ -313,10 +205,11 @@ class _MainAppState extends State<MainApp> {
                             icon: Icons.change_circle_rounded,
                             title: "Change Profile",
                             onTap: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (ctxt) {
-                                return launchCarousel();
-                              }));
+                              Navigator.of(context).pop();
+                              _animateToPage(4);
+                              setState(() {
+                                appBarTitle = "Settings";
+                              });
                             }),
                         if (APP_DEVELOPMENT_MODE)
                           makeListTile_SideDrawer(

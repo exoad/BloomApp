@@ -98,7 +98,7 @@ class ProfilePage extends StatelessWidget {
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500)),
                         const TextSpan(
-                            text: "Hours of exercise:\n",
+                            text: "Exercised:\n",
                             style: TextStyle(
                                 fontWeight: FontWeight.w700)),
                         TextSpan(
@@ -122,14 +122,6 @@ class ProfilePage extends StatelessWidget {
                         TextSpan(
                             text:
                                 "${iTele.howStressed == -1 ? "??" : iTele.howStressed}/10\n",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500)),
-                        const TextSpan(
-                            text: "Emotion tags:\n",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700)),
-                        TextSpan(
-                            text: "${iTele.emotionTags}\n",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500)),
                         const TextSpan(

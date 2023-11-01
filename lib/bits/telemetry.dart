@@ -55,6 +55,15 @@ double getCurrentWorkingEntryIndex() => getLastEntryIndex() + 1;
 void setLastEntryIndexOneMore() =>
     prefs.setDouble("lastEntryIndex", getLastEntryIndex() + 1);
 
+bool didTodaysEntry() {
+  DateTime now = DateTime.now();
+  DateTime lastEntryTime =
+      DateTime.fromMillisecondsSinceEpoch(getLastEntryTime());
+  return now.year == lastEntryTime.year &&
+      now.month == lastEntryTime.month &&
+      now.day == lastEntryTime.day;
+}
+
 void setLastEntryIndexOneLess() => getLastEntryIndex() - 1 <
         0 // we dont have to be null aware as this fx takes care of the nullability check
     ? prefs.setDouble("lastEntryIndex", 0)
@@ -129,6 +138,7 @@ void invalidateAllEntries() {
     prefs.remove("userEntry_EphemeralData$i");
   }
   setLastEntryIndex(0);
+  setLastEntryTime(DateTime.fromMillisecondsSinceEpoch(0));
 }
 
 EphemeralTelemetry getEntry(double index) {

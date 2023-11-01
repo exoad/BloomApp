@@ -229,14 +229,23 @@ class _MainAppState extends State<MainApp> {
         ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          tooltip: "Add an entry",
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctxt) => launchDailyEntryCarousel(
-                    EphemeralTelemetry(getLastEntryIndex()))));
-          },
-          child: const Icon(Icons.add_box_rounded, size: 32),
+        floatingActionButton: Container(
+          decoration: BoxDecoration(
+            borderRadius:
+                const BorderRadius.all(LaF.roundedRectBorderRadius),
+            border: Border.all(
+              color: LaF.primaryColorFgContrast,
+              width: 2.0,
+            ),
+          ),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctxt) => launchDailyEntryCarousel(
+                      EphemeralTelemetry(getLastEntryIndex()))));
+            },
+            child: const Icon(Icons.add_box_rounded, size: 32),
+          ),
         ),
         body: PageView(
           controller: pageController,

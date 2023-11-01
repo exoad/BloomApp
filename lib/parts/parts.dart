@@ -8,6 +8,16 @@ export "setup_carousel.dart";
 export "home.dart";
 export "garden.dart";
 
+Widget makeBorderComponent(
+        {required Widget child, Color color = LaF.primaryColor}) =>
+    Container(
+        decoration: BoxDecoration(
+            color: color,
+            borderRadius:
+                const BorderRadius.all(LaF.roundedRectBorderRadius)),
+        child:
+            Padding(padding: const EdgeInsets.all(10), child: child));
+
 class ActionableSlider extends StatefulWidget {
   final void Function(double) consumer;
   final String Function(double)? labelConsumer;

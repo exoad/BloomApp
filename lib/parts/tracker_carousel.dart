@@ -3,7 +3,24 @@ import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
 
 Widget launchDailyEntryCarousel(EphemeralTelemetry now) =>
-    InputTracker(now: now);
+    _InputWrapper(now: now);
+
+class _InputWrapper extends StatelessWidget {
+  final EphemeralTelemetry now;
+  const _InputWrapper({super.key, required this.now});
+
+  @override
+  Widget build(BuildContext context) {
+    return didTodaysEntry()
+        ? const InputDetailsCarousel(
+            firstPage: (
+              title: "You already added an entry for today",
+              hint: "You may only add one entry per day"
+            ),
+          )
+        : InputTracker(now: now);
+  }
+}
 
 class InputTracker extends StatefulWidget {
   final EphemeralTelemetry now;

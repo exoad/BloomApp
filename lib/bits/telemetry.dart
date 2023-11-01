@@ -92,8 +92,8 @@ void setUserSex(String newValue) =>
 
 int getLastEntryTime() => _safeGetInt("lastEntryTime", 0);
 
-void setLastEntryTimeAsNow() => prefs.setInt(
-    "lastEntryTime", DateTime.now().millisecondsSinceEpoch);
+void setLastEntryTimeAsNow() => prefs.setInt("lastEntryTime",
+    DateTime.fromMillisecondsSinceEpoch(0).millisecondsSinceEpoch);
 
 void setLastEntryTime(DateTime newValue) =>
     prefs.setInt("lastEntryTime", newValue.millisecondsSinceEpoch);

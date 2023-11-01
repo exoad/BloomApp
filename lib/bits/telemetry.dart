@@ -59,9 +59,9 @@ void updateStreak() {
 void setUserStreak(int newValue) =>
     prefs.setInt("userStreak", newValue);
 
-int getUserStreak() => prefs.getInt("userStreak") ?? 0;
+int getUserStreak() => _safeGetInt("userStreak", 0);
 
-bool getIsNewUser() => prefs.getBool("isNewUser") ?? true;
+bool getIsNewUser() => _safeGetBool("isNewUser", true);
 
 void setIsNewUser(bool newValue) =>
     prefs.setBool("isNewUser", newValue);
@@ -76,22 +76,22 @@ String getUserAvatarSVG() =>
 void setUserAvatarSVG(String newValue) =>
     prefs.setString("userAvatarSVG", newValue);
 
-String getUserName() => prefs.getString("userName") ?? "";
+String getUserName() => _safeGetString("userName", "John");
 
 void setUserName(String newValue) =>
     prefs.setString("userName", newValue);
 
-double getUserAgeGroup() => prefs.getDouble("userAgeGroup") ?? 0;
+double getUserAgeGroup() => _safeGetDouble("userAgeGroup", 0);
 
 void setUserAgeGroup(double newValue) =>
     prefs.setDouble("userAgeGroup", newValue);
 
-String getUserSex() => prefs.getString("userSex") ?? "?";
+String getUserSex() => _safeGetString("userSex", "N/A");
 
 void setUserSex(String newValue) =>
     prefs.setString("userSex", newValue);
 
-int getLastEntryTime() => prefs.getInt("lastEntryTime") ?? 00;
+int getLastEntryTime() => _safeGetInt("lastEntryTime", 0);
 
 void setLastEntryTimeAsNow() => prefs.setInt(
     "lastEntryTime", DateTime.now().millisecondsSinceEpoch);
@@ -99,7 +99,7 @@ void setLastEntryTimeAsNow() => prefs.setInt(
 void setLastEntryTime(DateTime newValue) =>
     prefs.setInt("lastEntryTime", newValue.millisecondsSinceEpoch);
 
-double getLastEntryIndex() => prefs.getDouble("lastEntryIndex") ?? 0;
+double getLastEntryIndex() => _safeGetDouble("lastEntryIndex", 0);
 
 double getCurrentWorkingEntryIndex() => getLastEntryIndex() + 1;
 

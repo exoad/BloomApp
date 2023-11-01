@@ -193,6 +193,8 @@ class ProfilePage extends StatelessWidget {
                           child: Column(
                               crossAxisAlignment:
                                   CrossAxisAlignment.start,
+                              mainAxisAlignment:
+                                  MainAxisAlignment.start,
                               children: [
                                 Text(getUserName(),
                                     style: const TextStyle(
@@ -235,7 +237,33 @@ class ProfilePage extends StatelessWidget {
                                     style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight:
-                                            FontWeight.normal))
+                                            FontWeight.normal)),
+                                const SizedBox(height: 6),
+                                TextButton.icon(
+                                    style: const ButtonStyle(
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.all(LaF
+                                                        .roundedRectBorderRadius))),
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                Colors.black)),
+                                    onPressed: () {
+                                      removeAllEntries();
+                                      setLastEntryIndex(0);
+                                      setLastEntryTime(DateTime
+                                          .fromMillisecondsSinceEpoch(
+                                              0));
+                                    },
+                                    label: const Text("Reset Entries",
+                                        style: TextStyle(
+                                            color: LaF.primaryColor,
+                                            fontWeight:
+                                                FontWeight.w700)),
+                                    icon: const Icon(
+                                        Icons.replay_rounded,
+                                        color: LaF.primaryColor))
                               ]))
                     ],
                   ),

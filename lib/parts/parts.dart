@@ -7,6 +7,7 @@ export 'tracker_carousel.dart';
 export "setup_carousel.dart";
 export "home.dart";
 export "garden.dart";
+export "tips.dart";
 
 Widget makeBorderComponent(
         {required Widget child, Color color = LaF.primaryColor}) =>

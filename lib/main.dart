@@ -34,7 +34,6 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -250,13 +249,12 @@ class _MainAppState extends State<MainApp> {
           pageSnapping: true,
           padEnds: false,
           allowImplicitScrolling: false,
-          children: <Widget>[
-            const HomePage(),
-            debug_wrapPageNumber(
-                bg: Colors.purple, text: "Tips Page"),
-            const GardenPage(),
-            const ProfilePage(),
-            const DebuggingStuffs(),
+          children: const <Widget>[
+            HomePage(),
+            TipsPage(),
+            GardenPage(),
+            ProfilePage(),
+            DebuggingStuffs(),
           ],
         ));
   }

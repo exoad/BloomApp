@@ -113,7 +113,7 @@ class GardenPageState extends State<GardenPage> {
                     } else {
                       // Notify user that an entry already exists for this day.
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text(
                               'An entry already exists for this date.'),
                         ),

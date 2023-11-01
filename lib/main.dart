@@ -8,9 +8,6 @@ void main() {
   SharedPreferences.getInstance().then((value) {
     prefs = value;
     prefs.reload();
-    invalidateAllEntries();
-    removeAllEntries();
-    setLastEntryIndex(0);
     runApp(_AppWrapper(
         appHome:
             !getIsNewUser() ? const MainApp() : launchCarousel(true)));

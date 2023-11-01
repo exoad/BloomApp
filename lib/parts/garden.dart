@@ -3,7 +3,6 @@
 import 'package:blosso_mindfulness/bits/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
 
 class GardenPage extends StatefulWidget {
   const GardenPage({super.key});
@@ -14,8 +13,7 @@ class GardenPage extends StatefulWidget {
 
 class GardenPageState extends State<GardenPage> {
   DateTime currentMonth = DateTime.now();
-  Random random = Random();
-  Map<DateTime, bool> completedPrompts = {};
+  Map<DateTime, bool> completedPrompts = {DateTime.now(): true};
 
   DateTime getFirstDayOfWeekForWeek(
       int weekIndex, int year, int month) {
@@ -63,6 +61,7 @@ class GardenPageState extends State<GardenPage> {
         ],
       ),
       body: ListView.builder(
+        physics: const BouncingScrollPhysics(),
         itemCount:
             getNumberOfWeeks(currentMonth.year, currentMonth.month),
         itemBuilder: (context, index) {
@@ -74,7 +73,6 @@ class GardenPageState extends State<GardenPage> {
               reverseIndex, currentMonth.year, currentMonth.month);
           String formattedDate =
               "${firstDayOfWeek.month}-${firstDayOfWeek.day}";
-
           return Column(
             children: [
               InkWell(
@@ -83,19 +81,26 @@ class GardenPageState extends State<GardenPage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
+                        backgroundColor: LaF.primaryColor,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                                LaF.roundedRectBorderRadius)),
                         title: Text(
-                            'Choose a day for the week of $formattedDate'),
+                            'Choose a day for week $formattedDate',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20)),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: List.generate(7, (idx) {
                             DateTime day = firstDayOfWeek
                                 .add(Duration(days: idx));
                             return ListTile(
-                              title: Text(
-                                  '${DateFormat.EEEE().format(day)} ${day.day}'),
-                              onTap: () =>
-                                  Navigator.pop(context, day),
-                            );
+                                title: Text(
+                                    '${DateFormat.EEEE().format(day)} ${day.day}'),
+                                onTap: () => {
+                                      Navigator.of(context).pop(day),
+                                    });
                           }),
                         ),
                       );
@@ -129,7 +134,10 @@ class GardenPageState extends State<GardenPage> {
                       padding: const EdgeInsets.all(10.0),
                       color: Colors.green.shade300,
                       child: Center(
-                          child: Text('Week of $formattedDate')),
+                          child: Text('Week of $formattedDate',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16))),
                     ),
                     Stack(
                       children: [

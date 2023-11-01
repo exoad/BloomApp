@@ -165,7 +165,7 @@ Widget makeCustomInputDetails(
 }
 
 String fmtDateTime(DateTime time) =>
-    "${time.hour}:${time.minute} ${time.month}/${time.day}/${time.year}";
+    "${time.hour}:${time.minute == 0 ? "00" : time.minute} ${time.month}/${time.day}/${time.year}";
 
 Widget makeListTile_SideDrawer(
     {required IconData icon,

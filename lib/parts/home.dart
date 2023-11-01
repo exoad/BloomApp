@@ -1,5 +1,4 @@
-import 'package:blosso_mindfulness/bits/helper.dart';
-import 'package:blosso_mindfulness/bits/telemetry.dart';
+import 'package:blosso_mindfulness/bits/bits.dart';
 import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -151,6 +150,16 @@ class _HomePageState extends State<HomePage> {
                             TextStyle(fontWeight: FontWeight.w800)),
                     TextSpan(text: getUserName())
                   ], style: const TextStyle(fontSize: 20))),
+                  const SizedBox(width: 12),
+                  TextButton.icon(
+                      style: const ButtonStyle(
+                          foregroundColor: MaterialStatePropertyAll(
+                              Colors.orange)),
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.replay_rounded),
+                      label: const Text("Refresh")),
                 ],
               ),
               const SizedBox(height: 15),
@@ -170,13 +179,17 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600),
                           ),
-                          const TextSpan(
-                              text: "Last entry was made at ",
-                              style: TextStyle(fontSize: 16)),
-                          TextSpan(
-                              text: fmtDateTime(
-                                  DateTime.fromMillisecondsSinceEpoch(
-                                      getLastEntryTime())))
+                          if (DateTime.fromMillisecondsSinceEpoch(
+                                  getLastEntryTime()) !=
+                              DateTime.fromMillisecondsSinceEpoch(0))
+                            TextSpan(
+                                text:
+                                    "Last entry was made on ${fmtDateTime(DateTime.fromMillisecondsSinceEpoch(getLastEntryTime()))}",
+                                style: const TextStyle(fontSize: 16))
+                          else
+                            const TextSpan(
+                                text: "Last entry was never made",
+                                style: TextStyle(fontSize: 16))
                         ]))
                       ],
                     ))
@@ -201,9 +214,36 @@ class _HomePageState extends State<HomePage> {
                             TextSpan(
                                 text: fmtDateTime(DateTime
                                     .fromMillisecondsSinceEpoch(
-                                        getLastEntryTime())))
+                                        getLastEntryTime()))),
+                            const TextSpan(
+                                text: "\n\nCheck back tomorrow!")
                           ]))
                         ])),
+              const SizedBox(height: 15),
+              makeBorderComponent(
+                  color: Colors.blue.shade300,
+                  child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.info_outline_rounded, size: 32),
+                        SizedBox(width: 16),
+                        Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text:
+                                  "Make sure to fill out everything!\n",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            TextSpan(
+                                text:
+                                    "This will give you better results",
+                                style: TextStyle(fontSize: 16)),
+                          ]),
+                          softWrap: true,
+                        )
+                      ])),
               const SizedBox(height: 30),
               const Text("Your stats & graphs",
                   style: TextStyle(
@@ -239,7 +279,6 @@ class _HomePageState extends State<HomePage> {
                 }),
               ),
               const SizedBox(height: 8),
-              // create simpleline chart of hours slept:
               makeBorderComponent(
                 child: Builder(builder: (ctxt) {
                   List<int> hoursSlept = [];

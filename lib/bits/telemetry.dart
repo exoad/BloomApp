@@ -138,6 +138,7 @@ void invalidateAllEntries() {
     prefs.remove("userEntry_EphemeralData$i");
   }
   setLastEntryIndex(0);
+  setLastEntryTime(DateTime.fromMillisecondsSinceEpoch(0));
 }
 
 EphemeralTelemetry getEntry(double index) {

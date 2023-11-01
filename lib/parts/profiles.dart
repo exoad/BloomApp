@@ -1,18 +1,10 @@
 import 'package:blosso_mindfulness/bits/bits.dart';
+import 'package:blosso_mindfulness/parts/parts.dart';
 import 'package:flutter/material.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
-  static Widget _makeBorderComponent({required Widget child}) =>
-      Container(
-          decoration: const BoxDecoration(
-              color: LaF.primaryColor,
-              borderRadius:
-                  BorderRadius.all(LaF.roundedRectBorderRadius)),
-          child: Padding(
-              padding: const EdgeInsets.all(10), child: child));
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +44,11 @@ class ProfilePage extends StatelessWidget {
                     text: " $lastYear",
                     style: const TextStyle(
                         color: Colors.black,
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500))
               ])),
             if (makeNewMonthDivision) const SizedBox(height: 10),
-            _makeBorderComponent(
+            makeBorderComponent(
               child: SizedBox(
                 width: double.infinity,
                 child: Column(
@@ -65,10 +57,10 @@ class ProfilePage extends StatelessWidget {
                       Text.rich(TextSpan(children: [
                         TextSpan(
                             text:
-                                "Entry: ${DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS).month} / ${DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS).day}\n",
+                                "Entry: ${DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS).month} / ${DateTime.fromMillisecondsSinceEpoch(iTele.entryTimeEpochMS).day}\n\n",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 16)),
+                                fontSize: 18)),
                         const TextSpan(
                             text: "Mood Rating:\n",
                             style: TextStyle(
@@ -181,7 +173,7 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _makeBorderComponent(
+            makeBorderComponent(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Center(
@@ -251,7 +243,7 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            _makeBorderComponent(
+            makeBorderComponent(
                 child: SizedBox(
                     width: double.infinity,
                     child: Text.rich(TextSpan(children: [

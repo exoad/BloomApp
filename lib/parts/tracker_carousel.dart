@@ -207,7 +207,7 @@ class _InputTrackerState extends State<InputTracker> {
               max: 10,
               divisions: 10,
               labelConsumer: (e) => e <= 3
-                  ? "🙁 Dpressing"
+                  ? "🙁 Depressing"
                   : e >= 4 && e <= 6
                       ? "😐 It was ok"
                       : "😄 Memorable",

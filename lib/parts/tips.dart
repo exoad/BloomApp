@@ -17,15 +17,17 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Try to Relax!",
     contentBody:
         "Chronic high levels of stress can lead to serious health issues, such as weakened immune function and increased risk of heart disease. Over time, it can also contribute to mental health conditions like depression and anxiety.",
-    condition: (telemetry) => telemetry.howStressed <= 4,
-    color: Color.fromARGB(255, 147, 237, 150)
+    condition: (telemetry) =>
+        telemetry.howStressed >= 4 && telemetry.howStressed != -1,
+    color: const Color.fromARGB(255, 147, 237, 150)
   ),
   (
-    source: "",
+    source: "Columbia University of Psychiatry",
     contentTitle: "Be Nice to Yourself",
     contentBody:
         "If you really are struggling to be nice to yourself, do something nice for someone else. Then, compliment yourself on doing it!",
-    condition: (telemetry) => telemetry.moodScale > 6,
+    condition: (telemetry) =>
+        telemetry.moodScale < 6 && telemetry.moodScale != -1,
     color: Colors.red
   ),
   (
@@ -34,7 +36,9 @@ final List<Tip> _tipsData = <Tip>[
     contentBody:
         "The American Academy of Sleep Medicine recommends between 8-10 hours of sleep per night for teenagers.",
     condition: (telemetry) =>
-        telemetry.hoursOfSleep <= 8 && getUserAgeGroup() < 20,
+        telemetry.hoursOfSleep <= 8 &&
+        getUserAgeGroup() < 20 &&
+        telemetry.hoursOfSleep != -1,
     color: Colors.orange
   ),
   (
@@ -42,15 +46,18 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Seek Quality Sleep!",
     contentBody:
         "Ensure your room is dark and quiet for a better sleep experience. Limit screen time before bed to enhance sleep quality.",
-    condition: (telemetry) => telemetry.sleepRating <= 5,
+    condition: (telemetry) =>
+        telemetry.sleepRating <= 5 && telemetry.hoursOfSleep != -1,
     color: Colors.blueGrey
   ),
   (
-    source: "",
+    source: "National Institute of Health",
     contentTitle: "Stay Connected!",
     contentBody:
         "Spending time with loved ones can boost your mood and provide support during challenging times.",
-    condition: (telemetry) => telemetry.hoursSpentWithFamily <= 2,
+    condition: (telemetry) =>
+        telemetry.hoursSpentWithFamily <= 2 &&
+        telemetry.hoursSpentWithFamily != -1,
     color: Colors.lightBlue
   ),
   (
@@ -66,7 +73,8 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Nature's Boost!",
     contentBody:
         "Spending time outside can refresh your mind. Natural sunlight provides vitamin D, which is essential for many bodily functions.",
-    condition: (telemetry) => telemetry.hoursOutside > 2,
+    condition: (telemetry) =>
+        telemetry.hoursOutside < 2 && telemetry.hoursOutside != -1,
     color: Colors.lightGreen
   ),
   (
@@ -74,23 +82,26 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Screen Break!",
     contentBody:
         "Extended screen time can strain your eyes. Make sure to take short breaks and reduce screen brightness in low light.",
-    condition: (telemetry) => telemetry.hoursOnScreen <= 3,
+    condition: (telemetry) =>
+        telemetry.hoursOnScreen >= 3 && telemetry.hoursOnScreen != -1,
     color: Colors.deepPurple
   ),
   (
-    source: "",
+    source: "Harvard Medical School",
     contentTitle: "Balance is Key!",
     contentBody:
         "Taking time to relax is crucial for mental health. Consider adding relaxation techniques like meditation to your routine.",
-    condition: (telemetry) => telemetry.hoursRecreational > 3,
+    condition: (telemetry) =>
+        telemetry.hoursRecreational < 3 &&
+        telemetry.hoursRecreational != -1,
     color: Colors.purpleAccent
   ),
   (
-    source: "",
+    source: "Mayo Clinic",
     contentTitle: "Take Breaks!",
     contentBody:
         "Long hours on work or study can be draining. Remember to take short breaks and set realistic goals.",
-    condition: (telemetry) => telemetry.hoursProductive > 6,
+    condition: (telemetry) => telemetry.hoursProductive < 6 && telemetry.hoursProductive != -1,
     color: Colors.teal
   ),
   (
@@ -98,7 +109,9 @@ final List<Tip> _tipsData = <Tip>[
     contentTitle: "Re-energize!",
     contentBody:
         "Low energy levels can be a sign of poor nutrition, dehydration, or sleep. Consider checking your diet or water intake and getting more sleep.",
-    condition: (telemetry) => telemetry.energyLevelRating > 4,
+    condition: (telemetry) =>
+        telemetry.energyLevelRating < 4 &&
+        telemetry.hoursOfSleep != -1,
     color: Colors.yellow
   ),
 ];
@@ -151,7 +164,7 @@ class TipsPage extends StatelessWidget {
     List<Widget> recommendedTips_Widget = [];
     List<Widget> otherTips_Widget = [];
     EphemeralTelemetry currentTelemetry =
-        EphemeralTelemetry(getLastEntryIndex());
+        getEntry(getLastEntryIndex() - 1);
     for (var element in _tipsData) {
       if (element.condition(currentTelemetry)) {
         recommendedTips_Widget.add(_makeTipBox(element));

@@ -90,10 +90,11 @@ String getUserSex() => _safeGetString("userSex", "N/A");
 void setUserSex(String newValue) =>
     prefs.setString("userSex", newValue);
 
-int getLastEntryTime() => _safeGetInt("lastEntryTime", 0);
-
-void setLastEntryTimeAsNow() => prefs.setInt("lastEntryTime",
+int getLastEntryTime() => _safeGetInt("lastEntryTime",
     DateTime.fromMillisecondsSinceEpoch(0).millisecondsSinceEpoch);
+
+void setLastEntryTimeAsNow() => prefs.setInt(
+    "lastEntryTime", DateTime.now().millisecondsSinceEpoch);
 
 void setLastEntryTime(DateTime newValue) =>
     prefs.setInt("lastEntryTime", newValue.millisecondsSinceEpoch);
@@ -277,5 +278,5 @@ class EphemeralTelemetry {
 
 void firstTimeValidateTelemetry() {
   setLastEntryIndex(0.0);
-  setLastEntryTime(DateTime.now());
+  setLastEntryTimeAsNow();
 }
